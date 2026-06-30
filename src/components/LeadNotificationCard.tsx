@@ -450,7 +450,7 @@ export default LeadNotificationCard;
 //   refId: "LD-6916-93FA",
 //   name: "\u0e1e\u0e34\u0e0a\u0e0d\u0e4c\u0e1e\u0e25\u0020\u0e28\u0e34\u0e23\u0e34\u0e1b\u0e23\u0e30\u0e40\u0e2a\u0e23\u0e34\u0e10",
 //   phone: "0843374982",
-//   email: "sstaminno@gmail.com",
+//   email: "cuttingpointtech@gmail.com",
 //   source: "website",
 //   locale: "th",
 //   requestId: "05d544cd-2462-4eaa-87b5-af33f9f2ab14",

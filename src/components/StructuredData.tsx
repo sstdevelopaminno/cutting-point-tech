@@ -28,7 +28,7 @@ type StructuredDataProps = {
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 const CONTACT = {
-  email: "sstaminno@gmail.com",
+  email: "cuttingpointtech@gmail.com",
   phoneLocal: "0843374982",
   phoneE164: "+66843374982",
   line: "https://line.me/R/ti/p/@974qhtym",
@@ -129,10 +129,10 @@ export default function StructuredData({
       address: {
         "@type": "PostalAddress",
         streetAddress:
-          "หมู่บ้านนันทนาการ์เด้นท์ 139/32 ตำบลบ้านกลาง อำเภอเมืองปทุมธานี",
-        addressLocality: "ปทุมธานี",
+          "บ้านเลขที่ 66/497 หมู่บ้านคันทรีพาร์ค 14 หมู่ 5 ซอย 2 ถนนปทุมธานีลาดหลุมแก้ว ตำบลบางเตย อำเภอสามโคก",
+        addressLocality: "สามโคก",
         addressRegion: "ปทุมธานี",
-        postalCode: "12000",
+        postalCode: "12160",
         addressCountry: "TH",
       },
     });

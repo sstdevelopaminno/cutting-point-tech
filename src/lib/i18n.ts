@@ -274,9 +274,9 @@ export const dict: Record<Lang, Dict> = {
     footer: {
       company: "บริษัท คัตติ้งพอยท์ เทค จำกัด",
       address:
-        "หมู่บ้านนันทนาการ์เด้นท์ 139/32 139 32 ตำบล บ้านกลาง อำเภอเมือง ปทุมธานี 12000",
+        "บ้านเลขที่ 66/497 หมู่บ้านคันทรีพาร์ค 14 หมู่ 5 ซอย 2 ถนนปทุมธานีลาดหลุมแก้ว ตำบลบางเตย อำเภอสามโคก จังหวัดปทุมธานี 12160",
       phone: "0843374982",
-      email: "sstaminno@gmail.com",
+      email: "cuttingpointtech@gmail.com",
       line: "ไลน์: @974qhtym",
       note: "โซลูชันดิจิทัลระดับองค์กร ครอบคลุมเว็บไซต์ แอปพลิเคชัน และระบบภายใน",
     },
@@ -469,9 +469,9 @@ export const dict: Record<Lang, Dict> = {
     footer: {
       company: "CUTTING POINT TECH COMPANY LIMITED",
       address:
-        "Nantana Garden Village 139/32, Ban Klang, Mueang Pathum Thani, Pathum Thani 12000",
+        "66/497 Country Park 14 Village, Moo 5, Soi 2, Pathum Thani-Lat Lum Kaeo Road, Bang Toei, Sam Khok, Pathum Thani 12160",
       phone: "+66 84 337 4982",
-      email: "sstaminno@gmail.com",
+      email: "cuttingpointtech@gmail.com",
       line: "Line: @974qhtym",
       note: "Enterprise digital solutions across websites, applications, and internal systems.",
     },
@@ -668,9 +668,9 @@ export const dict: Record<Lang, Dict> = {
     footer: {
       company: "CUTTING POINT TECH COMPANY LIMITED",
       address:
-        "ໂຄງການນັນທະນາກາເດັນ 139/32, ບ້ານກາງ, ເມືອງປະທຸມທານີ, ປະທຸມທານີ 12000",
+        "66/497 Country Park 14 Village, Moo 5, Soi 2, Pathum Thani-Lat Lum Kaeo Road, Bang Toei, Sam Khok, Pathum Thani 12160",
       phone: "0843374982",
-      email: "sstaminno@gmail.com",
+      email: "cuttingpointtech@gmail.com",
       line: "LINE: @974qhtym",
       note: "ໂຊລູຊັນດິຈິຕອນລະດັບອົງກອນ: ເວັບໄຊ, ແອັບ, ແລະ ລະບົບພາຍໃນ",
     },
