@@ -5,7 +5,7 @@ import { getRequestedLocale } from "@/lib/locale";
 import { isEstimatorService } from "@/lib/estimate";
 import type { EstimatorService } from "@/lib/estimateConfig";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cutting-point-tech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestedLocale();

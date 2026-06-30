@@ -25,7 +25,7 @@ type StructuredDataProps = {
   service?: ServiceSchema;
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cutting-point-tech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 const CONTACT = {
   email: "sstaminno@gmail.com",

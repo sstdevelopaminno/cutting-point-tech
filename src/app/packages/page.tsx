@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getRequestedLocale } from "@/lib/locale";
 import { estimatorConfig } from "@/lib/estimateConfig";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cutting-point-tech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 type PackageItem = {
   id: "pos" | "website" | "dormitory" | "company";

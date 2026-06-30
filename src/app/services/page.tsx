@@ -8,7 +8,7 @@ import type { Lang } from "@/lib/i18n";
 import { getCopy } from "@/lib/i18n";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cutting-point-tech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 const content = {
   th: {

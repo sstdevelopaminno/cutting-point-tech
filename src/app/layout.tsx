@@ -35,7 +35,7 @@ const notoSerifLao = Noto_Serif_Lao({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cutting-point-tech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
 
 const metadataByLocale: Record<
   Locale,
