@@ -192,15 +192,23 @@ export default function Navbar({ lang, onToggleLang, labels, cta }: NavbarProps)
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/40 bg-white/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/#top" className="flex min-w-0 items-center">
+        <Link href="/#top" className="flex min-w-0 items-center gap-2.5">
           <Image
-            src="/brand/logo-navbar.png"
-            alt="บริษัท คัตติ้งพอยท์ เทค จำกัด - CUTTING POINT TECH COMPANY LIMITED"
-            width={360}
-            height={110}
-            className="h-11 w-auto max-w-[220px] object-contain sm:h-12 sm:max-w-[280px]"
+            src="/brand/logo-icon.png"
+            alt="โลโก้บริษัท คัตติ้งพอยท์ เทค จำกัด"
+            width={64}
+            height={64}
+            className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12"
             priority
           />
+          <span className="min-w-0 leading-tight">
+            <span className="block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] text-slate-950 sm:text-lg">
+              CUTTING POINT TECH
+            </span>
+            <span className="block whitespace-nowrap text-[10px] font-semibold text-slate-600 sm:text-xs">
+              บริษัท คัตติ้งพอยท์ เทค จำกัด
+            </span>
+          </span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-700 lg:flex">
           {navItems.map((item) => {
