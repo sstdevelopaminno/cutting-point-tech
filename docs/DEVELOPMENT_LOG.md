@@ -32,3 +32,8 @@ This file records documentation-first development notes for the Cutting Point Te
 - Verification: npm run build passed and npm run lint passed on 2026-07-01 before commit/push/deploy.
 - Released commit 2f73184 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/7AU5TSytaYv2LdGFMgQSKz8A6Zvy.
 - Verification: https://cuttingpointtech.vercel.app returned HTTP 200 for public access after deployment; https://cutting-point-tech.vercel.app also returned HTTP 200.
+
+## 2026-07-02
+- Investigated why https://cuttingpointtech.vercel.app still showed the old hero while https://cutting-point-tech.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
+- Reassigned https://cuttingpointtech.vercel.app to the latest ready production deployment with Vercel CLI: https://cuttingpointtech-99zhnn2up-sstdevelopaminnos-projects.vercel.app.
+- Verification: cache-busted HTML checks for both domains returned the new hero slideshow markup, no old CTA button markup, and no old gradient-only hero markup; https://cuttingpointtech.vercel.app returned HTTP 200.
