@@ -35,5 +35,5 @@ This file records documentation-first development notes for the Cutting Point Te
 
 ## 2026-07-02
 - Investigated why https://cuttingpointtech.vercel.app still showed the old hero while https://cutting-point-tech.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
-- Reassigned https://cuttingpointtech.vercel.app to the latest ready production deployment with Vercel CLI. Initial fix pointed to https://cuttingpointtech-99zhnn2up-sstdevelopaminnos-projects.vercel.app, then the final documentation deployment was re-aliased to https://cuttingpointtech-d4q2y7o96-sstdevelopaminnos-projects.vercel.app.
+- Reassigned https://cuttingpointtech.vercel.app to the newest ready production deployment with Vercel CLI after each deployment, because Vercel's automatic production alias still targets the hyphenated project domain.
 - Verification: cache-busted HTML checks for both domains returned the new hero slideshow markup, no old CTA button markup, and no old gradient-only hero markup; https://cuttingpointtech.vercel.app returned HTTP 200.
