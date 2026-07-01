@@ -30,3 +30,5 @@ This file records documentation-first development notes for the Cutting Point Te
 - Verification: targeted source search confirmed no hero CTA references remain, Thai/Laos text samples render as UTF-8 source text, ESLint passed for src/components/HomePage.tsx, diff --check passed, and localhost preview returned HTTP 200.
 - Stopped the local dev server on port 3000 before release work, then fixed production build type issues by adding local type shims for Next generated imports, MetadataRoute, and lucide-react icons in src/types/next-types-js.d.ts; also replaced the HomePage styled-jsx-only style tag with a standard style tag for React 19 TypeScript compatibility.
 - Verification: npm run build passed and npm run lint passed on 2026-07-01 before commit/push/deploy.
+- Released commit 2f73184 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/7AU5TSytaYv2LdGFMgQSKz8A6Zvy.
+- Verification: https://cuttingpointtech.vercel.app returned HTTP 200 for public access after deployment; https://cutting-point-tech.vercel.app also returned HTTP 200.
