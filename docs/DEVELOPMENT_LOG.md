@@ -14,3 +14,5 @@ This file records documentation-first development notes for the Cutting Point Te
 - Current GitHub repository: https://github.com/sstdevelopaminno/cutting-point-tech.git.
 - Latest confirmed public-access fix: disabled Vercel SSO/password deployment protection and verified HTTP 200 for public visitors.
 - Recent company-contact update recorded: address changed to 66/497 Country Park 14 Village, Moo 5, Soi 2, Pathum Thani-Lat Lum Kaeo Road, Bang Toei, Sam Khok, Pathum Thani 12160; email changed to cuttingpointtech@gmail.com; phone and Line remain unchanged for now.
+- Added docs/AI_CONTEXT.md to keep AI-assisted work aligned with project identity, scope guardrails, required documentation checks, and token-saving mode.
+- Updated README.md documentation workflow to require reading docs/AI_CONTEXT.md before development.
