@@ -61,6 +61,11 @@ alter table leads add column if not exists service text;
 alter table leads add column if not exists estimate_id uuid references estimates(id);
 ```
 
+
+## Documentation workflow
+
+Before development or code changes, review this README and docs/DEVELOPMENT_LOG.md. After every code, UI, configuration, or deployment change, add a dated note to docs/DEVELOPMENT_LOG.md or another relevant docs file.
+
 ## Environment variables
 
 Do not commit `.env` or `.env.local` files. Use `.env.example` for reference only.
