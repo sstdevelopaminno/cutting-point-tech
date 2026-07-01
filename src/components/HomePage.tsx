@@ -26,6 +26,7 @@ export default function HomePage() {
   const [posModalView, setPosModalView] = useState<
     "legacyImage" | "mobileImage" | "features" | "audience" | null
   >(null);
+  const [heroSlideIndex, setHeroSlideIndex] = useState(0);
   const markImageLoaded = useCallback((src: string) => {
     setLoadedImageMap((prev) => (prev[src] ? prev : { ...prev, [src]: true }));
   }, []);
@@ -93,6 +94,15 @@ export default function HomePage() {
       ] as const,
     []
   );
+
+  const heroSlides = [
+    { src: "/hero-slides/01.png", alt: "Cloud database system background" },
+    { src: "/hero-slides/02.png", alt: "Data center system background" },
+    { src: "/hero-slides/03.png", alt: "Responsive website design background" },
+    { src: "/hero-slides/04.png", alt: "Business dashboard system background" },
+    { src: "/hero-slides/05.png", alt: "Secure payment system background" },
+    { src: "/hero-slides/06.png", alt: "Accounting and business document system background" },
+  ] as const;
 
   const servicesShowcase = {
     src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/templates-services.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3RlbXBsYXRlcy1zZXJ2aWNlcy5wbmciLCJpYXQiOjE3NzA3NDY4MTcsImV4cCI6MTgwMjI4MjgxN30.7Z2AeIBnYGjZCeZZvCGkxWjsqU379MIqvRRUpU040xg",
@@ -218,14 +228,14 @@ export default function HomePage() {
     lang === "th"
       ? "rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700"
       : "rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700";
-  const ctaPrimaryClass =
-    lang === "th"
-      ? "inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-semibold text-slate-900 shadow-lg"
-      : "inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-900 shadow-lg";
-  const ctaSecondaryClass =
-    lang === "th"
-      ? "inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-xs font-semibold text-white"
-      : "inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white";
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setHeroSlideIndex((current) => (current + 1) % heroSlides.length);
+    }, 5500);
+
+    return () => window.clearInterval(timer);
+  }, [heroSlides.length]);
 
   useEffect(() => {
     if (!isPosModalOpen) {
@@ -571,10 +581,25 @@ export default function HomePage() {
       />
       */}
       <main id="top">
-        <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 text-white">
-          <div className="absolute -left-32 top-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-          <div className="absolute -right-40 bottom-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-20 lg:flex-row lg:items-center">
+        <section className="relative overflow-hidden bg-slate-950 text-white">
+          <div className="absolute inset-0">
+            {heroSlides.map((slide, index) => (
+              <Image
+                key={slide.src}
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={index === 0}
+                sizes="100vw"
+                className={`object-cover transition-opacity duration-1000 ease-out ${
+                  index === heroSlideIndex ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-950/72 to-slate-950/35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70" />
+          <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-20">
             <div className="max-w-xl space-y-6">
               <p className="text-sm uppercase tracking-[0.4em] text-blue-100">
                 CUTTING POINT TECH
@@ -583,67 +608,10 @@ export default function HomePage() {
                 {seoContent.h1}
               </h1>
               <p className="text-lg text-blue-100">{copy.hero.subtitle}</p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/contact" className={ctaPrimaryClass}>
-                  {copy.hero.primaryCta}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link href="/packages" className={ctaSecondaryClass}>
-                  {copy.hero.secondaryCta}
-                </Link>
-              </div>
               <p className="text-sm text-blue-100">{copy.hero.trust}</p>
             </div>
-            <div className="w-full max-w-md rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-blue-200">
-                     {lang === "th"
-                       ? "เทคโนโลยีระดับพรีเมียม"
-                       : lang === "lo"
-                         ? "ເຕັກໂນໂລຊີລະດັບພຣີເມຍມ"
-                         : "Premium Stack"}
-                   </p>
-                   <p className="mt-2 text-2xl font-semibold">
-                     {lang === "th"
-                       ? "มาตรฐานสากลระดับโลก"
-                       : lang === "lo"
-                         ? "ມາດຕະຖານສາກົນລະດັບໂລກ"
-                         : "Global-standard platform"}
-                   </p>
-                 </div>
-                 <div className="grid grid-cols-2 gap-4 text-sm text-blue-100">
-                   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                     <p className="text-2xl font-semibold text-white">98%</p>
-                     <p>{lang === "th" ? "คะแนนประสิทธิภาพ" : lang === "lo" ? "ຄະແນນປະສິດທິພາບ" : "Performance score"}</p>
-                   </div>
-                   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                     <p className="text-2xl font-semibold text-white">24/7</p>
-                     <p>{lang === "th" ? "มอนิเตอร์ 24/7" : lang === "lo" ? "ຕິດຕາມ 24/7" : "Monitoring"}</p>
-                   </div>
-                   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                     <p className="text-2xl font-semibold text-white">
-                       {lang === "th" ? "14 วัน" : lang === "lo" ? "14 ມື້" : "14d"}
-                     </p>
-                     <p>{lang === "th" ? "ส่งมอบเฉลี่ย" : lang === "lo" ? "ສົ່ງມອບໂດຍສະເລ່ຍ" : "Fast delivery"}</p>
-                   </div>
-                   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                     <p className="text-2xl font-semibold text-white">100+</p>
-                     <p>{lang === "th" ? "มาตรฐาน" : lang === "lo" ? "ມາດຕະຖານ" : "Standards"}</p>
-                   </div>
-                 </div>
-                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-blue-100">
-                   {lang === "th"
-                     ? "ระบบครบวงจรและระดับ Supabase Deploy บน Vercel ได้ทันที"
-                     : lang === "lo"
-                       ? "ລະບົບ Supabase ຄົບວົງຈອນ ສາມາດ deploy ຂຶ້ນ Vercel ໄດ້ທັນທີ"
-                       : "End-to-end Supabase system, deployable on Vercel instantly"}
-                 </div>
-               </div>
-             </div>
-           </div>
-         </section>
-
+          </div>
+        </section>
         <section id="seo" className="bg-white py-20">
           <div className="mx-auto w-full max-w-5xl space-y-12 px-6">
             {seoContent.sections.map((section, sectionIndex) => {
@@ -716,6 +684,51 @@ export default function HomePage() {
                           }`}
                           onLoad={() => markImageLoaded(servicesShowcase.src)}
                         />
+                      </div>
+                      <div className="mt-6 rounded-3xl border border-blue-100 bg-white p-5 shadow-card-soft">
+                        <div className="mb-4">
+                          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500">
+                            {lang === "th"
+                              ? "เทคโนโลยีระดับพรีเมียม"
+                              : lang === "lo"
+                                ? "ເທັກໂນໂລຢີລະດັບພຣີເມຍມ"
+                                : "Premium technology"}
+                          </p>
+                          <h3 className="mt-2 font-[var(--font-heading)] text-2xl font-semibold text-slate-900">
+                            {lang === "th"
+                              ? "มาตรฐานสากลระดับโลก"
+                              : lang === "lo"
+                                ? "ມາດຕະຖານລະດັບໂລກ"
+                                : "World-standard platform"}
+                          </h3>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                            <p className="text-2xl font-semibold text-blue-700">98%</p>
+                            <p className="text-sm text-slate-600">{lang === "th" ? "คะแนนประสิทธิภาพ" : lang === "lo" ? "ຄະແນນປະສິດທິພາບ" : "Performance score"}</p>
+                          </div>
+                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                            <p className="text-2xl font-semibold text-blue-700">24/7</p>
+                            <p className="text-sm text-slate-600">{lang === "th" ? "มอนิเตอร์ 24/7" : lang === "lo" ? "ຕິດຕາມ 24/7" : "Monitoring"}</p>
+                          </div>
+                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                            <p className="text-2xl font-semibold text-blue-700">
+                              {lang === "th" ? "14 วัน" : lang === "lo" ? "14 ມື້" : "14d"}
+                            </p>
+                            <p className="text-sm text-slate-600">{lang === "th" ? "ส่งมอบเฉลี่ย" : lang === "lo" ? "ສົ່ງມອບໂດຍສະເລ່ຍ" : "Fast delivery"}</p>
+                          </div>
+                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                            <p className="text-2xl font-semibold text-blue-700">100+</p>
+                            <p className="text-sm text-slate-600">{lang === "th" ? "มาตรฐาน" : lang === "lo" ? "ມາດຕະຖານ" : "Standards"}</p>
+                          </div>
+                        </div>
+                        <p className="mt-4 rounded-2xl border border-blue-100 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+                          {lang === "th"
+                            ? "ระบบครบวงจรและระดับ Supabase Deploy บน Vercel ได้ทันที"
+                            : lang === "lo"
+                              ? "ລະບົບຄົບວົງຈອນ ແລະ ພ້ອມ Deploy ບົນ Vercel"
+                              : "Full-stack system, Supabase-ready, and deployable on Vercel."}
+                        </p>
                       </div>
                     </div>
                   ) : null}
@@ -1493,7 +1506,7 @@ export default function HomePage() {
           </div>
         </div>
       ) : null}
-      <style jsx global>{`
+      <style>{`
         @keyframes customers-pan {
           0% {
             transform: translateX(0);
