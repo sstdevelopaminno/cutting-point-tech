@@ -17,16 +17,41 @@ Open http://localhost:3000
 src/
   app/
     api/contact/route.ts
+    api/estimate/route.ts
+    api/estimate/lead/route.ts
+    api/events/route.ts
+    articles/page.tsx
+    contact/page.tsx
+    estimate/page.tsx
     layout.tsx
+    packages/page.tsx
     page.tsx
+    seo-ai/page.tsx
+    services/page.tsx
+    services/company-registration/page.tsx
+    services/dormitory-system/page.tsx
+    services/website/page.tsx
+    templates/corporate/page.tsx
+    templates/ecommerce/page.tsx
   components/
     Footer.tsx
+    HomePage.tsx
     Navbar.tsx
     PackageCard.tsx
     PlatformCard.tsx
+    SiteShell.tsx
   lib/
+    email.ts
+    estimate.ts
+    estimateConfig.ts
+    eventLogger.ts
+    ga.ts
     i18n.ts
+    lineWebhook.ts
+    supabaseAdmin.ts
 ```
+
+The home page is composed from `src/components/HomePage.tsx`. Shared language copy lives in `src/lib/i18n.ts`, estimate pricing logic lives in `src/lib/estimate.ts` and `src/lib/estimateConfig.ts`, and server-side lead notification helpers live in `src/lib/email.ts` and `src/lib/lineWebhook.ts`.
 
 ## Deploy to Vercel (GitHub)
 
@@ -69,3 +94,20 @@ Before development or code changes, review this README, docs/DEVELOPMENT_LOG.md,
 ## Environment variables
 
 Do not commit `.env` or `.env.local` files. Use `.env.example` for reference only.
+
+Current environment variable surface:
+
+| Variable | Scope | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | public | Canonical site URL used by metadata and structured data. Defaults to `https://cuttingpointtech.vercel.app`. |
+| `NEXT_PUBLIC_SUPABASE_URL` | public/server | Supabase project URL used by client/server helpers. |
+| `SUPABASE_SERVICE_ROLE_KEY` | server only | Supabase service-role key for lead, estimate, and event writes. Never expose in browser code. |
+| `SMTP_HOST` | server only | SMTP host for admin lead notifications. |
+| `SMTP_PORT` | server only | SMTP port, defaults to `587` when omitted by the mail helper. |
+| `SMTP_USER` | server only | SMTP username. |
+| `SMTP_PASS` | server only | SMTP password or app password. |
+| `MAIL_FROM` | server only | Sender address for admin notification emails. |
+| `ADMIN_NOTIFY_EMAIL` | server only | Recipient address for admin notification emails. |
+| `CLOUDFLARE_LINE_WEBHOOK_URL` | server only | Optional Cloudflare Worker URL for LINE lead notifications. |
+| `CLOUDFLARE_LINE_WEBHOOK_SECRET` | server only | Optional shared secret sent to the Cloudflare webhook. |
+| `NEXT_PUBLIC_GA4_ID` | public | Optional GA4 measurement ID. Analytics loads only in production when this matches `G-...`. |

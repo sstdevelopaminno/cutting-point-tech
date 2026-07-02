@@ -37,3 +37,12 @@ This file records documentation-first development notes for the Cutting Point Te
 - Investigated why https://cuttingpointtech.vercel.app still showed the old hero while https://cutting-point-tech.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
 - Reassigned https://cuttingpointtech.vercel.app to the newest ready production deployment with Vercel CLI after each deployment, because Vercel's automatic production alias still targets the hyphenated project domain.
 - Verification: cache-busted HTML checks for both domains returned the new hero slideshow markup, no old CTA button markup, and no old gradient-only hero markup; https://cuttingpointtech.vercel.app returned HTTP 200.
+- Reviewed README.md, docs/AI_CONTEXT.md, and this development log before continuing development setup.
+- Updated README.md so the documented source structure matches the current Next.js App Router routes, components, libraries, and environment variable surface.
+- Verification: README/log readback confirmed the new documentation entries. No source code behavior was changed. Git status and npm lint could not be checked in the current shell because `git` and `npm` were not available in PATH.
+- Removed the dark POS system section shown in the owner screenshot from src/components/HomePage.tsx, including the related POS modal state/rendering and unused icons.
+- Changed scrollbar handling to fully hide scrollbars instead of temporarily showing them while scrolling by removing the SiteShell scroll listener and simplifying src/app/globals.css scrollbar rules.
+- Verification: targeted readback confirmed no `id="pos-system"`, `pos-modal`, or `is-scrolling` references remain, `ArrowRight` import usage is valid, and global CSS keeps `scrollbar-width: none`. Git status and npm lint could not be checked because `git`, `node`, and `npm` were not available in PATH in this shell.
+- Added a new `main-services` image gallery above the features section in src/components/HomePage.tsx with the owner-provided six service images arranged as a responsive 3-column desktop grid.
+- Copied the provided service images into public/main-services as service-01-pos.png through service-06-registration.png.
+- Verification: targeted readback confirmed six image references and six copied images; `npm run build` passed with Node.js added to PATH for the shell session. `npm run lint` timed out without returning diagnostics.

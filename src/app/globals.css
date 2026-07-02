@@ -43,32 +43,16 @@ picture {
 }
 
 
-html {
+html,
+body {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-html.is-scrolling {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(15, 23, 42, 0.55) transparent;
-}
-
-html::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
   width: 0;
   height: 0;
-}
-
-html.is-scrolling::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-html::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html::-webkit-scrollbar-thumb {
-  background-color: rgba(15, 23, 42, 0.55);
-  background-clip: content-box;
-  border: 3px solid transparent;
-  border-radius: 999px;
+  display: none;
 }

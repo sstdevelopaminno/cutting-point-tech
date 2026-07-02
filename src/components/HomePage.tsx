@@ -2,12 +2,9 @@
 import {
   ArrowRight,
   Award,
-  CheckCircle2,
-  Eye,
   Layers,
   ShieldCheck,
   Sparkles,
-  X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,9 +20,6 @@ export default function HomePage() {
 
   const copy = getCopy(lang);
   const [loadedImageMap, setLoadedImageMap] = useState<Record<string, boolean>>({});
-  const [posModalView, setPosModalView] = useState<
-    "legacyImage" | "mobileImage" | "features" | "audience" | null
-  >(null);
   const [heroSlideIndex, setHeroSlideIndex] = useState(0);
   const markImageLoaded = useCallback((src: string) => {
     setLoadedImageMap((prev) => (prev[src] ? prev : { ...prev, [src]: true }));
@@ -109,99 +103,38 @@ export default function HomePage() {
     altTh: "ภาพตัวอย่างบริการและเทมเพลตเว็บไซต์",
     altEn: "Services and website templates showcase",
   } as const;
-  const posShowcase = [
+  const mainServiceShowcase = [
     {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/44557782.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uLzQ0NTU3NzgyLnBuZyIsImlhdCI6MTc3NDEwODgyNSwiZXhwIjoxODA1NjQ0ODI1fQ.zsvx6g--6oRsON5CkcmJp07wcx_XhARlNPM-bjQ2Uww",
-      altTh: "ภาพตัวอย่างระบบ POS แบบแนวนอน",
-      altEn: "Horizontal POS system showcase",
+      src: "/main-services/service-01-pos.png",
+      altTh: "บริการระบบ POS พร้อมเครื่องสำหรับร้านอาหารและธุรกิจหลายสาขา",
+      altEn: "POS system and hardware service for restaurants and multi-branch businesses",
     },
     {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/1585858.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uLzE1ODU4NTgucG5nIiwiaWF0IjoxNzc0MDgzNzUwLCJleHAiOjE4MDU2MTk3NTB9.yRlI5N7tWxCoyeIcg5rV0i18bl-kbCqeGwMnrwOJ9t8",
-      altTh: "ภาพตัวอย่างระบบ POS สำหรับร้านอาหารและคาเฟ่",
-      altEn: "POS system example for restaurants and cafes",
+      src: "/main-services/service-02-website.png",
+      altTh: "บริการรับทำเว็บไซต์องค์กร ร้านค้าออนไลน์ และ Landing Page",
+      altEn: "Website, ecommerce, and landing page development service",
     },
     {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/256633.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uLzI1NjYzMy5wbmciLCJpYXQiOjE3NzQwODM3OTEsImV4cCI6MTgwNTYxOTc5MX0.knU6qU6ajXaJEVVC0VV3-xsJcSUTmVSmNXXpRMioez4",
-      altTh: "ภาพตัวอย่างการใช้งาน POS บนมือถือ",
-      altEn: "POS mobile usage example",
+      src: "/main-services/service-03-hotel.png",
+      altTh: "บริการระบบโรงแรมและรีสอร์ทสำหรับการจองและรายงาน",
+      altEn: "Hotel and resort system service for booking and reporting",
+    },
+    {
+      src: "/main-services/service-04-accounting-app.png",
+      altTh: "บริการโปรแกรมบัญชีสำหรับจัดการรายรับรายจ่ายและเอกสาร",
+      altEn: "Accounting software service for income, expenses, and documents",
+    },
+    {
+      src: "/main-services/service-05-accounting-service.png",
+      altTh: "บริการรับทำบัญชีและดูแลงานเอกสารทางการเงิน",
+      altEn: "Accounting service and financial document support",
+    },
+    {
+      src: "/main-services/service-06-registration.png",
+      altTh: "บริการรับจดบริษัทและจัดเตรียมเอกสารนิติบุคคล",
+      altEn: "Company registration and juristic document service",
     },
   ] as const;
-  const posCopy =
-    lang === "th"
-      ? {
-          eyebrow: "POS สำหรับร้านอาหารและค้าปลีก",
-          title:
-            "🚀 เปลี่ยนร้านของคุณให้ “ขายคล่อง จัดการง่าย” ด้วยระบบ POS ครบจบในที่เดียว!",
-          body: "ไม่ว่าจะขายแบบ 🍽️ ทานที่ร้าน หรือ 🥡 กลับบ้าน / เดลิเวอรี่ ระบบของเราช่วยให้คุณจัดการทุกออเดอร์ได้อย่างรวดเร็ว แม่นยำ และมืออาชีพ",
-          featureTitle: "✨ ฟีเจอร์เด่นที่ร้านคุณต้องมี",
-          features: [
-            "✔️ จัดการโต๊ะอาหารแบบเรียลไทม์",
-            "✔️ รองรับออเดอร์ทานที่ร้าน / กลับบ้าน / เดลิเวอรี่",
-            "✔️ สรุปยอดขายอัตโนมัติ ดูรายงานได้ทันที",
-            "✔️ ใช้งานง่าย รองรับมือถือ ไม่ต้องมีอุปกรณ์เพิ่ม",
-          ],
-          audienceTitle: "🔥 เหมาะกับ",
-          audience: "ร้านอาหาร • คาเฟ่ • ร้านขายของทั่วไป",
-          ctaLead: "เริ่มต้นง่าย ใช้งานได้ทันที ไม่ต้องลงทุนสูง! ทดลองใช้ฟรีทันที!",
-          ctaFree: "👉 ไม่ต้องจ่ายค่าเริ่มต้น",
-          trialLabel: "🧾 ทดลองใช้งานระบบ",
-          trialCta: "👉 https://sstinnovate.com",
-          modeDineIn: "ทานที่ร้าน",
-          modeTakeaway: "กลับบ้าน",
-          modeDelivery: "เดลิเวอรี่",
-        }
-      : {
-          eyebrow: "POS for Restaurants & Retail",
-          title: "Sell faster and manage easier with one complete POS solution",
-          body: "From dine-in to takeaway and delivery, manage every order with speed, accuracy, and confidence.",
-          featureTitle: "Key features",
-          features: [
-            "Real-time table management",
-            "Supports dine-in / takeaway / delivery orders",
-            "Automatic sales summary and instant reporting",
-            "Mobile-friendly and easy to use",
-          ],
-          audienceTitle: "Best for",
-          audience: "Restaurants • Cafes • Retail shops",
-          ctaLead: "Start quickly with low setup cost and immediate usability.",
-          ctaFree: "No upfront fee",
-          trialLabel: "Try the system",
-          trialCta: "https://sstinnovate.com",
-          modeDineIn: "Dine-in",
-          modeTakeaway: "Takeaway",
-          modeDelivery: "Delivery",
-        };
-  const posPrimaryShowcase = posShowcase[0];
-  const posLegacyShowcase = posShowcase[1];
-  const posMobileShowcase = posShowcase[2];
-  const posLegacyPreviewButtonText = lang === "th" ? "รูปแบบมือถือ" : "View legacy image";
-  const posMobilePreviewButtonText = lang === "th" ? "รูปแบบมือถือ" : "View mobile image";
-  const posFeaturePreviewButtonText = lang === "th" ? "ฟีเจอร์เด่น" : "Key features";
-  const posAudiencePreviewButtonText = lang === "th" ? "เหมาะสำลับร้าน/ธุระกิจ" : "Best for shops/businesses";
-  const posPrimaryImageLinkText = lang === "th" ? "เปิดภาพเต็ม" : "Open full image";
-  const posTryButtonText = lang === "th" ? "ทดลองใช้งานระบบ" : "Try the system";
-  const posCloseLabel = lang === "th" ? "ปิด" : "Close";
-  const isPosModalOpen = posModalView !== null;
-  const posModalImage =
-    posModalView === "legacyImage"
-      ? posLegacyShowcase
-      : posModalView === "mobileImage"
-        ? posMobileShowcase
-        : null;
-  const posModalTitle =
-    posModalView === "legacyImage"
-      ? lang === "th"
-        ? "ภาพเดิมระบบ POS"
-        : "Legacy POS image"
-      : posModalView === "mobileImage"
-        ? lang === "th"
-          ? "ภาพระบบ POS บนมือถือ"
-          : "POS mobile image"
-        : posModalView === "features"
-          ? posCopy.featureTitle
-          : lang === "th"
-            ? "กลุ่มธุรกิจที่เหมาะกับ"
-            : "Suitable businesses";
   const customerSectionEyebrow = lang === "th" ? "ลูกค้าของเรา" : "Our customers";
   const customerSectionTitle =
     lang === "th" ? "แบรนด์ที่ไว้วางใจเรา" : "Trusted by Leading Brands";
@@ -237,26 +170,6 @@ export default function HomePage() {
     return () => window.clearInterval(timer);
   }, [heroSlides.length]);
 
-  useEffect(() => {
-    if (!isPosModalOpen) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setPosModalView(null);
-      }
-    };
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isPosModalOpen]);
 
   const seoContent = useMemo(
     () =>
@@ -812,114 +725,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section
-          id="pos-system"
-          className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-20 text-white"
-        >
-          <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-cyan-400/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-28 right-0 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl" />
-          <div className="relative mx-auto w-full max-w-6xl px-6">
-            <div className="grid items-start gap-8 lg:grid-cols-12">
-              <div className="space-y-6 lg:col-span-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
-                  {posCopy.eyebrow}
-                </p>
-                <h2 className="font-[var(--font-heading)] text-3xl font-semibold leading-tight text-white md:text-4xl">
-                  {posCopy.title}
-                </h2>
-                <p className="max-w-2xl text-base leading-relaxed text-slate-200">{posCopy.body}</p>
-
-                <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-                  <button
-                    type="button"
-                    onClick={() => setPosModalView("features")}
-                    aria-haspopup="dialog"
-                    aria-controls="pos-modal"
-                    className="inline-flex min-h-11 touch-manipulation items-center justify-center rounded-2xl border border-cyan-300/35 bg-gradient-to-b from-white/15 to-white/5 px-5 py-2.5 text-sm font-semibold text-cyan-50 shadow-[0_10px_24px_rgba(6,182,212,0.15)] backdrop-blur-md transition duration-200 active:scale-[0.98] hover:-translate-y-0.5 hover:border-cyan-200/70 hover:from-cyan-300/25 hover:to-cyan-200/10 sm:px-6"
-                  >
-                    {posFeaturePreviewButtonText}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPosModalView("audience")}
-                    aria-haspopup="dialog"
-                    aria-controls="pos-modal"
-                    className="inline-flex min-h-11 touch-manipulation items-center justify-center rounded-2xl border border-cyan-300/35 bg-gradient-to-b from-white/15 to-white/5 px-5 py-2.5 text-sm font-semibold text-cyan-50 shadow-[0_10px_24px_rgba(6,182,212,0.15)] backdrop-blur-md transition duration-200 active:scale-[0.98] hover:-translate-y-0.5 hover:border-cyan-200/70 hover:from-cyan-300/25 hover:to-cyan-200/10 sm:px-6"
-                  >
-                    {posAudiencePreviewButtonText}
-                  </button>
-                  <a
-                    href="https://sstinnovate.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border border-transparent bg-gradient-to-r from-cyan-300 to-blue-400 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-[0_10px_24px_rgba(56,189,248,0.35)] transition duration-200 active:scale-[0.98] hover:-translate-y-0.5 hover:from-cyan-200 hover:to-blue-300 sm:px-6"
-                  >
-                    {posTryButtonText}
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-
-              </div>
-
-              <div className="space-y-4 lg:col-span-5">
-                <a
-                  href={posPrimaryShowcase.src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative block aspect-[16/10] overflow-hidden rounded-3xl border border-white/15 bg-slate-900/60 shadow-xl"
-                >
-                  {!isImageLoaded(posPrimaryShowcase.src) ? (
-                    <div className="absolute inset-0 animate-pulse bg-slate-800/70" />
-                  ) : null}
-                  <Image
-                    src={posPrimaryShowcase.src}
-                    alt={lang === "th" ? posPrimaryShowcase.altTh : posPrimaryShowcase.altEn}
-                    width={900}
-                    height={1200}
-                    unoptimized
-                    loading="lazy"
-                    fetchPriority="low"
-                    className={`h-full w-full object-cover object-center transition-opacity duration-300 ${
-                      isImageLoaded(posPrimaryShowcase.src) ? "opacity-100" : "opacity-0"
-                    }`}
-                    onLoad={() => markImageLoaded(posPrimaryShowcase.src)}
-                  />
-                  <span className="absolute bottom-3 right-3 inline-flex min-h-9 items-center rounded-full bg-white/95 px-4 py-1.5 text-xs font-semibold text-slate-900 shadow">
-                    {posPrimaryImageLinkText}
-                  </span>
-                </a>
-                <div className="flex flex-wrap gap-3 sm:gap-4">
-                  {posLegacyShowcase ? (
-                    <button
-                      type="button"
-                      onClick={() => setPosModalView("legacyImage")}
-                      aria-haspopup="dialog"
-                      aria-controls="pos-modal"
-                      className="inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border border-cyan-200/40 bg-cyan-300/10 px-5 py-2 text-sm font-semibold text-cyan-100 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-cyan-300/20"
-                    >
-                      <Eye className="h-4 w-4" />
-                      {posLegacyPreviewButtonText}
-                    </button>
-                  ) : null}
-                  {posMobileShowcase ? (
-                    <button
-                      type="button"
-                      onClick={() => setPosModalView("mobileImage")}
-                      aria-haspopup="dialog"
-                      aria-controls="pos-modal"
-                      className="inline-flex min-h-11 touch-manipulation items-center justify-center gap-2 rounded-full border border-cyan-200/40 bg-cyan-300/10 px-5 py-2 text-sm font-semibold text-cyan-100 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-cyan-300/20"
-                    >
-                      <Eye className="h-4 w-4" />
-                      {posMobilePreviewButtonText}
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
         {/*
         <section id="service-landing" className="bg-mist py-20">
           <div className="mx-auto w-full max-w-6xl px-6">
@@ -953,7 +758,46 @@ export default function HomePage() {
         </section>
         */}
 
-        <section id="features" className="bg-white py-20">
+        <section id="main-services" className="bg-white pt-20 pb-10">
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className={eyebrowClass}>{lang === "th" ? "บริการ" : "Services"}</p>
+                <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
+                  {lang === "th" ? "การบริการหลักของเรา" : "Our Core Services"}
+                </h2>
+              </div>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {mainServiceShowcase.map((item) => (
+                <div
+                  key={item.src}
+                  className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
+                    {!isImageLoaded(item.src) ? (
+                      <div className="absolute inset-0 animate-pulse bg-slate-200/80" />
+                    ) : null}
+                    <Image
+                      src={item.src}
+                      alt={lang === "th" ? item.altTh : item.altEn}
+                      width={1200}
+                      height={1200}
+                      className={`h-full w-full object-cover transition duration-500 group-hover:scale-[1.02] ${
+                        isImageLoaded(item.src) ? "opacity-100" : "opacity-0"
+                      }`}
+                      loading="lazy"
+                      fetchPriority="low"
+                      onLoad={() => markImageLoaded(item.src)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="bg-white pt-10 pb-20">
           <div className="mx-auto w-full max-w-6xl px-6">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
@@ -1425,87 +1269,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      {isPosModalOpen ? (
-        <div
-          id="pos-modal"
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[120] flex items-center justify-center px-4 py-6"
-        >
-          <button
-            type="button"
-            aria-label={posCloseLabel}
-            onClick={() => setPosModalView(null)}
-            className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
-          />
-          <div
-            className={`relative z-10 w-full rounded-3xl border border-cyan-200/30 bg-slate-900 p-4 shadow-2xl ${
-              posModalImage ? "max-w-sm" : "max-w-3xl"
-            }`}
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <p className="text-sm font-semibold text-cyan-100">{posModalTitle}</p>
-              <button
-                type="button"
-                aria-label={posCloseLabel}
-                onClick={() => setPosModalView(null)}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-cyan-200/30 text-cyan-100 transition hover:bg-cyan-300/20"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            {posModalImage ? (
-              <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-cyan-200/20">
-                {!isImageLoaded(posModalImage.src) ? (
-                  <div className="absolute inset-0 animate-pulse bg-slate-800/70" />
-                ) : null}
-                <Image
-                  src={posModalImage.src}
-                  alt={lang === "th" ? posModalImage.altTh : posModalImage.altEn}
-                  width={900}
-                  height={1200}
-                  unoptimized
-                  loading="lazy"
-                  fetchPriority="low"
-                  className={`h-full w-full object-cover object-[center_20%] transition-opacity duration-300 ${
-                    isImageLoaded(posModalImage.src) ? "opacity-100" : "opacity-0"
-                  }`}
-                  onLoad={() => markImageLoaded(posModalImage.src)}
-                />
-              </div>
-            ) : posModalView === "features" ? (
-              <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
-                <ul className="grid gap-3 text-sm text-slate-100 md:grid-cols-2">
-                  {posCopy.features.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-cyan-300/30 bg-cyan-400/10 p-6">
-                <p className="text-sm font-semibold text-cyan-200">{posCopy.audienceTitle}</p>
-                <p className="mt-2 text-base font-medium text-white">{posCopy.audience}</p>
-                <p className="mt-4 text-sm text-cyan-100">{posCopy.ctaLead}</p>
-                <p className="mt-1 text-sm font-semibold text-cyan-200">{posCopy.ctaFree}</p>
-                <div className="mt-5 flex flex-wrap items-center gap-3">
-                  <a
-                    href="https://sstinnovate.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-full border border-cyan-200/40 bg-cyan-300/10 px-5 py-2 text-sm font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:bg-cyan-300/20"
-                  >
-                    {posTryButtonText}
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : null}
       <style>{`
         @keyframes customers-pan {
           0% {
