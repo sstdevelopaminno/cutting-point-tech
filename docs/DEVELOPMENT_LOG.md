@@ -46,3 +46,6 @@ This file records documentation-first development notes for the Cutting Point Te
 - Added a new `main-services` image gallery above the features section in src/components/HomePage.tsx with the owner-provided six service images arranged as a responsive 3-column desktop grid.
 - Copied the provided service images into public/main-services as service-01-pos.png through service-06-registration.png.
 - Verification: targeted readback confirmed six image references and six copied images; `npm run build` passed with Node.js added to PATH for the shell session. `npm run lint` timed out without returning diagnostics.
+- Released commit 6c051c2 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/39btyKHpuToNhSwPQhWQ67tFbEM1.
+- Reassigned https://cuttingpointtech.vercel.app to the latest deployment https://cuttingpointtech-d61y15nnh-sstdevelopaminnos-projects.vercel.app because the automatic production alias targets https://cutting-point-tech.vercel.app.
+- Verification: https://cuttingpointtech.vercel.app returned HTTP 200, and cache-busted HTML for both the direct deployment URL and primary domain contained `main-services`, `service-01-pos`, and `การบริการหลักของเรา`.
