@@ -55,3 +55,6 @@ This file records documentation-first development notes for the Cutting Point Te
 - Tuned next.config.ts image optimization with AVIF/WebP formats, longer optimizer cache TTL, responsive device/image sizes, and allowed quality values for the hero images.
 - Reduced src/components/ImageProtection.tsx startup work by throttling image hardening after DOM mutations instead of scanning all images immediately on every mutation.
 - Verification: npm run lint passed, npm run build passed, and a temporary local production server on http://localhost:3004 returned HTTP 200 with the homepage hero/lazy image markers present. The temporary port 3004 process was stopped after verification.
+- Released performance commit e72f683 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/FUXSs9Fa87NvRdj5Qr4ciaw61LBU.
+- Production deployment URL: https://cuttingpointtech-pgiocpubb-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Post-deploy verification: https://cuttingpointtech.vercel.app and https://cutting-point-tech.vercel.app both returned HTTP 200 on 2026-07-03.
