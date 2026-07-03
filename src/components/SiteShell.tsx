@@ -17,6 +17,7 @@ function Chrome({ children }: { children: ReactNode }) {
         onToggleLang={toggleLang}
         labels={copy.nav}
         cta={copy.nav.contact}
+        contactPhone={copy.footer.phone}
       />
       {children}
       <Footer {...copy.footer} />

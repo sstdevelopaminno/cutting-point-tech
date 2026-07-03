@@ -26,10 +26,18 @@ type NavbarProps = {
   onToggleLang: () => void;
   labels: Record<NavKey, string>;
   cta: string;
+  contactPhone: string;
 };
 
-export default function Navbar({ lang, onToggleLang, labels, cta }: NavbarProps) {
+export default function Navbar({
+  lang,
+  onToggleLang,
+  labels,
+  cta,
+  contactPhone,
+}: NavbarProps) {
   const langCode = lang === "th" ? "TH" : lang === "en" ? "EN" : "LO";
+  const contactPhoneHref = `tel:${contactPhone.replace(/[^\d+]/g, "")}`;
   const langFlagSrc =
     lang === "th"
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/pngtree-spherical-thailand-flag-png-image_3510746.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3BuZ3RyZWUtc3BoZXJpY2FsLXRoYWlsYW5kLWZsYWctcG5nLWltYWdlXzM1MTA3NDYuanBnIiwiaWF0IjoxNzcwNzQ2NTA2LCJleHAiOjE4MDIyODI1MDZ9.qt45pLITCBp9F2YaRCrcPF2bKnq6JplnXBuXaJR-nDM"
@@ -765,8 +773,8 @@ export default function Navbar({ lang, onToggleLang, labels, cta }: NavbarProps)
                         </button>
                       </div>
 
-                      <Link
-                        href="/contact"
+                      <a
+                        href={contactPhoneHref}
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setMobileFeaturesOpen(false);
@@ -775,10 +783,11 @@ export default function Navbar({ lang, onToggleLang, labels, cta }: NavbarProps)
                           setMobileTemplatesOpen(false);
                         }}
                         className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-800"
+                        aria-label={`${labels.contact} ${contactPhone}`}
                       >
                         <Phone className="h-4 w-4" />
                         {labels.contact}
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -801,10 +810,10 @@ export default function Navbar({ lang, onToggleLang, labels, cta }: NavbarProps)
             />
             {langCode}
           </button>
-          <Link href="/contact" className={ctaClass} aria-label={cta}>
+          <a href={contactPhoneHref} className={ctaClass} aria-label={`${cta} ${contactPhone}`}>
             <Phone className="h-4 w-4" />
             <span className="hidden md:inline">{cta}</span>
-          </Link>
+          </a>
         </div>
       </div>
     </header>

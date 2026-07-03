@@ -58,3 +58,6 @@ This file records documentation-first development notes for the Cutting Point Te
 - Released performance commit e72f683 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/FUXSs9Fa87NvRdj5Qr4ciaw61LBU.
 - Production deployment URL: https://cuttingpointtech-pgiocpubb-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
 - Post-deploy verification: https://cuttingpointtech.vercel.app and https://cutting-point-tech.vercel.app both returned HTTP 200 on 2026-07-03.
+- Updated the top navigation contact CTA so both desktop and mobile navbar contact buttons use the contact phone number from `copy.footer.phone` and open `tel:0843374982` instead of navigating to `/contact`.
+- Files touched: src/components/Navbar.tsx and src/components/SiteShell.tsx.
+- Verification: npm run lint passed, npm run build passed, and a temporary local production server on http://localhost:3004 returned HTTP 200 with `tel:0843374982` present in the homepage markup. The temporary port 3004 process was stopped after verification.
