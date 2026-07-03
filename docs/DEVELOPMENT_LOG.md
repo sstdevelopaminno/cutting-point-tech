@@ -32,7 +32,6 @@ This file records documentation-first development notes for the Cutting Point Te
 - Verification: npm run build passed and npm run lint passed on 2026-07-01 before commit/push/deploy.
 - Released commit 2f73184 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/7AU5TSytaYv2LdGFMgQSKz8A6Zvy.
 - Verification: https://cuttingpointtech.vercel.app returned HTTP 200 for public access after deployment; https://cutting-point-tech.vercel.app also returned HTTP 200.
-
 ## 2026-07-02
 - Investigated why https://cuttingpointtech.vercel.app still showed the old hero while https://cutting-point-tech.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
 - Reassigned https://cuttingpointtech.vercel.app to the newest ready production deployment with Vercel CLI after each deployment, because Vercel's automatic production alias still targets the hyphenated project domain.
@@ -49,3 +48,10 @@ This file records documentation-first development notes for the Cutting Point Te
 - Released commit 6c051c2 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/39btyKHpuToNhSwPQhWQ67tFbEM1.
 - Reassigned https://cuttingpointtech.vercel.app to the latest deployment https://cuttingpointtech-d61y15nnh-sstdevelopaminnos-projects.vercel.app because the automatic production alias targets https://cutting-point-tech.vercel.app.
 - Verification: https://cuttingpointtech.vercel.app returned HTTP 200, and cache-busted HTML for both the direct deployment URL and primary domain contained `main-services`, `service-01-pos`, and `การบริการหลักของเรา`.
+
+## 2026-07-03
+- Investigated slow homepage startup, delayed image display, and page jank symptoms.
+- Optimized src/components/HomePage.tsx hero slideshow so only the first hero image is rendered during initial paint; secondary slides mount lazily after the page has had time to render, with lower image quality/fetch priority for non-LCP slides.
+- Tuned next.config.ts image optimization with AVIF/WebP formats, longer optimizer cache TTL, responsive device/image sizes, and allowed quality values for the hero images.
+- Reduced src/components/ImageProtection.tsx startup work by throttling image hardening after DOM mutations instead of scanning all images immediately on every mutation.
+- Verification: npm run lint passed, npm run build passed, and a temporary local production server on http://localhost:3004 returned HTTP 200 with the homepage hero/lazy image markers present. The temporary port 3004 process was stopped after verification.

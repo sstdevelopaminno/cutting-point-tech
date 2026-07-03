@@ -20,6 +20,7 @@ export default function HomePage() {
 
   const copy = getCopy(lang);
   const [loadedImageMap, setLoadedImageMap] = useState<Record<string, boolean>>({});
+  const [enableHeroSlideshow, setEnableHeroSlideshow] = useState(false);
   const [heroSlideIndex, setHeroSlideIndex] = useState(0);
   const markImageLoaded = useCallback((src: string) => {
     setLoadedImageMap((prev) => (prev[src] ? prev : { ...prev, [src]: true }));
@@ -163,15 +164,26 @@ export default function HomePage() {
       : "rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700";
 
   useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setEnableHeroSlideshow(true);
+    }, 1200);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!enableHeroSlideshow) {
+      return;
+    }
+
     const timer = window.setInterval(() => {
       setHeroSlideIndex((current) => (current + 1) % heroSlides.length);
     }, 5500);
 
     return () => window.clearInterval(timer);
-  }, [heroSlides.length]);
+  }, [enableHeroSlideshow, heroSlides.length]);
 
-
-  const seoContent = useMemo(
+const seoContent = useMemo(
     () =>
       lang === "th"
       ? {
@@ -496,19 +508,33 @@ export default function HomePage() {
       <main id="top">
         <section className="relative overflow-hidden bg-slate-950 text-white">
           <div className="absolute inset-0">
-            {heroSlides.map((slide, index) => (
-              <Image
-                key={slide.src}
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                priority={index === 0}
-                sizes="100vw"
-                className={`object-cover transition-opacity duration-1000 ease-out ${
-                  index === heroSlideIndex ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
+            {heroSlides.map((slide, index) => {
+              if (!enableHeroSlideshow && index > 0) {
+                return null;
+              }
+
+              const isActiveHeroSlide =
+                index === 0
+                  ? !enableHeroSlideshow || heroSlideIndex === 0
+                  : heroSlideIndex === index;
+
+              return (
+                <Image
+                  key={slide.src}
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? undefined : "lazy"}
+                  fetchPriority={index === 0 ? "high" : "low"}
+                  quality={index === 0 ? 72 : 60}
+                  sizes="100vw"
+                  className={`object-cover transition-opacity duration-1000 ease-out ${
+                    isActiveHeroSlide ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              );
+            })}
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-950/72 to-slate-950/35" />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70" />

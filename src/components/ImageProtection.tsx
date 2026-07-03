@@ -10,11 +10,23 @@ export default function ImageProtection() {
   useEffect(() => {
     const IMG_SELECTOR = "img, picture, figure img, [data-protected-image='true']";
 
+    let hardenTimer: number | null = null;
     const hardenImages = () => {
       const images = document.querySelectorAll<HTMLImageElement>("img");
       images.forEach((img) => {
-        img.setAttribute("draggable", "false");
+        if (img.draggable) {
+          img.draggable = false;
+        }
       });
+    };
+    const scheduleHardenImages = () => {
+      if (hardenTimer !== null) {
+        return;
+      }
+      hardenTimer = window.setTimeout(() => {
+        hardenTimer = null;
+        hardenImages();
+      }, 500);
     };
 
     const onContextMenu = (event: MouseEvent) => {
@@ -53,9 +65,9 @@ export default function ImageProtection() {
       }
     };
 
-    hardenImages();
+    scheduleHardenImages();
     const observer = new MutationObserver(() => {
-      hardenImages();
+      scheduleHardenImages();
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -66,6 +78,9 @@ export default function ImageProtection() {
 
     return () => {
       observer.disconnect();
+      if (hardenTimer !== null) {
+        window.clearTimeout(hardenTimer);
+      }
       document.removeEventListener("contextmenu", onContextMenu, { capture: true });
       document.removeEventListener("dragstart", onDragStart, { capture: true });
       document.removeEventListener("copy", onCopy, { capture: true });
