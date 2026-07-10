@@ -43,7 +43,13 @@ public static class BrandLogoGenerator
                     float hue = pixel.GetHue();
                     float saturation = pixel.GetSaturation();
                     float brightness = pixel.GetBrightness();
-                    bool blueLogoPixel = hue >= 175f && hue <= 235f && saturation > 0.12f && brightness > 0.14f;
+                    bool blueLogoPixel =
+                        hue >= 175f &&
+                        hue <= 235f &&
+                        saturation > 0.62f &&
+                        brightness > 0.15f &&
+                        pixel.B - pixel.R > 24 &&
+                        pixel.G - pixel.R > 10;
 
                     if (!blueLogoPixel)
                     {
@@ -51,14 +57,17 @@ public static class BrandLogoGenerator
                         continue;
                     }
 
-                    int alpha = Clamp((int)Math.Round((saturation - 0.10f) / 0.55f * 255f), 0, 255);
-                    if (alpha < 12)
+                    int alpha = Clamp((int)Math.Round((saturation - 0.58f) / 0.22f * 255f), 0, 255);
+                    if (alpha < 48)
                     {
                         symbol.SetPixel(x, y, Color.Transparent);
                         continue;
                     }
 
-                    symbol.SetPixel(x, y, Color.FromArgb(alpha, pixel.R, pixel.G, pixel.B));
+                    int red = Clamp((int)Math.Round(pixel.R * 0.88), 0, 255);
+                    int green = Clamp((int)Math.Round(pixel.G * 1.08), 0, 255);
+                    int blue = Clamp((int)Math.Round(pixel.B * 1.14), 0, 255);
+                    symbol.SetPixel(x, y, Color.FromArgb(alpha, red, green, blue));
                     if (alpha > 24)
                     {
                         if (x < bounds.X) bounds.X = x;
