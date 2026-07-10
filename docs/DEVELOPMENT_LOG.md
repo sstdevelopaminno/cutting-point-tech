@@ -64,9 +64,12 @@ This file records documentation-first development notes for the Cutting Point Te
 - Released navbar phone CTA commit 20137d3 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/B7jVdLGJ96WtjytkAQVyhQDL1sNd.
 - Production deployment URL: https://cuttingpointtech-ou9aux0k7-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
 - Post-deploy verification: https://cuttingpointtech.vercel.app returned HTTP 200 and the homepage HTML contained `href="tel:0843374982"` on 2026-07-03.
+
 ## 2026-07-10
 - Replaced the website logo assets with the owner-provided standalone company logo from `C:\Users\Admins\Downloads\โลโก้บริษัทแบบเดี่ยว.png`.
 - Updated brand and app icon assets: `public/brand/logo-icon.png`, `public/brand/logo-navbar.png`, `public/brand/logo-th.png`, `public/brand/logo-en.png`, `src/app/icon.png`, and `src/app/apple-icon.png`.
 - Added `scripts/update-brand-logo.ps1` so the same logo source can regenerate the brand assets consistently.
 - Verification: generated asset dimensions matched the expected brand/app icon sizes; targeted ESLint passed for `src`; `npm run build` passed; a temporary local production server on `http://localhost:3004` returned HTTP 200 for `/`, `/brand/logo-icon.png`, and `/icon.png`; browser verification confirmed page content, no Next.js error overlay, and navbar image loading from `/brand/logo-icon.png`. The temporary local server was stopped after verification.
-- GitHub and Vercel deployment status will be recorded after release.
+- Released logo asset commit `8fe4176` to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/CjWmiGXrSheypb2YEd7wPX9fzV5M.
+- Production deployment URL: https://cuttingpointtech-e5f3h4wik-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Post-deploy verification: https://cuttingpointtech.vercel.app and https://cutting-point-tech.vercel.app returned HTTP 200; `/brand/logo-icon.png` and `/icon.png` returned HTTP 200 with the new 239398-byte assets; production HTML referenced `/brand/logo-icon.png` and `/icon.png`; Vercel error log scan for the deployment returned no logs found.
