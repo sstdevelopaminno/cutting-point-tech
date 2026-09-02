@@ -8,10 +8,10 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import PackageCard from "@/components/PackageCard";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLang } from "@/components/LangContext";
 import { getCopy } from "@/lib/i18n";
+import BusinessPartnerSection from "@/components/sections/business-partner-section";
 
 const featureIcons = [ShieldCheck, Sparkles, Award, Layers];
 
@@ -22,27 +22,62 @@ export default function HomePage() {
   const [loadedImageMap, setLoadedImageMap] = useState<Record<string, boolean>>({});
   const [enableHeroSlideshow, setEnableHeroSlideshow] = useState(false);
   const [heroSlideIndex, setHeroSlideIndex] = useState(0);
+  const [activeProductIndex, setActiveProductIndex] = useState(0);
+  const [serviceStatsVisible, setServiceStatsVisible] = useState(false);
+  const [serviceStatsCount, setServiceStatsCount] = useState({ groups: 0, support: 0 });
+  const serviceStatsRef = useRef<HTMLDivElement>(null);
   const markImageLoaded = useCallback((src: string) => {
     setLoadedImageMap((prev) => (prev[src] ? prev : { ...prev, [src]: true }));
   }, []);
   const isImageLoaded = (src: string) => Boolean(loadedImageMap[src]);
-  const portfolioShowcase = [
-    {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/voltatechth.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3ZvbHRhdGVjaHRoLmpwZyIsImlhdCI6MTc2OTYwMDUwOCwiZXhwIjoxODAxMTM2NTA4fQ.mqTlYZiL5qiVIZpmVmhwXEc_zs-RkY9b2C1DX5mFihc",
-      altTh: "ตัวอย่างเว็บไซต์ 1",
-      altEn: "Website example 1",
-    },
-    {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/webdesign_nack.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3dlYmRlc2lnbl9uYWNrLmpwZyIsImlhdCI6MTc2OTYwMDUyMSwiZXhwIjoxODAxMTM2NTIxfQ.jknVEfODS-tsWy6ZC5W3iJQscqxfE3-difKO2Sx9JPE",
-      altTh: "ตัวอย่างเว็บไซต์ 2",
-      altEn: "Website example 2",
-    },
-    {
-      src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/Youngdo-Clinic.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL1lvdW5nZG8tQ2xpbmljLnBuZyIsImlhdCI6MTc2OTYwMDUzNywiZXhwIjoxODAxMTM2NTM3fQ.0oEhcTtHCUs7KaX23EdKUmFJ5lCGWaRX-QKTQq5G22k",
-      altTh: "ตัวอย่างเว็บไซต์ 3",
-      altEn: "Website example 3",
-    },
-  ] as const;
+  const productShowcase = useMemo(
+    () =>
+      [
+        {
+          src: "/product-showcase/service-cloud.png",
+          titleTh: "บริการคลาวด์และโฮสติ้ง",
+          titleEn: "Cloud and Hosting Service",
+          altTh: "บริการคลาวด์เซิร์ฟเวอร์และโฮสติ้งสำหรับธุรกิจ",
+          altEn: "Cloud server and hosting service artwork",
+        },
+        {
+          src: "/product-showcase/service-hotel-booking.png",
+          titleTh: "ระบบจองที่พัก",
+          titleEn: "Hotel and Resort Booking System",
+          altTh: "ระบบจองที่พักสำหรับหอพัก โรงแรม และรีสอร์ท",
+          altEn: "Hotel and resort booking system artwork",
+        },
+        {
+          src: "/product-showcase/service-payment-api.png",
+          titleTh: "ระบบชำระเงิน Payment API",
+          titleEn: "Payment API",
+          altTh: "ระบบชำระเงินและเชื่อมต่อ Payment API",
+          altEn: "Payment API service artwork",
+        },
+        {
+          src: "/product-showcase/service-business-system.png",
+          titleTh: "ระบบจัดการธุรกิจ",
+          titleEn: "Business Management System",
+          altTh: "ระบบจัดการธุรกิจสำหรับงานบริหารทั่วไป",
+          altEn: "Business management system artwork",
+        },
+        {
+          src: "/product-showcase/service-pos.png",
+          titleTh: "บริการระบบขายหน้าร้าน",
+          titleEn: "POS Sales System",
+          altTh: "บริการระบบขายหน้าร้านและเครื่อง POS",
+          altEn: "POS sales system service artwork",
+        },
+        {
+          src: "/product-showcase/service-website.png",
+          titleTh: "บริการออกแบบเว็บไซต์",
+          titleEn: "Website Design Service",
+          altTh: "บริการออกแบบเว็บไซต์สำหรับองค์กรและร้านค้าทั่วไป",
+          altEn: "Website design service artwork",
+        },
+      ] as const,
+    []
+  );
   const customerLogoShowcase = useMemo(
     () =>
       [
@@ -91,6 +126,12 @@ export default function HomePage() {
   );
 
   const heroSlides = [
+    { src: "/hero-slides/12.jpg", alt: "Data center server room background" },
+    { src: "/hero-slides/07.png", alt: "Digital payment and finance system background" },
+    { src: "/hero-slides/08.png", alt: "Cloud technology background" },
+    { src: "/hero-slides/09.png", alt: "POS consultation and restaurant system background" },
+    { src: "/hero-slides/10.png", alt: "POS hardware system background" },
+    { src: "/hero-slides/11.png", alt: "Dark POS terminal system background" },
     { src: "/hero-slides/01.png", alt: "Cloud database system background" },
     { src: "/hero-slides/02.png", alt: "Data center system background" },
     { src: "/hero-slides/03.png", alt: "Responsive website design background" },
@@ -99,43 +140,6 @@ export default function HomePage() {
     { src: "/hero-slides/06.png", alt: "Accounting and business document system background" },
   ] as const;
 
-  const servicesShowcase = {
-    src: "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/templates-services.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3RlbXBsYXRlcy1zZXJ2aWNlcy5wbmciLCJpYXQiOjE3NzA3NDY4MTcsImV4cCI6MTgwMjI4MjgxN30.7Z2AeIBnYGjZCeZZvCGkxWjsqU379MIqvRRUpU040xg",
-    altTh: "ภาพตัวอย่างบริการและเทมเพลตเว็บไซต์",
-    altEn: "Services and website templates showcase",
-  } as const;
-  const mainServiceShowcase = [
-    {
-      src: "/main-services/service-01-pos.png",
-      altTh: "บริการระบบ POS พร้อมเครื่องสำหรับร้านอาหารและธุรกิจหลายสาขา",
-      altEn: "POS system and hardware service for restaurants and multi-branch businesses",
-    },
-    {
-      src: "/main-services/service-02-website.png",
-      altTh: "บริการรับทำเว็บไซต์องค์กร ร้านค้าออนไลน์ และ Landing Page",
-      altEn: "Website, ecommerce, and landing page development service",
-    },
-    {
-      src: "/main-services/service-03-hotel.png",
-      altTh: "บริการระบบโรงแรมและรีสอร์ทสำหรับการจองและรายงาน",
-      altEn: "Hotel and resort system service for booking and reporting",
-    },
-    {
-      src: "/main-services/service-04-accounting-app.png",
-      altTh: "บริการโปรแกรมบัญชีสำหรับจัดการรายรับรายจ่ายและเอกสาร",
-      altEn: "Accounting software service for income, expenses, and documents",
-    },
-    {
-      src: "/main-services/service-05-accounting-service.png",
-      altTh: "บริการรับทำบัญชีและดูแลงานเอกสารทางการเงิน",
-      altEn: "Accounting service and financial document support",
-    },
-    {
-      src: "/main-services/service-06-registration.png",
-      altTh: "บริการรับจดบริษัทและจัดเตรียมเอกสารนิติบุคคล",
-      altEn: "Company registration and juristic document service",
-    },
-  ] as const;
   const customerSectionEyebrow = lang === "th" ? "ลูกค้าของเรา" : "Our customers";
   const customerSectionTitle =
     lang === "th" ? "แบรนด์ที่ไว้วางใจเรา" : "Trusted by Leading Brands";
@@ -182,6 +186,53 @@ export default function HomePage() {
 
     return () => window.clearInterval(timer);
   }, [enableHeroSlideshow, heroSlides.length]);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveProductIndex((current) => (current + 1) % productShowcase.length);
+    }, 2800);
+
+    return () => window.clearInterval(timer);
+  }, [productShowcase.length]);
+
+  useEffect(() => {
+    const node = serviceStatsRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setServiceStatsVisible(entry.isIntersecting),
+      { threshold: 0.45 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!serviceStatsVisible) {
+      setServiceStatsCount({ groups: 0, support: 0 });
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setServiceStatsCount({ groups: 5, support: 24 });
+      return;
+    }
+
+    let frame = 0;
+    const start = performance.now();
+    const duration = 520;
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      setServiceStatsCount({
+        groups: Math.round(progress * 5),
+        support: Math.round(progress * 24),
+      });
+      if (progress < 1) frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [serviceStatsVisible]);
 
 const seoContent = useMemo(
     () =>
@@ -551,206 +602,22 @@ const seoContent = useMemo(
             </div>
           </div>
         </section>
-        <section id="seo" className="bg-white py-20">
-          <div className="mx-auto w-full max-w-5xl space-y-12 px-6">
-            {seoContent.sections.map((section, sectionIndex) => {
-              const illustration =
-                sectionIndex === 2
-                  ? {
-                      src: "/illustrations/service-dormitory.svg",
-                      alt:
-                        lang === "th"
-                          ? "ภาพประกอบโปรแกรมบริหารหอพักและรีสอร์ท"
-                          : "Illustration: Dormitory and resort management system",
-                    }
-                  : sectionIndex === 3
-                    ? {
-                        src: "/illustrations/service-company.svg",
-                        alt:
-                          lang === "th"
-                            ? "ภาพประกอบบริการจดทะเบียนบริษัทครบวงจร"
-                          : "Illustration: Company registration service",
-                      }
-                    : null;
-              const imageOnLeft = Boolean(illustration) && sectionIndex === 2;
-
-              const detailsHref =
-                sectionIndex === 1
-                  ? "/services/website"
-                  : sectionIndex === 2
-                    ? "/services/dormitory-system"
-                    : sectionIndex === 3
-                      ? "/services/company-registration"
-                      : null;
-
-              const estimateHref =
-                sectionIndex === 2
-                  ? "/estimate?service=dormitory"
-                  : sectionIndex === 3
-                    ? "/estimate?service=company"
-                    : null;
-
-              return (
-              <div
-                key={section.h2}
-                className={
-                  sectionIndex === 0
-                    ? "space-y-6 text-center"
-                    : illustration
-                      ? `flex flex-col gap-6 md:items-center md:gap-10 ${
-                          imageOnLeft ? "md:flex-row" : "md:flex-row-reverse"
-                        }`
-                      : "space-y-6"
-                }
-              >
-                <div className={illustration ? "space-y-6" : undefined}>
-                  {sectionIndex === 1 ? (
-                    <div className="mb-10 md:mb-12">
-                      <div className="relative">
-                        {!isImageLoaded(servicesShowcase.src) ? (
-                          <div className="absolute inset-0 animate-pulse rounded-2xl bg-slate-200/70" />
-                        ) : null}
-                        <Image
-                          src={servicesShowcase.src}
-                          alt={lang === "th" ? servicesShowcase.altTh : servicesShowcase.altEn}
-                          width={1400}
-                          height={560}
-                          unoptimized
-                          loading="lazy"
-                          fetchPriority="low"
-                          className={`h-auto w-full object-cover transition-opacity duration-300 ${
-                            isImageLoaded(servicesShowcase.src) ? "opacity-100" : "opacity-0"
-                          }`}
-                          onLoad={() => markImageLoaded(servicesShowcase.src)}
-                        />
-                      </div>
-                      <div className="mt-6 rounded-3xl border border-blue-100 bg-white p-5 shadow-card-soft">
-                        <div className="mb-4">
-                          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-500">
-                            {lang === "th"
-                              ? "เทคโนโลยีระดับพรีเมียม"
-                              : lang === "lo"
-                                ? "ເທັກໂນໂລຢີລະດັບພຣີເມຍມ"
-                                : "Premium technology"}
-                          </p>
-                          <h3 className="mt-2 font-[var(--font-heading)] text-2xl font-semibold text-slate-900">
-                            {lang === "th"
-                              ? "มาตรฐานสากลระดับโลก"
-                              : lang === "lo"
-                                ? "ມາດຕະຖານລະດັບໂລກ"
-                                : "World-standard platform"}
-                          </h3>
-                        </div>
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                            <p className="text-2xl font-semibold text-blue-700">98%</p>
-                            <p className="text-sm text-slate-600">{lang === "th" ? "คะแนนประสิทธิภาพ" : lang === "lo" ? "ຄະແນນປະສິດທິພາບ" : "Performance score"}</p>
-                          </div>
-                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                            <p className="text-2xl font-semibold text-blue-700">24/7</p>
-                            <p className="text-sm text-slate-600">{lang === "th" ? "มอนิเตอร์ 24/7" : lang === "lo" ? "ຕິດຕາມ 24/7" : "Monitoring"}</p>
-                          </div>
-                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                            <p className="text-2xl font-semibold text-blue-700">
-                              {lang === "th" ? "14 วัน" : lang === "lo" ? "14 ມື້" : "14d"}
-                            </p>
-                            <p className="text-sm text-slate-600">{lang === "th" ? "ส่งมอบเฉลี่ย" : lang === "lo" ? "ສົ່ງມອບໂດຍສະເລ່ຍ" : "Fast delivery"}</p>
-                          </div>
-                          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                            <p className="text-2xl font-semibold text-blue-700">100+</p>
-                            <p className="text-sm text-slate-600">{lang === "th" ? "มาตรฐาน" : lang === "lo" ? "ມາດຕະຖານ" : "Standards"}</p>
-                          </div>
-                        </div>
-                        <p className="mt-4 rounded-2xl border border-blue-100 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
-                          {lang === "th"
-                            ? "ระบบครบวงจรและระดับ Supabase Deploy บน Vercel ได้ทันที"
-                            : lang === "lo"
-                              ? "ລະບົບຄົບວົງຈອນ ແລະ ພ້ອມ Deploy ບົນ Vercel"
-                              : "Full-stack system, Supabase-ready, and deployable on Vercel."}
-                        </p>
-                      </div>
-                    </div>
-                  ) : null}
-                  <h2
-                    className={`font-[var(--font-heading)] text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl ${
-                      sectionIndex === 1 ? "leading-[1.5]" : ""
-                    }`}
-                  >
-                    {section.h2}
-                  </h2>
-                  {section.intro.slice(0, 1).map((paragraph) => (
-                    <p
-                      key={paragraph.slice(0, 40)}
-                      className={
-                        sectionIndex === 0
-                          ? "mx-auto max-w-3xl text-base text-slate-600"
-                          : "text-base text-slate-600"
-                      }
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                  {section.h3.length ? (
-                    <ul
-                      className={
-                        sectionIndex === 0
-                          ? "mx-auto w-fit list-disc space-y-2 pl-5 text-left text-base text-slate-600"
-                          : "list-disc space-y-2 pl-5 text-base text-slate-600"
-                      }
-                    >
-                      {section.h3.map((item) => (
-                        <li key={item.title}>{item.title}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {detailsHref || estimateHref ? (
-                    <div className="flex flex-wrap items-center gap-4">
-                      {detailsHref ? (
-                        <Link
-                          href={detailsHref}
-                          className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700"
-                        >
-                          {lang === "th"
-                            ? "ดูรายละเอียดบริการ"
-                            : "View full service details"}
-                          <ArrowRight className="h-4 w-4" />
-                        </Link>
-                      ) : null}
-                      {estimateHref ? (
-                        <Link
-                          href={estimateHref}
-                          className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-50"
-                        >
-                          {lang === "th" ? "ประมาณราคา" : "Estimate"}
-                        </Link>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </div>
-
-                {illustration ? (
-                  <div className="mx-auto w-full max-w-[420px] md:mx-0 md:w-[320px] md:flex-none">
-                    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card-soft">
-                      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-white p-3">
-                      <Image
-                        src={illustration.src}
-                        alt={illustration.alt}
-                        width={800}
-                        height={520}
-                        className="h-auto w-full"
-                        loading="lazy"
-                        fetchPriority="low"
-                      />
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
+        <section id="seo" className="bg-white py-16">
+          <div className="mx-auto w-full max-w-5xl px-6">
+            {seoContent.sections.slice(0, 1).map((section) => (
+              <div key={section.h2} className="space-y-6 text-center">
+                <h2 className="font-[var(--font-heading)] text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+                  {section.h2}
+                </h2>
+                {section.intro.slice(0, 1).map((paragraph) => (
+                  <p key={paragraph.slice(0, 40)} className="mx-auto max-w-3xl text-base leading-7 text-slate-600">
+                    {paragraph}
+                  </p>
+                ))}
               </div>
-              );
-            })}
+            ))}
           </div>
         </section>
-
         {/*
         <section id="service-landing" className="bg-mist py-20">
           <div className="mx-auto w-full max-w-6xl px-6">
@@ -784,42 +651,104 @@ const seoContent = useMemo(
         </section>
         */}
 
-        <section id="main-services" className="bg-white pt-20 pb-10">
-          <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <section id="main-services" className="relative isolate overflow-hidden bg-gradient-to-b from-white via-cyan-50/70 to-white py-20">
+          <Image
+            src="/hero-slides/12.jpg"
+            alt=""
+            fill
+            className="-z-10 object-cover opacity-[0.08]"
+            sizes="100vw"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(236,254,255,0.78)_45%,rgba(255,255,255,0.97))]" />
+          <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mb-10 max-w-3xl text-center">
+              <p className={eyebrowClass}>{lang === "th" ? "ผลิตภัณฑ์และบริการ" : "Products and Services"}</p>
+              <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
+                {lang === "th" ? "โซลูชันที่ต่อยอดได้ตามธุรกิจของคุณ" : "Solutions Built Around Your Business"}
+              </h2>
+              <p className="mt-3 text-slate-600">
+                {lang === "th"
+                  ? "เว็บไซต์ ระบบ POS เครื่อง POS ระบบจองที่พัก และระบบบริหารธุรกิจ วางเป็นชุดบริการเดียวที่ขยายต่อได้"
+                  : "Websites, POS systems, POS hardware, booking systems, and business tools arranged as a scalable service suite."}
+              </p>
+            </div>
+
+            <div ref={serviceStatsRef} className="mx-auto flex max-w-5xl items-center justify-center gap-10 border-y border-cyan-200/70 bg-white/45 py-7 text-center backdrop-blur-sm md:gap-16">
               <div>
-                <p className={eyebrowClass}>{lang === "th" ? "บริการ" : "Services"}</p>
-                <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
-                  {lang === "th" ? "การบริการหลักของเรา" : "Our Core Services"}
-                </h2>
+                <p className="font-[var(--font-heading)] text-4xl font-semibold text-slate-950 md:text-5xl">{serviceStatsCount.groups}+</p>
+                <p className="mt-2 text-sm text-slate-500">{lang === "th" ? "กลุ่มบริการหลัก" : "Core service groups"}</p>
+              </div>
+              <div className="h-16 w-px bg-cyan-200" />
+              <div>
+                <p className="font-[var(--font-heading)] text-4xl font-semibold text-slate-950 md:text-5xl">{serviceStatsCount.support}/7</p>
+                <p className="mt-2 text-sm text-slate-500">{lang === "th" ? "พร้อมดูแลระบบ" : "Support ready"}</p>
               </div>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {mainServiceShowcase.map((item) => (
-                <div
-                  key={item.src}
-                  className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card-soft transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
-                    {!isImageLoaded(item.src) ? (
-                      <div className="absolute inset-0 animate-pulse bg-slate-200/80" />
-                    ) : null}
-                    <Image
-                      src={item.src}
-                      alt={lang === "th" ? item.altTh : item.altEn}
-                      width={1200}
-                      height={1200}
-                      className={`h-full w-full object-cover transition duration-500 group-hover:scale-[1.02] ${
-                        isImageLoaded(item.src) ? "opacity-100" : "opacity-0"
+
+            <div className="relative mx-auto mt-12 h-[min(96vw,800px)] min-h-[440px] w-full overflow-hidden md:h-[830px]">
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent" />
+              <div className="product-showcase-stage relative h-full">
+                {productShowcase.map((item, index) => {
+                  const rawOffset = index - activeProductIndex;
+                  const half = productShowcase.length / 2;
+                  const offset =
+                    rawOffset > half
+                      ? rawOffset - productShowcase.length
+                      : rawOffset < -half
+                        ? rawOffset + productShowcase.length
+                        : rawOffset;
+                  const distance = Math.abs(offset);
+                  const isActive = offset === 0;
+                  const isVisible = distance <= 2;
+                  const shift = offset * 360;
+                  const depth = isActive ? 110 : -distance * 95;
+                  const rotate = offset * -16;
+                  const scale = isActive ? 1 : 0.82 - Math.min(distance * 0.05, 0.12);
+                  const title = lang === "th" ? item.titleTh : item.titleEn;
+
+                  return (
+                    <button
+                      key={item.src}
+                      type="button"
+                      onClick={() => setActiveProductIndex(index)}
+                      className={`absolute left-1/2 top-0 flex h-[min(92vw,760px)] w-[min(92vw,760px)] overflow-hidden rounded-[8px] bg-transparent transition duration-700 ${
+                        !isVisible
+                          ? "pointer-events-none opacity-0"
+                          : isActive
+                            ? "opacity-100 shadow-[0_28px_80px_rgba(14,116,144,0.18)]"
+                            : "opacity-30 shadow-[0_18px_55px_rgba(15,23,42,0.10)] saturate-75"
                       }`}
-                      loading="lazy"
-                      fetchPriority="low"
-                      onLoad={() => markImageLoaded(item.src)}
-                    />
-                  </div>
-                </div>
-              ))}
+                      style={{
+                        zIndex: 20 - distance,
+                        transform: `translateX(calc(-50% + ${shift}px)) translateZ(${depth}px) rotateY(${rotate}deg) scale(${scale})`,
+                      }}
+                      aria-label={title}
+                    >
+                      <div className="relative h-full w-full overflow-hidden bg-transparent">
+                        {!isImageLoaded(item.src) ? (
+                          <div className="absolute inset-0 animate-pulse bg-slate-200/80" />
+                        ) : null}
+                        <Image
+                          src={item.src}
+                          alt={lang === "th" ? item.altTh : item.altEn}
+                          width={1254}
+                          height={1254}
+                          className={`h-full w-full object-contain transition duration-700 ${
+                            isImageLoaded(item.src) ? "opacity-100" : "opacity-0"
+                          }`}
+                          loading={index === 0 ? "eager" : "lazy"}
+                          fetchPriority={index === 0 ? "high" : "low"}
+                          sizes="(max-width: 768px) 92vw, 760px"
+                          onLoad={() => markImageLoaded(item.src)}
+                        />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+
           </div>
         </section>
 
@@ -897,72 +826,6 @@ const seoContent = useMemo(
           </div>
         </section>
         */}
-        <section id="package-list" className="bg-gradient-to-b from-white to-mist py-20">
-          <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className={eyebrowClass}>{copy.nav.packages}</p>
-                <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
-                  {copy.packages.title}
-                </h2>
-                <p className="mt-3 max-w-xl text-slate-600">{copy.packages.subtitle}</p>
-              </div>
-              <div className={pillBlueClass}>
-                {lang === "th" ? "ปรับแต่งตามธุรกิจ" : "Customizable"}
-              </div>
-            </div>
-            <div className="mt-10 grid gap-6 lg:grid-cols-3">
-              {copy.packages.items.map((item) => (
-                <PackageCard key={item.name} {...item} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="portfolio" className="bg-white py-20">
-          <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="mb-10 text-center">
-              <p className={eyebrowClass}>{copy.nav.portfolio}</p>
-              <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
-                {lang === "th" ? "รูปแบบเว็บไซต์ตัวอย่าง" : "Website template examples"}
-              </h2>
-              <p className="mt-3 text-slate-600">
-                {lang === "th"
-                  ? "ตัวอย่างเลย์เอาต์และสไตล์เว็บไซต์ เพื่อใช้เป็นแนวทางก่อนเริ่มทำเว็บไซต์"
-                  : "Layout and style examples to help you choose a direction before we build."}
-              </p>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {portfolioShowcase.map((item) => (
-                <div
-                  key={item.src}
-                  className="overflow-hidden rounded-3xl transition hover:-translate-y-1"
-                >
-                  <div className="relative h-56 w-full sm:h-60 md:h-56">
-                    {!isImageLoaded(item.src) ? (
-                      <div className="absolute inset-0 animate-pulse bg-slate-200/70" />
-                    ) : null}
-                    <Image
-                      src={item.src}
-                      alt={lang === "th" ? item.altTh : item.altEn}
-                      width={1200}
-                      height={800}
-                      className={`block h-56 w-full object-cover transition-opacity duration-300 sm:h-60 md:h-56 ${
-                        isImageLoaded(item.src) ? "opacity-100" : "opacity-0"
-                      }`}
-                      unoptimized
-                      loading="lazy"
-                      fetchPriority="low"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      onLoad={() => markImageLoaded(item.src)}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="our-customers" className="relative overflow-hidden bg-slate-950 py-20 text-white">
           <div className="pointer-events-none absolute -left-24 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -right-20 top-8 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
@@ -1220,6 +1083,8 @@ const seoContent = useMemo(
           </div>
         </section>
 
+        <BusinessPartnerSection companyLogoSrc="/brand/business-partner-company-logo-transparent.png" partnerLogoSrc="/brand/business-partner-clexpert-logo.png" partnerName="CLEXPERT" />
+
         <section id="articles" className="bg-mist py-20">
           <div className="mx-auto w-full max-w-6xl px-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -1308,6 +1173,11 @@ const seoContent = useMemo(
         .customers-logo-track {
           animation: customers-pan 18s ease-in-out infinite alternate;
           will-change: transform;
+        }
+
+        .product-showcase-stage {
+          perspective: 1400px;
+          transform-style: preserve-3d;
         }
 
         @media (max-width: 768px) {

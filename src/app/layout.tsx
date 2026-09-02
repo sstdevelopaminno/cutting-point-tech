@@ -92,6 +92,11 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/",
       siteName: "CUTTING POINT TECH COMPANY LIMITED",
     },
+    icons: {
+      icon: [{ url: "/brand/logo-icon.png", type: "image/png" }],
+      shortcut: "/brand/logo-icon.png",
+      apple: "/brand/logo-icon.png",
+    },
     twitter: {
       card: "summary_large_image",
       title: meta.title,

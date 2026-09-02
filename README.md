@@ -89,7 +89,7 @@ alter table leads add column if not exists estimate_id uuid references estimates
 
 ## Documentation workflow
 
-Before development or code changes, review this README, docs/DEVELOPMENT_LOG.md, and docs/AI_CONTEXT.md. After every code, UI, configuration, or deployment change, add a dated note to docs/DEVELOPMENT_LOG.md or another relevant docs file.
+Before development or code changes, review this README, docs/DEVELOPMENT_LOG.md, and docs/AI_CONTEXT.md. For owner self-edits, use docs/SELF_EDIT_GUIDE.md as the quick file map and safe-edit checklist. After every code, UI, configuration, or deployment change, add a dated note to docs/DEVELOPMENT_LOG.md or another relevant docs file.
 
 ## Environment variables
 
