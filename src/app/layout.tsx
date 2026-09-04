@@ -47,11 +47,11 @@ const metadataByLocale: Record<
   }
 > = {
   th: {
-    title: "บริษัท คัตติ้งพอยท์ เทค จำกัด | โซลูชันเว็บไซต์และระบบธุรกิจ",
+    title: "บริษัท คัตติ้งพอยท์ เทค จำกัด | เว็บไซต์และระบบบริหารธุรกิจครบวงจร",
     description:
-      "บริษัท คัตติ้งพอยท์ เทค จำกัด (CUTTING POINT TECH COMPANY LIMITED) ให้บริการพัฒนาเว็บไซต์ ระบบธุรกิจ และโซลูชันดิจิทัลสำหรับองค์กรที่ต้องการความน่าเชื่อถือและการเติบโตระยะยาว",
+      "บริษัท คัตติ้งพอยท์ เทค จำกัด (CUTTING POINT TECH COMPANY LIMITED) ให้บริการรับทำเว็บไซต์ ระบบ POS ระบบจองที่พัก คลาวด์ และระบบบริหารธุรกิจครบวงจร สำหรับองค์กร ร้านค้า ร้านอาหาร โรงแรม และรีสอร์ทที่ต้องการความน่าเชื่อถือ ประสิทธิภาพ และการเติบโตระยะยาว",
     ogLocale: "th_TH",
-    alternateLocales: ["en_US"],
+    alternateLocales: ["en_US", "lo_LA"],
   },
   en: {
     title: "CUTTING POINT TECH COMPANY LIMITED | Websites and Business Systems",

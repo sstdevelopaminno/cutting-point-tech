@@ -1,6 +1,5 @@
 "use client";
 import {
-  ArrowRight,
   Award,
   Layers,
   ShieldCheck,
@@ -15,16 +14,45 @@ import BusinessPartnerSection from "@/components/sections/business-partner-secti
 
 const featureIcons = [ShieldCheck, Sparkles, Award, Layers];
 
+const heroProductSlides = [
+  {
+    src: "/home-hero/hero-slide-pos-ui.png",
+    altTh: "หน้าจอระบบ CpIPOS บนแท็บเล็ต",
+    altEn: "CpIPOS tablet interface",
+  },
+  {
+    src: "/home-hero/hero-slide-pos-system.png",
+    altTh: "ชุดระบบ POS สำหรับร้านค้า",
+    altEn: "POS system product set",
+  },
+  {
+    src: "/home-hero/hero-slide-pos-devices.png",
+    altTh: "อุปกรณ์ POS สองหน้าจอ",
+    altEn: "Dual-screen POS devices",
+  },
+  {
+    src: "/home-hero/hero-slide-payment.png",
+    altTh: "ระบบชำระเงินหลายช่องทาง",
+    altEn: "Multi-channel payment system",
+  },
+  {
+    src: "/home-hero/hero-slide-cloud-security.png",
+    altTh: "คลาวด์เซิร์ฟเวอร์และระบบความปลอดภัย",
+    altEn: "Cloud server and security system",
+  },
+] as const;
+
 export default function HomePage() {
   const { lang } = useLang();
 
   const copy = getCopy(lang);
   const [loadedImageMap, setLoadedImageMap] = useState<Record<string, boolean>>({});
-  const [enableHeroSlideshow, setEnableHeroSlideshow] = useState(false);
-  const [heroSlideIndex, setHeroSlideIndex] = useState(0);
+  const [heroProductSlideIndex, setHeroProductSlideIndex] = useState(0);
   const [activeProductIndex, setActiveProductIndex] = useState(0);
   const [serviceStatsVisible, setServiceStatsVisible] = useState(false);
+  const [c20LiteVisible, setC20LiteVisible] = useState(false);
   const [serviceStatsCount, setServiceStatsCount] = useState({ groups: 0, support: 0 });
+  const c20LiteRef = useRef<HTMLElement>(null);
   const serviceStatsRef = useRef<HTMLDivElement>(null);
   const markImageLoaded = useCallback((src: string) => {
     setLoadedImageMap((prev) => (prev[src] ? prev : { ...prev, [src]: true }));
@@ -125,20 +153,6 @@ export default function HomePage() {
     []
   );
 
-  const heroSlides = [
-    { src: "/hero-slides/12.jpg", alt: "Data center server room background" },
-    { src: "/hero-slides/07.png", alt: "Digital payment and finance system background" },
-    { src: "/hero-slides/08.png", alt: "Cloud technology background" },
-    { src: "/hero-slides/09.png", alt: "POS consultation and restaurant system background" },
-    { src: "/hero-slides/10.png", alt: "POS hardware system background" },
-    { src: "/hero-slides/11.png", alt: "Dark POS terminal system background" },
-    { src: "/hero-slides/01.png", alt: "Cloud database system background" },
-    { src: "/hero-slides/02.png", alt: "Data center system background" },
-    { src: "/hero-slides/03.png", alt: "Responsive website design background" },
-    { src: "/hero-slides/04.png", alt: "Business dashboard system background" },
-    { src: "/hero-slides/05.png", alt: "Secure payment system background" },
-    { src: "/hero-slides/06.png", alt: "Accounting and business document system background" },
-  ] as const;
 
   const customerSectionEyebrow = lang === "th" ? "ลูกค้าของเรา" : "Our customers";
   const customerSectionTitle =
@@ -156,36 +170,16 @@ export default function HomePage() {
   );
   const eyebrowClass =
     lang === "th"
-      ? "text-xs font-semibold text-blue-600"
-      : "text-xs uppercase tracking-[0.3em] text-blue-600";
-  const pillMutedClass =
-    lang === "th"
-      ? "rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-500"
-      : "rounded-full border border-slate-200 bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500";
-  const pillBlueClass =
-    lang === "th"
-      ? "rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-700"
-      : "rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700";
+      ? "text-xs font-semibold text-slate-600"
+      : "text-xs uppercase tracking-[0.3em] text-slate-600";
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setEnableHeroSlideshow(true);
-    }, 1200);
-
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!enableHeroSlideshow) {
-      return;
-    }
-
     const timer = window.setInterval(() => {
-      setHeroSlideIndex((current) => (current + 1) % heroSlides.length);
-    }, 5500);
+      setHeroProductSlideIndex((current) => (current + 1) % heroProductSlides.length);
+    }, 4600);
 
     return () => window.clearInterval(timer);
-  }, [enableHeroSlideshow, heroSlides.length]);
+  }, []);
   useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveProductIndex((current) => (current + 1) % productShowcase.length);
@@ -199,7 +193,12 @@ export default function HomePage() {
     if (!node) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setServiceStatsVisible(entry.isIntersecting),
+      ([entry]) => {
+        setServiceStatsVisible(entry.isIntersecting);
+        if (!entry.isIntersecting) {
+          setServiceStatsCount({ groups: 0, support: 0 });
+        }
+      },
       { threshold: 0.45 }
     );
 
@@ -208,17 +207,31 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (!serviceStatsVisible) {
-      setServiceStatsCount({ groups: 0, support: 0 });
-      return;
-    }
+    const node = c20LiteRef.current;
+    if (!node) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setServiceStatsCount({ groups: 5, support: 24 });
+    const observer = new IntersectionObserver(
+      ([entry]) => setC20LiteVisible(entry.isIntersecting),
+      { rootMargin: "-20% 0px -20% 0px", threshold: 0.35 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!serviceStatsVisible) {
       return;
     }
 
     let frame = 0;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      frame = window.requestAnimationFrame(() => {
+        setServiceStatsCount({ groups: 5, support: 24 });
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
     const start = performance.now();
     const duration = 520;
     const tick = (now: number) => {
@@ -557,60 +570,92 @@ const seoContent = useMemo(
       />
       */}
       <main id="top">
-        <section className="relative overflow-hidden bg-slate-950 text-white">
-          <div className="absolute inset-0">
-            {heroSlides.map((slide, index) => {
-              if (!enableHeroSlideshow && index > 0) {
-                return null;
-              }
+        <section className="relative -mt-[78px] flex min-h-[calc(100svh-12px)] overflow-hidden bg-[#030609] pt-[78px] text-white sm:-mt-[84px] sm:min-h-[calc(100svh-18px)] sm:pt-[84px]">
+          <Image
+            src="/home-hero/hero-bg-tech-banner.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-95"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,6,16,0.42)_0%,rgba(8,18,34,0.28)_40%,rgba(18,42,72,0.10)_72%,rgba(8,18,32,0)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_66%_48%,rgba(50,143,230,0.16),transparent_44%),radial-gradient(ellipse_at_55%_82%,rgba(37,209,138,0.14),transparent_34%),linear-gradient(180deg,rgba(2,8,18,0.12)_0%,rgba(2,8,18,0)_46%,rgba(2,8,18,0.24)_100%)]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,transparent,rgba(8,18,32,0.18))]" />
 
-              const isActiveHeroSlide =
-                index === 0
-                  ? !enableHeroSlideshow || heroSlideIndex === 0
-                  : heroSlideIndex === index;
-
-              return (
-                <Image
-                  key={slide.src}
-                  src={slide.src}
-                  alt={slide.alt}
-                  fill
-                  priority={index === 0}
-                  loading={index === 0 ? undefined : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "low"}
-                  quality={index === 0 ? 72 : 60}
-                  sizes="100vw"
-                  className={`object-cover transition-opacity duration-1000 ease-out ${
-                    isActiveHeroSlide ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-              );
-            })}
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-950/72 to-slate-950/35" />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/10 via-transparent to-slate-950/70" />
-          <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-20">
-            <div className="max-w-xl space-y-6">
-              <p className="text-sm uppercase tracking-[0.4em] text-blue-100">
+          <div className="relative mx-auto grid min-h-[calc(100svh-96px)] w-full max-w-7xl items-center gap-8 px-6 py-12 sm:min-h-[calc(100svh-112px)] lg:grid-cols-[0.88fr_1.12fr] lg:px-12 xl:px-4">
+            <div className="z-10 max-w-[620px] pt-8 lg:pt-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#20a4ff] sm:text-sm">
                 CUTTING POINT TECH
               </p>
-              <h1 className="font-[var(--font-heading)] text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+              <h1 className="mt-6 font-[var(--font-body)] text-[34px] font-extrabold leading-[1.08] tracking-normal text-white sm:text-[46px] lg:text-[56px]">
                 {seoContent.h1}
               </h1>
-              <p className="text-lg text-blue-100">{copy.hero.subtitle}</p>
-              <p className="text-sm text-blue-100">{copy.hero.trust}</p>
+              <div className="mt-5 h-1 w-32 rounded-full bg-[linear-gradient(90deg,#149bff_0%,#25d18a_58%,#ffd166_100%)] shadow-[0_0_28px_rgba(37,209,138,0.28)]" />
+              <p className="mt-6 max-w-xl text-lg font-semibold leading-snug text-white sm:text-xl lg:text-2xl">
+                {copy.hero.subtitle}
+              </p>
+              <p className="mt-4 max-w-xl text-sm font-medium leading-7 text-slate-100 sm:text-base">
+                {copy.hero.trust}
+              </p>
+            </div>
+
+            <div className="relative min-h-[310px] sm:min-h-[410px] lg:min-h-[540px]">
+              <div className="hero-light-line absolute inset-x-[8%] bottom-14 h-px bg-gradient-to-r from-transparent via-[#8abfff]/80 to-[#25d18a]/45" />
+              <div className="absolute bottom-10 right-[14%] h-px w-[36%] bg-gradient-to-r from-transparent via-[#ffd166]/60 to-transparent" />
+              <div className="absolute bottom-7 left-[22%] h-7 w-[56%] rounded-full bg-black/55 blur-2xl" />
+              {heroProductSlides.map((slide, index) => {
+                const isActive = index === heroProductSlideIndex;
+                const isPrevious =
+                  index ===
+                  (heroProductSlideIndex - 1 + heroProductSlides.length) % heroProductSlides.length;
+                return (
+                  <div
+                    key={slide.src}
+                    className={`hero-product-float absolute inset-0 flex items-center justify-center transition duration-1000 ease-out ${
+                      isActive
+                        ? "z-20 translate-x-0 scale-100 opacity-100"
+                        : isPrevious
+                          ? "z-10 -translate-x-8 scale-95 opacity-0"
+                          : "z-0 translate-x-8 scale-95 opacity-0"
+                    }`}
+                    aria-hidden={!isActive}
+                  >
+                    <Image
+                      src={slide.src}
+                      alt={lang === "th" ? slide.altTh : slide.altEn}
+                      width={860}
+                      height={720}
+                      priority={index === 0}
+                      sizes="(min-width: 1024px) 46vw, 88vw"
+                      className="hero-product-image max-h-[290px] w-auto max-w-[92%] object-contain drop-shadow-[0_28px_44px_rgba(0,0,0,0.36)] sm:max-h-[390px] lg:max-h-[520px]"
+                    />
+                  </div>
+                );
+              })}
+              <div className="absolute bottom-3 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
+                {heroProductSlides.map((slide, index) => (
+                  <span
+                    key={`${slide.src}-dot`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      index === heroProductSlideIndex ? "w-8 bg-[#0a91ff]" : "w-2 bg-white/35"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
-        <section id="seo" className="bg-white py-16">
-          <div className="mx-auto w-full max-w-5xl px-6">
+        <section id="seo" className="bg-white py-20 md:py-24">
+          <div className="mx-auto w-full max-w-6xl px-6">
             {seoContent.sections.slice(0, 1).map((section) => (
               <div key={section.h2} className="space-y-6 text-center">
-                <h2 className="font-[var(--font-heading)] text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">
+                <h2 className="font-[var(--font-body)] text-3xl font-extrabold leading-tight tracking-normal text-slate-950 sm:text-4xl md:text-[44px]">
                   {section.h2}
                 </h2>
                 {section.intro.slice(0, 1).map((paragraph) => (
-                  <p key={paragraph.slice(0, 40)} className="mx-auto max-w-3xl text-base leading-7 text-slate-600">
+                  <p key={paragraph.slice(0, 40)} className="mx-auto max-w-4xl text-lg font-semibold leading-9 tracking-normal text-slate-700 sm:text-xl">
                     {paragraph}
                   </p>
                 ))}
@@ -639,7 +684,7 @@ const seoContent = useMemo(
               </div>
               <Link
                 href="/contact"
-                className="text-sm font-semibold text-blue-700"
+                className="text-sm font-semibold text-slate-700"
               >
                 {lang === "th" ? "ขอใบเสนอราคา" : "Request a quote"}
               </Link>
@@ -651,7 +696,56 @@ const seoContent = useMemo(
         </section>
         */}
 
-        <section id="main-services" className="relative isolate overflow-hidden bg-gradient-to-b from-white via-cyan-50/70 to-white py-20">
+        <section
+          ref={c20LiteRef}
+          id="c20-lite-pos"
+          data-c20-active={c20LiteVisible ? "true" : "false"}
+          className="relative isolate min-h-[520px] overflow-hidden bg-white py-16 sm:min-h-[560px] md:min-h-[620px] md:py-20"
+        >
+          <Image
+            src="/products/c20-lite-bg.png"
+            alt=""
+            fill
+            className="-z-20 object-cover object-center"
+            sizes="100vw"
+            priority={false}
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0.96)_0%,rgba(255,255,255,0.92)_34%,rgba(255,255,255,0.58)_58%,rgba(255,255,255,0.12)_100%)]" />
+          <div className="c20-highlight-sweep pointer-events-none absolute inset-y-0 left-[-25%] z-0 w-1/3 bg-gradient-to-r from-transparent via-slate-300/45 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-16 bg-gradient-to-b from-white via-white/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-24 bg-gradient-to-t from-white via-white/75 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-[2] w-10 bg-gradient-to-r from-white/95 to-transparent sm:w-16" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-10 bg-gradient-to-l from-white/90 to-transparent sm:w-16" />
+          <div className="mx-auto flex min-h-[410px] w-full max-w-[1500px] flex-col justify-center px-6 sm:block sm:px-10 lg:px-16 xl:px-20">
+            <div className="relative z-10 max-w-xl pt-4 text-slate-950">
+              <h2 className="c20-copy c20-copy-1 font-[var(--font-body)] text-5xl font-extrabold leading-none tracking-normal text-slate-950 sm:text-6xl lg:text-7xl">
+                C20 Lite
+              </h2>
+              <p className="c20-copy c20-copy-2 mt-5 max-w-[15ch] font-[var(--font-body)] text-2xl font-extrabold leading-tight tracking-normal text-slate-950 sm:max-w-none sm:text-3xl lg:text-4xl">
+                Android Desktop POS <span className="block sm:inline">Terminal</span>
+              </p>
+              <p className="c20-copy c20-copy-3 mt-6 max-w-[19rem] text-base font-medium leading-8 text-slate-700 sm:max-w-lg sm:text-lg">
+                เครื่อง POS พร้อมระบบขาย ที่รองรับรูปแบบขนาดร้านอาหาร สำหรับโต๊ะ และร้านค้าทั่วไป แบบ 2 จอ
+              </p>
+            </div>
+            <div className="pointer-events-none relative z-[1] mx-auto mt-8 w-[64%] max-w-[280px] self-end sm:absolute sm:bottom-[-2%] sm:right-[2%] sm:mt-0 sm:w-[48%] sm:max-w-[560px] lg:right-[8%] lg:w-[36%] xl:right-[10%] xl:w-[34%]">
+              <div className="c20-device relative aspect-[1242/1177] w-full">
+                <Image
+                  src="/products/c20-lite-device-cutout.png"
+                  alt="C20 Lite Android Desktop POS Terminal"
+                  fill
+                  className="object-contain object-bottom"
+                  sizes="(min-width: 1280px) 34vw, (min-width: 1024px) 36vw, 64vw"
+                  priority={false}
+                  unoptimized
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="main-services" className="relative isolate overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white py-20">
           <Image
             src="/hero-slides/12.jpg"
             alt=""
@@ -660,7 +754,7 @@ const seoContent = useMemo(
             sizes="100vw"
             aria-hidden="true"
           />
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(236,254,255,0.78)_45%,rgba(255,255,255,0.97))]" />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.86)_45%,rgba(255,255,255,0.97))]" />
           <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-10 max-w-3xl text-center">
               <p className={eyebrowClass}>{lang === "th" ? "ผลิตภัณฑ์และบริการ" : "Products and Services"}</p>
@@ -674,12 +768,12 @@ const seoContent = useMemo(
               </p>
             </div>
 
-            <div ref={serviceStatsRef} className="mx-auto flex max-w-5xl items-center justify-center gap-10 border-y border-cyan-200/70 bg-white/45 py-7 text-center backdrop-blur-sm md:gap-16">
+            <div ref={serviceStatsRef} className="mx-auto flex max-w-5xl items-center justify-center gap-10 border-y border-slate-200/80 bg-white/45 py-7 text-center backdrop-blur-sm md:gap-16">
               <div>
                 <p className="font-[var(--font-heading)] text-4xl font-semibold text-slate-950 md:text-5xl">{serviceStatsCount.groups}+</p>
                 <p className="mt-2 text-sm text-slate-500">{lang === "th" ? "กลุ่มบริการหลัก" : "Core service groups"}</p>
               </div>
-              <div className="h-16 w-px bg-cyan-200" />
+              <div className="h-16 w-px bg-slate-200" />
               <div>
                 <p className="font-[var(--font-heading)] text-4xl font-semibold text-slate-950 md:text-5xl">{serviceStatsCount.support}/7</p>
                 <p className="mt-2 text-sm text-slate-500">{lang === "th" ? "พร้อมดูแลระบบ" : "Support ready"}</p>
@@ -752,35 +846,40 @@ const seoContent = useMemo(
           </div>
         </section>
 
-        <section id="features" className="bg-white pt-10 pb-20">
-          <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <section id="features" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F7FBFF_42%,#FFFFFF_100%)] py-16 sm:py-20 md:py-24">
+          <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-slate-50/90 via-white/70 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 -z-10 w-20 bg-gradient-to-r from-slate-50/85 to-transparent md:w-32" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-20 bg-gradient-to-l from-slate-50/85 to-transparent md:w-32" />
+          <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-10 xl:px-14">
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1.1fr)_minmax(260px,0.56fr)] md:items-end">
               <div>
                 <p className={eyebrowClass}>{copy.nav.features}</p>
-                <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
+                <h2 className="mt-3 max-w-4xl font-[var(--font-body)] text-4xl font-extrabold leading-tight tracking-normal text-slate-950 sm:text-5xl lg:text-[56px]">
                   {copy.features.title}
                 </h2>
-                <p className="mt-3 max-w-xl text-slate-600">{copy.features.subtitle}</p>
+                <p className="mt-5 max-w-3xl text-lg font-semibold leading-8 text-slate-700 sm:text-xl">{copy.features.subtitle}</p>
               </div>
-              <div className="text-sm text-slate-500">
+              <div className="rounded-[8px] border border-slate-200/90 bg-white/72 px-5 py-4 text-sm font-semibold leading-7 text-slate-600 shadow-[0_18px_50px_rgba(15,23,42,0.07)] backdrop-blur">
                 {lang === "th"
                   ? "ยกระดับเว็บไซต์ให้เป็นสินทรัพย์เชิงธุรกิจ"
                   : "Turn your website into a strategic business asset."}
               </div>
             </div>
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-5">
               {copy.features.items.map((item, index) => {
                 const Icon = featureIcons[index] ?? ShieldCheck;
                 return (
                   <div
                     key={item.title}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card-soft transition hover:-translate-y-1 hover:shadow-xl"
+                    className="group relative overflow-hidden rounded-[8px] border border-slate-200/90 bg-white/82 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.07)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-[0_28px_80px_rgba(15,23,42,0.13)]"
                   >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-slate-50/90 to-transparent opacity-80" />
+                    <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.07),transparent_42%,rgba(10,145,255,0.08))] opacity-0 transition group-hover:opacity-100" />
+                    <div className="relative flex h-12 w-12 items-center justify-center rounded-[8px] bg-[#0a91ff] text-white shadow-[0_12px_28px_rgba(10,145,255,0.24)]">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="mt-4 font-semibold text-slate-900">{item.title}</h3>
-                    <p className="mt-2 text-sm text-slate-600">{item.description}</p>
+                    <h3 className="relative mt-5 text-lg font-extrabold leading-snug tracking-normal text-slate-950">{item.title}</h3>
+                    <p className="relative mt-3 text-sm font-medium leading-7 text-slate-600">{item.description}</p>
                   </div>
                 );
               })}
@@ -801,7 +900,7 @@ const seoContent = useMemo(
               </div>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700"
               >
                 {lang === "th" ? "คุยกับผู้เชี่ยวชาญ" : "Talk to specialists"}
                 <ArrowRight className="h-4 w-4" />
@@ -1053,37 +1152,42 @@ const seoContent = useMemo(
         </section>
         */}
 
-        <section id="additional" className="bg-white py-20">
-          <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <section id="additional" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#eef6ff_48%,#ffffff_100%)] py-20 md:py-24">
+          <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-[#0a91ff]/45 to-transparent" />
+          <div className="absolute right-0 top-0 -z-10 h-full w-1/2 bg-[linear-gradient(135deg,transparent_0%,rgba(10,145,255,0.08)_44%,rgba(37,209,138,0.08)_100%)]" />
+          <div className="mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-10 xl:px-14">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)] lg:items-end">
               <div>
-                <p className={eyebrowClass}>
+                <p className="text-xs font-bold text-[#0a91ff]">
                   {lang === "th" ? "บริการเสริม" : "Add-ons"}
                 </p>
-                <h2 className="mt-3 font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900">
+                <h2 className="mt-4 max-w-3xl font-[var(--font-body)] text-4xl font-extrabold leading-tight tracking-normal text-slate-950 sm:text-5xl lg:text-[56px]">
                   {copy.additional.title}
                 </h2>
-                <p className="mt-3 max-w-xl text-slate-600">{copy.additional.subtitle}</p>
+                <p className="mt-5 max-w-2xl text-lg font-medium leading-8 text-slate-600">{copy.additional.subtitle}</p>
               </div>
-              <div className={pillMutedClass}>
-                {lang === "th" ? "ยืดหยุ่นตามแผน" : "Flexible add-ons"}
+              <div className="rounded-[8px] border border-slate-200/90 bg-white/78 px-5 py-4 text-sm font-semibold leading-7 text-slate-600 shadow-[0_18px_50px_rgba(15,23,42,0.07)] backdrop-blur">
+                {lang === "th" ? "ยืดหยุ่นตามแผนและต่อยอดตามการใช้งานจริง" : "Flexible add-ons that scale with real operations"}
               </div>
             </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {copy.additional.items.map((item) => (
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-5">
+              {copy.additional.items.map((item, index) => (
                 <div
                   key={item}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-card-soft"
+                  className="group relative min-h-32 overflow-hidden rounded-[8px] border border-slate-200/90 bg-white/84 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.07)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[#0a91ff]/35 hover:shadow-[0_28px_80px_rgba(10,145,255,0.12)]"
                 >
-                  <span className="h-2 w-2 rounded-full bg-blue-600" />
-                  <p className="text-sm text-slate-700">{item}</p>
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#e8f4ff] to-transparent opacity-80" />
+                  <div className="relative flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#0a91ff] text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(10,145,255,0.22)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <p className="relative mt-5 text-base font-bold leading-7 text-slate-900">{item}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        <BusinessPartnerSection companyLogoSrc="/brand/business-partner-company-logo-transparent.png" partnerLogoSrc="/brand/business-partner-clexpert-logo.png" partnerName="CLEXPERT" />
+        <BusinessPartnerSection companyLogoSrc="/brand/business-partner-company-logo-transparent.png" partnerLogoSrc="/brand/business-partner-clexpert-logo-transparent.png" partnerName="CLEXPERT" />
 
         <section id="articles" className="bg-mist py-20">
           <div className="mx-auto w-full max-w-6xl px-6">
@@ -1103,7 +1207,7 @@ const seoContent = useMemo(
                     : "Explore practical guides on websites, management systems, and business setup."}
                 </p>
               </div>
-              <Link href="/articles" className="text-sm font-semibold text-blue-700">
+              <Link href="/articles" className="text-sm font-semibold text-slate-700">
                 {lang === "th" ? "ดูบทความทั้งหมด" : "View all articles"}
               </Link>
             </div>
@@ -1150,7 +1254,7 @@ const seoContent = useMemo(
                   <p className="mt-3 text-sm text-slate-600">{article.excerpt}</p>
                   <Link
                     href="/articles"
-                    className="mt-4 inline-flex text-sm text-blue-700"
+                    className="mt-4 inline-flex text-sm text-slate-700"
                   >
                     {lang === "th" ? "อ่านต่อ" : "Read more"}
                   </Link>
@@ -1170,6 +1274,25 @@ const seoContent = useMemo(
           }
         }
 
+        .hero-product-float {
+          will-change: opacity, transform;
+        }
+
+        .hero-product-image {
+          animation: hero-product-float 6s ease-in-out infinite;
+          will-change: transform;
+        }
+
+
+        @keyframes hero-product-float {
+          0%, 100% {
+            transform: translateY(0) rotate(-1deg);
+          }
+          50% {
+            transform: translateY(-14px) rotate(1deg);
+          }
+        }
+
         .customers-logo-track {
           animation: customers-pan 18s ease-in-out infinite alternate;
           will-change: transform;
@@ -1180,9 +1303,108 @@ const seoContent = useMemo(
           transform-style: preserve-3d;
         }
 
+
+        .c20-copy {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+
+        #c20-lite-pos[data-c20-active="true"] .c20-copy {
+          animation: c20-copy-reveal 760ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        #c20-lite-pos[data-c20-active="true"] .c20-copy-2 {
+          animation-delay: 120ms;
+        }
+
+        #c20-lite-pos[data-c20-active="true"] .c20-copy-3 {
+          animation-delay: 220ms;
+        }
+
+        .c20-device {
+          opacity: 0;
+          transform: translateX(42px) scale(0.96);
+          filter: drop-shadow(0 24px 42px rgba(15, 23, 42, 0.22));
+        }
+
+        #c20-lite-pos[data-c20-active="true"] .c20-device {
+          animation: c20-device-pop 880ms cubic-bezier(0.18, 0.9, 0.24, 1) forwards,
+            c20-device-float 5.8s ease-in-out 900ms infinite;
+        }
+
+        .c20-highlight-sweep {
+          opacity: 0;
+          transform: skewX(-16deg) translateX(0);
+        }
+
+        #c20-lite-pos[data-c20-active="true"] .c20-highlight-sweep {
+          animation: c20-sweep 1150ms ease-out forwards;
+        }
+
+        @keyframes c20-copy-reveal {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes c20-device-pop {
+          0% {
+            opacity: 0;
+            transform: translateX(42px) scale(0.96);
+          }
+          68% {
+            opacity: 1;
+            transform: translateX(-4px) scale(1.01);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+          }
+        }
+
+        @keyframes c20-device-float {
+          0%, 100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-8px) scale(1.004);
+          }
+        }
+
+        @keyframes c20-sweep {
+          0% {
+            opacity: 0;
+            transform: skewX(-16deg) translateX(0);
+          }
+          25% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+            transform: skewX(-16deg) translateX(430%);
+          }
+        }
+
+
         @media (max-width: 768px) {
           .customers-logo-track {
             animation-duration: 14s;
+          }
+
+          #c20-lite-pos[data-c20-active="true"] .c20-device {
+            animation: c20-device-pop 880ms cubic-bezier(0.18, 0.9, 0.24, 1) forwards;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-product-image,
+          #c20-lite-pos[data-c20-active="true"] .c20-copy,
+          #c20-lite-pos[data-c20-active="true"] .c20-device,
+          #c20-lite-pos[data-c20-active="true"] .c20-highlight-sweep {
+            animation: none;
+            opacity: 1;
+            transform: none;
           }
         }
       `}</style>

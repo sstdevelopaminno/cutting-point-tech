@@ -16,7 +16,15 @@ This file records documentation-first development notes for the Cutting Point Te
 
 
 
+## 2026-09-04
+- Refreshed the homepage hero to use the owner-provided technology banner background, restored the original hero copy, removed the two hero CTA buttons, reduced the right-side slider artwork size, and kept the rotating product/service visuals. Updated the navbar so it is transparent over the banner at the top and switches to a soft light gray translucent bar while scrolling. Reworked the additional-services section into a wider modern full-page band, changed feature icons from black to logo-blue, and corrected Thai SEO metadata in `src/app/layout.tsx`. Verification: targeted lint passed, `npm run build` passed, local SEO markup and the new banner asset returned OK, and production commit/deploy are being completed in this run.
+
 ## 2026-09-03
+- Expanded the top navbar container and removed the Packages and Templates menu entries from desktop and mobile navigation, including their dropdown labels, state, refs, links, and close handlers, while leaving the Services menu intact for the next planned pass. Verification: targeted Navbar source search found no packages/templates nav references, git diff --check passed with only Windows LF/CRLF warnings, npm run build passed, and localhost homepage returned HTTP 200 with no /packages or /templates hrefs in the markup. Commit and production deployment remain pending.
+- Removed the business partner connector throw lines entirely from src/components/sections/business-partner-section.tsx, including the connector SVG paths and line animation CSS, leaving only the two logo panels and center handshake mark. Verification: targeted source search found no connector class/path/keyframe, git diff --check passed with only Windows LF/CRLF warnings, npm run build passed, localhost homepage returned HTTP 200, and HTML output confirmed no connector class, no line-throw keyframe, and no old connector viewBox while the transparent CLEXPERT logo still loaded. Commit and production deployment remain pending.
+- Adjusted the business partner connector lines again so they sit close to the center handshake circle and stay below the logo/card layer instead of crossing over the CUTTING POINT TECH or CLEXPERT logos. Verification: targeted source search confirmed z-[5] and shortened left/right connector paths near the circle; git diff --check passed with only Windows LF/CRLF warnings; npm run build passed.
+- Removed the visible white background from the CLEXPERT business partner logo by creating `public/brand/business-partner-clexpert-logo-transparent.png`, updated the homepage to use that cache-busting transparent asset, removed logo `mix-blend-multiply`, and raised/widened the business partner connector SVG so both CUTTING POINT TECH and CLEXPERT sides show visible throw lines toward the center. Verification: transparent asset alpha check passed, targeted source search confirmed the new asset path plus left/right connector paths, `git diff --check` passed with only Windows LF/CRLF warnings, `npm run build` passed, localhost homepage returned HTTP 200 with the transparent logo reference, and both the direct asset and Next image optimizer URL returned HTTP 200. Commit and production deployment remain pending.
+- Added `docs/PRE_DEVELOPMENT_REVIEW_2026-09-03.md` as a pre-development code and documentation review before further improvements. Scope: documentation only. Review covered required docs, package/dependency surface, source map, API/data flows, environment variables, git status, current guardrails, and recommended next improvements. Verification: targeted file/source reads and `git status -sb` completed; lint/build not run because website runtime behavior did not change.
 - Added the owner-provided CLEXPERT partner logo from C:\\Users\\Admins\\Downloads\\55995889.png as public/brand/business-partner-clexpert-logo.png, reduced the business partner section/card/logo sizing further, and kept the paired connector curves throwing inward from both sides toward the center. Verification: source and copied asset SHA256 hashes match, `npm run build` passed, localhost served the PNG with HTTP 200, and agent-browser confirmed two logo images, four active connector curves, two active logo spin elements, and no browser errors. Commit and production deployment are being completed in this run.
 
 ## 2026-09-02
@@ -217,3 +225,64 @@ This file records documentation-first development notes for the Cutting Point Te
 - Production deployment URL: https://cuttingpointtech-mn6k99meq-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
 
 - Verification on 2026-07-21: `npm run lint` passed, `npm run build` passed, https://cuttingpointtech.vercel.app returned HTTP 200, https://cutting-point-tech.vercel.app returned HTTP 200, the direct deployment URL returned HTTP 200, and https://cuttingpointtech.vercel.app/brand/logo-icon.png returned HTTP 200 with `Content-Length: 69557`, matching the latest local `public/brand/logo-icon.png` asset.
+
+## 2026-09-03 - Responsive website showcase section
+
+- Added a new full-width responsive website showcase section after the main services block.
+- Imported the provided Cutting Point Tech website design image into public/website-showcase/cpt-website-design-sample.png for use as the real preview asset.
+- Added desktop and mobile device frames with subtle responsive motion and reduced-motion fallback.
+
+## 2026-09-03 - Removed responsive website showcase draft
+
+- Removed the responsive website showcase draft section after visual review.
+- Removed the related motion CSS and unused website showcase asset from the page implementation.
+
+## 2026-09-03 - Added C20 Lite POS banner
+
+- Added a full-width C20 Lite Android Desktop POS Terminal banner between the company intro content and the main solutions section.
+- Imported the provided POS terminal image as public/products/c20-lite-pos-terminal.png.
+- Kept the layout simple with left-aligned product copy over the real product image background.
+
+## 2026-09-03 - Updated C20 Lite banner motion and imagery
+
+- Replaced the C20 Lite banner with the provided clean background image and a separate transparent POS terminal cutout.
+- Added viewport-triggered highlight motion for the text, light sweep, and POS terminal device.
+- Generated public/products/c20-lite-device-cutout.png from the provided device image and kept the source asset for traceability.
+- Verification: git diff --check passed, npm run build passed, local homepage HTML contained c20-lite-pos, c20-lite-bg.png, c20-lite-device-cutout.png, and c20-device-pop, and both C20 image assets returned HTTP 200.
+
+## 2026-09-03 - Replaced C20 Lite device image
+
+- Replaced the C20 Lite POS terminal cutout with the provided higher-resolution transparent PNG source.
+- Cropped the transparent bounds into public/products/c20-lite-device-cutout.png and removed the older low-resolution JPG source.
+
+## 2026-09-03 - Reduced C20 Lite device render size
+
+- Reduced the displayed C20 Lite device size in the homepage banner so the transparent product PNG is not enlarged too aggressively.
+- Served the product cutout unoptimized to avoid additional Next.js image recompression on the transparent PNG.
+- Softened the device animation scale to keep the product image sharper while moving.
+- Verification: npm run build passed, local homepage HTML referenced the direct PNG asset without Next image optimization, and the product cutout returned HTTP 200 image/png.
+
+## 2026-09-03 - Updated company intro typography
+
+- Increased the company intro heading and paragraph typography to match the bolder C20 Lite reference style.
+- Switched the company intro title to the body font with heavier weight, larger sizing, and normal letter spacing for a stronger visual hierarchy.
+- Verification: targeted search confirmed the updated HomePage typography classes and npm run build passed.
+
+## 2026-09-03 - Fixed C20 Lite mobile text overlap
+
+- Adjusted the C20 Lite banner mobile layout so the POS terminal image sits below the text instead of overlapping the heading.
+- Added a mobile line break for Android Desktop POS Terminal and constrained the Thai paragraph width for better readability.
+- Verification: git diff --check passed, npm run build passed, and local homepage HTML rendered c20-lite-pos with the new mobile wrap and relative device classes.
+
+## 2026-09-03 - Softened C20 Lite banner edges
+
+- Added subtle top, bottom, left, and right fade highlights to the C20 Lite banner so the section blends more gently into the page.
+- Added faint blue edge lines for a light highlight effect without creating a hard rectangular frame.
+- Verification: targeted search confirmed the new edge highlight layers, git diff --check passed, and npm run build passed.
+
+## 2026-09-03 - Polished feature and section edge highlights
+
+- Expanded the homepage features section into a wider full-page layout with a softer blue-highlight background, stronger headline hierarchy, highlighted intro note, and elevated feature cards.
+- Added subtle edge highlights to the business partner section and partner logo panels so the section edges blend more smoothly into the page.
+- Removed the hard blue pixel edge lines from the C20 Lite banner, keeping only soft fade layers so no visible straight line remains.
+- Verification: targeted search confirmed the feature highlight classes remain scoped to the features section, git diff --check passed with LF/CRLF warnings only, and npm run build passed.

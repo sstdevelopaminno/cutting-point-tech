@@ -12,9 +12,6 @@ const navItems = [
   { href: "/#top", key: "home" },
   { href: "/#features", key: "features" },
   { href: "/#services", key: "services" },
-  { href: "/packages", key: "packages" },
-  // Keep key as "portfolio" to avoid changing the i18n schema elsewhere; label becomes "Website Templates".
-  { href: "/templates", key: "portfolio" },
   { href: "/articles", key: "articles" },
   { href: "/contact", key: "contact" },
 ] as const;
@@ -47,6 +44,7 @@ export default function Navbar({
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/flag-laos-with-red-blue-stripes-white-circle-vector-icon-design_877269-3713.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL2ZsYWctbGFvcy13aXRoLXJlZC1ibHVlLXN0cmlwZXMtd2hpdGUtY2lyY2xlLXZlY3Rvci1pY29uLWRlc2lnbl84NzcyNjktMzcxMy5qcGciLCJpYXQiOjE3NzA3OTgwOTYsImV4cCI6MTgwMjMzNDA5Nn0.jN6soZsQ12XHB27BFZC1zW5pGyXJlDeo45AF2miok0I"
       : langFlagSrc;
   const langFlagAlt = lang === "th" ? "Thailand flag" : lang === "en" ? "UK flag" : "Laos flag";
+  const [isScrolled, setIsScrolled] = useState(false);
   const isEnglishStyle = lang === "en";
   const featuresOverviewLabel = isEnglishStyle ? "Highlights overview" : labels.features;
   const featuresSeoAiLabel = "SEO AI";
@@ -58,12 +56,6 @@ export default function Navbar({
           servicesWebsite: "รับทำเว็บไซต์",
           servicesDorm: "ระบบหอพัก/รีสอร์ท",
           servicesCompany: "จดทะเบียนบริษัท",
-          packagesPos: "แพ็คเกจ ระบบ POS",
-          packagesWebsite: "แพ็กเกจรับทำเว็บไซต์",
-          packagesDorm: "แพ็กเกจระบบหอพัก",
-          packagesCompany: "แพ็กเกจจดทะเบียนบริษัท",
-          templatesCorporate: "เว็บไซต์องค์กร",
-          templatesEcommerce: "ร้านค้าออนไลน์",
           menu: "เมนู",
           close: "ปิด",
           language: "ภาษา",
@@ -74,12 +66,6 @@ export default function Navbar({
             servicesWebsite: "ພັດທະນາເວັບໄຊ",
             servicesDorm: "ລະບົບຫໍພັກ/ຣີສອດ",
             servicesCompany: "ຈົດທະບຽນບໍລິສັດ",
-            packagesPos: "ແພັກເກດ ລະບົບ POS",
-            packagesWebsite: "ແພັກເກດ ເວັບໄຊ",
-            packagesDorm: "ແພັກເກດ ຫໍພັກ",
-            packagesCompany: "ແພັກເກດ ຈົດທະບຽນບໍລິສັດ",
-            templatesCorporate: "ເວັບໄຊອົງກອນ",
-            templatesEcommerce: "ຮ້ານຄ້າອອນລາຍ",
             menu: "ເມນູ",
             close: "ປິດ",
             language: "ພາສາ",
@@ -89,22 +75,43 @@ export default function Navbar({
           servicesWebsite: "Website Development",
           servicesDorm: "Dormitory/Resort System",
           servicesCompany: "Company Registration",
-          packagesPos: "POS system package",
-          packagesWebsite: "Website package",
-          packagesDorm: "Dormitory package",
-          packagesCompany: "Company registration package",
-          templatesCorporate: "Corporate",
-          templatesEcommerce: "Ecommerce",
           menu: "Menu",
           close: "Close",
           language: "Language",
         };
 
-  const ctaClass =
-    isEnglishStyle
-      ? "inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:border-slate-300 md:border-0 md:bg-slate-900 md:px-4 md:py-2 md:text-xs md:font-semibold md:text-white md:shadow-md md:hover:bg-slate-800 md:uppercase md:tracking-[0.18em]"
-      : "inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:border-slate-300 md:border-0 md:bg-slate-900 md:px-4 md:py-2 md:text-xs md:font-semibold md:text-white md:shadow-md md:hover:bg-slate-800";
-
+  const headerClass = `sticky top-0 z-50 w-full border-b transition-all duration-300 ${
+    isScrolled
+      ? "border-slate-200/80 bg-slate-50/88 text-slate-950 shadow-[0_12px_34px_rgba(15,23,42,0.08)] backdrop-blur-xl"
+      : "border-white/10 bg-transparent text-white backdrop-blur-[2px]"
+  }`;
+  const brandTitleClass = `block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] transition-colors sm:text-lg ${
+    isScrolled ? "text-slate-950" : "text-white"
+  }`;
+  const brandSubtitleClass = `block whitespace-nowrap text-[10px] font-semibold transition-colors sm:text-xs ${
+    isScrolled ? "text-slate-500" : "text-slate-200/82"
+  }`;
+  const navClass = `hidden items-center gap-6 text-sm font-medium transition-colors lg:flex xl:gap-8 ${
+    isScrolled ? "text-slate-700" : "text-white/86"
+  }`;
+  const navLinkClass = `inline-flex items-center gap-1 transition-colors ${
+    isScrolled ? "hover:text-slate-950" : "hover:text-white"
+  }`;
+  const iconButtonClass = `flex items-center justify-center rounded-full border p-2 shadow-sm transition ${
+    isScrolled
+      ? "border-slate-200 bg-white/90 text-slate-800 shadow-slate-900/5 hover:border-slate-300 hover:bg-white"
+      : "border-white/25 bg-white/12 text-white shadow-black/10 hover:bg-white/18"
+  }`;
+  const langButtonClass = `flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold shadow-sm transition ${
+    isScrolled
+      ? "border-slate-200 bg-white/90 text-slate-800 shadow-slate-900/5 hover:border-slate-300 hover:bg-white"
+      : "border-white/25 bg-white/12 text-white shadow-black/10 hover:bg-white/18"
+  }`;
+  const ctaClass = `inline-flex items-center gap-2 rounded-full border p-2 shadow-sm transition md:px-4 md:py-2 md:text-xs md:font-semibold ${
+    isScrolled
+      ? "border-slate-200 bg-white text-slate-950 shadow-slate-900/5 hover:border-slate-300"
+      : "border-white/30 bg-white/92 text-slate-950 shadow-black/10 hover:bg-white"
+  }${isEnglishStyle ? " md:uppercase md:tracking-[0.18em]" : ""}`;
   const onNavClick = (key: NavKey) => {
     if (key !== "services") {
       return;
@@ -119,22 +126,16 @@ export default function Navbar({
 
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [packagesOpen, setPackagesOpen] = useState(false);
-  const [templatesOpen, setTemplatesOpen] = useState(false);
   const featuresMenuDesktopRef = useRef<HTMLDivElement | null>(null);
   const servicesMenuDesktopRef = useRef<HTMLDivElement | null>(null);
-  const packagesMenuDesktopRef = useRef<HTMLDivElement | null>(null);
-  const templatesMenuDesktopRef = useRef<HTMLDivElement | null>(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const [mobilePackagesOpen, setMobilePackagesOpen] = useState(false);
-  const [mobileTemplatesOpen, setMobileTemplatesOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!featuresOpen && !servicesOpen && !packagesOpen && !templatesOpen && !mobileMenuOpen) {
+    if (!featuresOpen && !servicesOpen && !mobileMenuOpen) {
       return;
     }
 
@@ -142,13 +143,9 @@ export default function Navbar({
       if (event.key === "Escape") {
         setFeaturesOpen(false);
         setServicesOpen(false);
-        setPackagesOpen(false);
-        setTemplatesOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
-        setMobilePackagesOpen(false);
-        setMobileTemplatesOpen(false);
       }
     };
 
@@ -156,8 +153,6 @@ export default function Navbar({
       const containers = [
         featuresMenuDesktopRef.current,
         servicesMenuDesktopRef.current,
-        packagesMenuDesktopRef.current,
-        templatesMenuDesktopRef.current,
         mobileMenuRef.current,
       ].filter((node): node is HTMLDivElement => Boolean(node));
       if (!containers.length) {
@@ -170,13 +165,9 @@ export default function Navbar({
       if (containers.every((container) => !container.contains(target))) {
         setFeaturesOpen(false);
         setServicesOpen(false);
-        setPackagesOpen(false);
-        setTemplatesOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
-        setMobilePackagesOpen(false);
-        setMobileTemplatesOpen(false);
       }
     };
 
@@ -186,7 +177,7 @@ export default function Navbar({
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [featuresOpen, servicesOpen, packagesOpen, templatesOpen, mobileMenuOpen]);
+  }, [featuresOpen, servicesOpen, mobileMenuOpen]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -197,9 +188,16 @@ export default function Navbar({
     };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    const updateScrolled = () => setIsScrolled(window.scrollY > 12);
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrolled);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/40 bg-white/80 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
+    <header className={headerClass}>
+      <div className="flex w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-10 xl:px-14">
         <Link href="/#top" className="flex min-w-0 items-center gap-2.5">
           <Image
             src="/brand/logo-icon.png"
@@ -210,28 +208,23 @@ export default function Navbar({
             priority
           />
           <span className="min-w-0 leading-tight">
-            <span className="block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] text-slate-950 sm:text-lg">
+            <span className={brandTitleClass}>
               CUTTING POINT TECH
             </span>
-            <span className="block whitespace-nowrap text-[10px] font-semibold text-slate-600 sm:text-xs">
+            <span className={brandSubtitleClass}>
               บริษัท คัตติ้งพอยท์ เทค จำกัด
             </span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-700 lg:flex">
+        <nav className={navClass}>
           {navItems.map((item) => {
-            if (
-              item.key !== "features" &&
-              item.key !== "services" &&
-              item.key !== "packages" &&
-              item.key !== "portfolio"
-            ) {
+            if (item.key !== "features" && item.key !== "services") {
               return (
                 <Link
                   key={item.key}
                   href={item.href}
                   onClick={() => onNavClick(item.key)}
-                  className="transition-colors hover:text-slate-900"
+                  className={navLinkClass}
                 >
                   {labels[item.key]}
                 </Link>
@@ -248,10 +241,8 @@ export default function Navbar({
                     onClick={() => {
                       setFeaturesOpen((prev) => !prev);
                       setServicesOpen(false);
-                      setPackagesOpen(false);
-                      setTemplatesOpen(false);
                     }}
-                    className="inline-flex items-center gap-1 transition-colors hover:text-slate-900"
+                    className={navLinkClass}
                   >
                     {labels[item.key]}
                     <ChevronDown className="h-4 w-4" />
@@ -284,113 +275,6 @@ export default function Navbar({
               );
             }
 
-            if (item.key === "packages") {
-              return (
-                <div key={item.key} ref={packagesMenuDesktopRef} className="relative">
-                  <button
-                    type="button"
-                    aria-haspopup="menu"
-                    aria-expanded={packagesOpen}
-                    onClick={() => {
-                      setPackagesOpen((prev) => !prev);
-                      setFeaturesOpen(false);
-                      setServicesOpen(false);
-                      setTemplatesOpen(false);
-                    }}
-                    className="inline-flex items-center gap-1 transition-colors hover:text-slate-900"
-                  >
-                    {labels[item.key]}
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-
-                  {packagesOpen ? (
-                    <div
-                      role="menu"
-                      className="absolute left-0 top-full mt-3 w-72 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg"
-                    >
-                      <Link
-                        role="menuitem"
-                        href="/packages#pos"
-                        onClick={() => setPackagesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.packagesPos}
-                      </Link>
-                      <Link
-                        role="menuitem"
-                        href="/packages#website"
-                        onClick={() => setPackagesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.packagesWebsite}
-                      </Link>
-                      <Link
-                        role="menuitem"
-                        href="/packages#dormitory"
-                        onClick={() => setPackagesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.packagesDorm}
-                      </Link>
-                      <Link
-                        role="menuitem"
-                        href="/packages#company"
-                        onClick={() => setPackagesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.packagesCompany}
-                      </Link>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            }
-
-            if (item.key === "portfolio") {
-              return (
-                <div key={item.key} ref={templatesMenuDesktopRef} className="relative">
-                  <button
-                    type="button"
-                    aria-haspopup="menu"
-                    aria-expanded={templatesOpen}
-                    onClick={() => {
-                      setTemplatesOpen((prev) => !prev);
-                      setFeaturesOpen(false);
-                      setServicesOpen(false);
-                    }}
-                    className="inline-flex items-center gap-1 transition-colors hover:text-slate-900"
-                  >
-                    {labels[item.key]}
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-
-                  {templatesOpen ? (
-                    <div
-                      role="menu"
-                      className="absolute left-0 top-full mt-3 w-64 rounded-2xl border border-slate-200 bg-white p-2 shadow-lg"
-                    >
-                      <Link
-                        role="menuitem"
-                        href="/templates/corporate"
-                        onClick={() => setTemplatesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.templatesCorporate}
-                      </Link>
-                      <Link
-                        role="menuitem"
-                        href="/templates/ecommerce"
-                        onClick={() => setTemplatesOpen(false)}
-                        className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        {t.templatesEcommerce}
-                      </Link>
-                    </div>
-                  ) : null}
-                </div>
-              );
-            }
-
             return (
               <div key={item.key} ref={servicesMenuDesktopRef} className="relative">
                 <button
@@ -400,10 +284,8 @@ export default function Navbar({
                   onClick={() => {
                     setServicesOpen((prev) => !prev);
                     setFeaturesOpen(false);
-                    setTemplatesOpen(false);
-                    setPackagesOpen(false);
                   }}
-                  className="inline-flex items-center gap-1 transition-colors hover:text-slate-900"
+                  className={navLinkClass}
                 >
                   {labels[item.key]}
                   <ChevronDown className="h-4 w-4" />
@@ -473,7 +355,7 @@ export default function Navbar({
               aria-haspopup="dialog"
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen(true)}
-              className="flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:border-slate-300"
+              className={iconButtonClass}
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -487,8 +369,6 @@ export default function Navbar({
                     setMobileMenuOpen(false);
                     setMobileFeaturesOpen(false);
                     setMobileServicesOpen(false);
-                    setMobilePackagesOpen(false);
-                    setMobileTemplatesOpen(false);
                   }}
                   className="fixed inset-0 bg-slate-950/55 backdrop-blur-[2px]"
                 />
@@ -503,8 +383,6 @@ export default function Navbar({
                         setMobileMenuOpen(false);
                         setMobileFeaturesOpen(false);
                         setMobileServicesOpen(false);
-                        setMobilePackagesOpen(false);
-                        setMobileTemplatesOpen(false);
                       }}
                       className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm transition hover:border-slate-300"
                     >
@@ -520,8 +398,6 @@ export default function Navbar({
                           setMobileMenuOpen(false);
                           setMobileFeaturesOpen(false);
                           setMobileServicesOpen(false);
-                          setMobilePackagesOpen(false);
-                          setMobileTemplatesOpen(false);
                         }}
                         className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
                       >
@@ -544,8 +420,6 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
@@ -557,8 +431,6 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
@@ -584,8 +456,6 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
@@ -598,8 +468,6 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
@@ -612,8 +480,6 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
@@ -626,116 +492,10 @@ export default function Navbar({
                               setMobileMenuOpen(false);
                               setMobileFeaturesOpen(false);
                               setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
                             }}
                             className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
                           >
                             {t.servicesCompany}
-                          </Link>
-                        </div>
-                      ) : null}
-
-                      <button
-                        type="button"
-                        onClick={() => setMobilePackagesOpen((prev) => !prev)}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
-                      >
-                        <span>{labels.packages}</span>
-                        <ChevronDown className="h-5 w-5" />
-                      </button>
-                      {mobilePackagesOpen ? (
-                        <div className="space-y-1 px-3 pb-2">
-                          <Link
-                            href="/packages#pos"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.packagesPos}
-                          </Link>
-                          <Link
-                            href="/packages#website"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.packagesWebsite}
-                          </Link>
-                          <Link
-                            href="/packages#dormitory"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.packagesDorm}
-                          </Link>
-                          <Link
-                            href="/packages#company"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.packagesCompany}
-                          </Link>
-                        </div>
-                      ) : null}
-
-                      <button
-                        type="button"
-                        onClick={() => setMobileTemplatesOpen((prev) => !prev)}
-                        className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
-                      >
-                        <span>{labels.portfolio}</span>
-                        <ChevronDown className="h-5 w-5" />
-                      </button>
-                      {mobileTemplatesOpen ? (
-                        <div className="space-y-1 px-3 pb-2">
-                          <Link
-                            href="/templates/corporate"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.templatesCorporate}
-                          </Link>
-                          <Link
-                            href="/templates/ecommerce"
-                            onClick={() => {
-                              setMobileMenuOpen(false);
-                              setMobileFeaturesOpen(false);
-                              setMobileServicesOpen(false);
-                              setMobilePackagesOpen(false);
-                              setMobileTemplatesOpen(false);
-                            }}
-                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
-                          >
-                            {t.templatesEcommerce}
                           </Link>
                         </div>
                       ) : null}
@@ -746,8 +506,6 @@ export default function Navbar({
                           setMobileMenuOpen(false);
                           setMobileFeaturesOpen(false);
                           setMobileServicesOpen(false);
-                          setMobilePackagesOpen(false);
-                          setMobileTemplatesOpen(false);
                         }}
                         className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
                       >
@@ -779,8 +537,6 @@ export default function Navbar({
                           setMobileMenuOpen(false);
                           setMobileFeaturesOpen(false);
                           setMobileServicesOpen(false);
-                          setMobilePackagesOpen(false);
-                          setMobileTemplatesOpen(false);
                         }}
                         className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-slate-800"
                         aria-label={`${labels.contact} ${contactPhone}`}
@@ -798,7 +554,7 @@ export default function Navbar({
           <button
             type="button"
             onClick={onToggleLang}
-            className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300"
+            className={langButtonClass}
           >
             <Image
               src={langFlagSrcResolved}

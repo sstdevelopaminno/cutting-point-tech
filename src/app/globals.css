@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f9fc;
-  --foreground: #0f172a;
-  --primary: #1d4ed8;
-  --primary-dark: #1e3a8a;
+  --background: #f4f6f8;
+  --foreground: #0b1220;
+  --primary: #2563eb;
+  --primary-dark: #111827;
   --surface: #ffffff;
   --border: #e2e8f0;
   --font-body: var(--font-sans-lao), var(--font-sans-thai), ui-sans-serif, system-ui,
@@ -25,7 +25,8 @@
 }
 
 body {
-  background: var(--background);
+  background:
+    linear-gradient(180deg, #f7f9fb 0%, #eef2f6 42%, #f8fafc 100%);
   color: var(--foreground);
   font-family: var(--font-body), "Helvetica Neue", Arial, sans-serif;
 }

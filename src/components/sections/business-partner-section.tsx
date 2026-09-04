@@ -24,7 +24,7 @@ function LogoPanel({ label, logoSrc, placeholder, side, isVisible }: LogoPanelPr
 
   return (
     <div
-      className={`relative z-10 flex min-h-[148px] w-full flex-col items-center justify-center rounded-[24px] bg-white/56 px-4 py-5 text-center shadow-[0_24px_80px_rgba(15,23,42,0.075)] ring-1 ring-white/85 backdrop-blur-md transition duration-[600ms] ease-out motion-reduce:translate-x-0 motion-reduce:opacity-100 md:min-h-[196px] ${
+      className={`relative z-10 flex min-h-[148px] w-full flex-col items-center justify-center rounded-[24px] bg-white/56 px-4 py-5 text-center shadow-[0_24px_80px_rgba(37,99,235,0.10)] ring-1 ring-blue-100/80 backdrop-blur-md transition duration-[600ms] ease-out motion-reduce:translate-x-0 motion-reduce:opacity-100 md:min-h-[196px] ${
         isVisible ? "translate-x-0 opacity-100" : `${startClass} opacity-0`
       }`}
       style={{ transitionDelay: "620ms" }}
@@ -39,7 +39,7 @@ function LogoPanel({ label, logoSrc, placeholder, side, isVisible }: LogoPanelPr
             src={logoSrc}
             alt={label}
             fill
-            className="object-contain mix-blend-multiply"
+            className="object-contain"
             sizes="(max-width: 768px) 72vw, 360px"
             priority={false}
           />
@@ -108,10 +108,14 @@ export default function BusinessPartnerSection({
     <section
       ref={sectionRef}
       id="business-partner"
-      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F7FBFF_16%,#EEF6FF_52%,#F7FBFF_84%,#FFFFFF_100%)] py-12 md:py-16"
+      className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F7FBFF_16%,#EEF6FF_52%,#F7FBFF_84%,#FFFFFF_100%)] py-12 shadow-[inset_0_1px_0_rgba(59,130,246,0.10),inset_0_-1px_0_rgba(59,130,246,0.10)] md:py-16"
     >
       <div className="pointer-events-none absolute inset-x-[8%] top-16 -z-10 h-56 rounded-full bg-blue-200/20 blur-3xl" />
-      <div className="mx-auto w-full max-w-5xl px-6">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-20 bg-gradient-to-b from-blue-50/75 via-white/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-24 bg-gradient-to-t from-blue-50/70 via-white/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-0 w-16 bg-gradient-to-r from-white/90 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-16 bg-gradient-to-l from-white/90 to-transparent" />
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
         <div
           className={`mx-auto max-w-3xl text-center transition duration-500 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"
@@ -124,13 +128,6 @@ export default function BusinessPartnerSection({
         </div>
 
         <div className="relative mt-8 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-7">
-          <svg className="pointer-events-none absolute inset-x-0 top-1/2 z-[5] hidden h-36 -translate-y-1/2 overflow-visible text-blue-400 md:block" viewBox="0 0 1120 180" fill="none" aria-hidden="true">
-            <path className={`business-partner-connector top left ${isVisible ? "is-visible" : ""}`} d="M424 76 C464 54 500 60 528 86" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-            <path className={`business-partner-connector bottom left ${isVisible ? "is-visible" : ""}`} d="M424 104 C464 126 500 120 528 94" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-            <path className={`business-partner-connector top right ${isVisible ? "is-visible" : ""}`} d="M696 76 C656 54 620 60 592 86" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-            <path className={`business-partner-connector bottom right ${isVisible ? "is-visible" : ""}`} d="M696 104 C656 126 620 120 592 94" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-          </svg>
-
           <LogoPanel label="CUTTING POINT TECH" logoSrc={companyLogoSrc} side="left" isVisible={isVisible} />
           <HandshakeMark isVisible={isVisible} />
           <LogoPanel label={partnerName} logoSrc={partnerLogoSrc} placeholder={`${partnerName} LOGO`} side="right" isVisible={isVisible} />
@@ -147,26 +144,6 @@ export default function BusinessPartnerSection({
           animation: business-partner-logo-spin 820ms cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        .business-partner-connector {
-          opacity: 0;
-          stroke-dasharray: 260;
-          stroke-dashoffset: 260;
-          transform-box: fill-box;
-          transform-origin: center;
-        }
-
-        .business-partner-connector.is-visible {
-          animation: business-partner-line-throw 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-
-        .business-partner-connector.top.is-visible {
-          animation-delay: 340ms;
-        }
-
-        .business-partner-connector.bottom.is-visible {
-          animation-delay: 400ms;
-        }
-
         @keyframes business-partner-logo-spin {
           0% {
             transform: rotateY(0deg) scale(0.94);
@@ -179,37 +156,9 @@ export default function BusinessPartnerSection({
           }
         }
 
-        @keyframes business-partner-line-throw {
-          0% {
-            opacity: 0;
-            stroke-dashoffset: 260;
-            transform: scaleX(0.7);
-            filter: drop-shadow(0 0 0 rgba(37, 99, 235, 0));
-          }
-          58% {
-            opacity: 1;
-            stroke-dashoffset: 30;
-            transform: scaleX(1.03);
-            filter: drop-shadow(0 10px 14px rgba(37, 99, 235, 0.26));
-          }
-          100% {
-            opacity: 0.95;
-            stroke-dashoffset: 0;
-            transform: scaleX(1);
-            filter: drop-shadow(0 2px 5px rgba(37, 99, 235, 0.12));
-          }
-        }
-
         @media (prefers-reduced-motion: reduce) {
-          .business-partner-logo-spin.is-visible,
-          .business-partner-connector.is-visible {
+          .business-partner-logo-spin.is-visible {
             animation: none;
-          }
-
-          .business-partner-connector.is-visible {
-            opacity: 0.95;
-            stroke-dashoffset: 0;
-            transform: none;
           }
         }
       `}</style>
