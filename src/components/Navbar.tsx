@@ -14,6 +14,7 @@ const navItems = [
   { href: "/#services", key: "services" },
   { href: "/articles", key: "articles" },
   { href: "/contact", key: "contact" },
+  { href: "/register-store", key: "signup" },
   { href: "/downloads", key: "downloads" },
 ] as const;
 
@@ -36,6 +37,8 @@ export default function Navbar({
 }: NavbarProps) {
   const langCode = lang === "th" ? "TH" : lang === "en" ? "EN" : "LO";
   const contactPhoneHref = `tel:${contactPhone.replace(/[^\d+]/g, "")}`;
+  const signupHref = process.env.NEXT_PUBLIC_CPIPOS_SIGNUP_URL?.trim() ||
+    "https://cp-ipos-it-web.vercel.app/register-store";
   const langFlagSrc =
     lang === "th"
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/pngtree-spherical-thailand-flag-png-image_3510746.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3BuZ3RyZWUtc3BoZXJpY2FsLXRoYWlsYW5kLWZsYWctcG5nLWltYWdlXzM1MTA3NDYuanBnIiwiaWF0IjoxNzcwNzQ2NTA2LCJleHAiOjE4MDIyODI1MDZ9.qt45pLITCBp9F2YaRCrcPF2bKnq6JplnXBuXaJR-nDM"
@@ -114,6 +117,10 @@ export default function Navbar({
       : "border-white/30 bg-white/92 text-slate-950 shadow-black/10 hover:bg-white"
   }${isEnglishStyle ? " md:uppercase md:tracking-[0.18em]" : ""}`;
   const onNavClick = (key: NavKey) => {
+    if (key === "signup") {
+      trackGaEvent("cpipos_signup_click", { location: "navbar", destination: "cpipos_it" });
+      return;
+    }
     if (key !== "services") {
       return;
     }
@@ -220,6 +227,22 @@ export default function Navbar({
         </Link>
         <nav className={navClass}>
           {navItems.map((item) => {
+            if (item.key === "signup") {
+              return (
+                <a
+                  key={item.key}
+                  href={signupHref}
+                  onClick={() => onNavClick(item.key)}
+                  className={`inline-flex items-center whitespace-nowrap rounded-full px-3 py-2 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
+                    isScrolled
+                      ? "bg-sky-100 text-blue-800 hover:bg-sky-200"
+                      : "bg-sky-400/15 text-sky-100 ring-1 ring-sky-300/45 hover:bg-sky-400/25"
+                  }`}
+                >
+                  {labels.signup}
+                </a>
+              );
+            }
             if (item.key !== "features" && item.key !== "services") {
               return (
                 <Link
@@ -525,6 +548,20 @@ export default function Navbar({
                       >
                         {labels.contact}
                       </Link>
+
+                      <a
+                        href={signupHref}
+                        onClick={() => {
+                          onNavClick("signup");
+                          setMobileMenuOpen(false);
+                          setMobileFeaturesOpen(false);
+                          setMobileServicesOpen(false);
+                        }}
+                        className="my-2 flex items-center justify-between rounded-xl bg-blue-600 px-4 py-3 text-base font-bold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                      >
+                        <span>{labels.signup}</span>
+                        <span className="rounded-full bg-white/20 px-2 py-1 text-xs">{lang === "th" ? "ทดลอง 7 วัน" : lang === "lo" ? "ທົດລອງ 7 ມື້" : "7-day trial"}</span>
+                      </a>
 
                       <Link
                         href="/downloads"
