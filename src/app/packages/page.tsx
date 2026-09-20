@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getRequestedLocale } from "@/lib/locale";
 import { estimatorConfig } from "@/lib/estimateConfig";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 type PackageItem = {
   id: "pos" | "website" | "dormitory" | "company";
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestedLocale();
   const baseUrl = SITE_URL.replace(/\/+$/, "");
   const title =
-    locale === "th" ? "แพ็กเกจบริการ | CUTTING POINT TECH" : "Packages | CUTTING POINT TECH";
+    locale === "th" ? "แพ็กเกจบริการ | CUTTING POINT INNOVATION" : "Packages | CUTTING POINT INNOVATION";
   const description =
     locale === "th"
       ? "แพ็กเกจสำหรับเว็บไซต์ ระบบหอพัก/รีสอร์ท และบริการจดทะเบียนบริษัท พร้อมทีมงานดูแลครบวงจร"
@@ -175,7 +175,7 @@ export default async function PackagesPage() {
       <section className="border-b border-slate-200 bg-gradient-to-b from-white to-mist py-10">
         <div className="mx-auto w-full max-w-6xl space-y-4 px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-600">
-            CUTTING POINT TECH
+            CUTTING POINT INNOVATION
           </p>
           <h1 className="font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
             {locale === "th" ? "แพ็กเกจบริการ" : "Service packages"}

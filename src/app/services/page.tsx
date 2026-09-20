@@ -8,17 +8,17 @@ import type { Lang } from "@/lib/i18n";
 import { getCopy } from "@/lib/i18n";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 const content = {
   th: {
     meta: {
-      title: "บริการของเรา | CUTTING POINT TECH",
+      title: "บริการของเรา | CUTTING POINT INNOVATION",
       description:
-        "บริการหลักของ CUTTING POINT TECH ครอบคลุมรับทำเว็บไซต์ ระบบหอพัก/รีสอร์ท และจดทะเบียนบริษัทครบวงจร พร้อมทีมงานดูแลต่อเนื่องและการทำ SEO/การตลาด.",
+        "บริการหลักของ CUTTING POINT INNOVATION ครอบคลุมรับทำเว็บไซต์ ระบบหอพัก/รีสอร์ท และจดทะเบียนบริษัทครบวงจร พร้อมทีมงานดูแลต่อเนื่องและการทำ SEO/การตลาด.",
     },
     hero: {
-      title: "บริการหลักของ CUTTING POINT TECH",
+      title: "บริการหลักของ CUTTING POINT INNOVATION",
       subtitle:
         "เลือกบริการที่ตอบโจทย์ธุรกิจของคุณ พร้อมรายละเอียดครบถ้วนและช่องทางติดต่อทีมงาน",
     },
@@ -43,12 +43,12 @@ const content = {
   },
   en: {
     meta: {
-      title: "Our Services | CUTTING POINT TECH",
+      title: "Our Services | CUTTING POINT INNOVATION",
       description:
-        "Explore CUTTING POINT TECH services: professional website development, dormitory/resort systems, and company registration, plus ongoing support and SEO/marketing.",
+        "Explore CUTTING POINT INNOVATION services: professional website development, dormitory/resort systems, and company registration, plus ongoing support and SEO/marketing.",
     },
     hero: {
-      title: "Core services by CUTTING POINT TECH",
+      title: "Core services by CUTTING POINT INNOVATION",
       subtitle: "Choose the service that best fits your business goals.",
     },
     crumbs: [

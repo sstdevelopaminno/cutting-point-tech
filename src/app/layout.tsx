@@ -35,7 +35,7 @@ const notoSerifLao = Noto_Serif_Lao({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 const metadataByLocale: Record<
   Locale,
@@ -47,23 +47,23 @@ const metadataByLocale: Record<
   }
 > = {
   th: {
-    title: "บริษัท คัตติ้งพอยท์ เทค จำกัด | เว็บไซต์และระบบบริหารธุรกิจครบวงจร",
+    title: "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด | เว็บไซต์และระบบบริหารธุรกิจครบวงจร",
     description:
-      "บริษัท คัตติ้งพอยท์ เทค จำกัด (CUTTING POINT TECH COMPANY LIMITED) ให้บริการรับทำเว็บไซต์ ระบบ POS ระบบจองที่พัก คลาวด์ และระบบบริหารธุรกิจครบวงจร สำหรับองค์กร ร้านค้า ร้านอาหาร โรงแรม และรีสอร์ทที่ต้องการความน่าเชื่อถือ ประสิทธิภาพ และการเติบโตระยะยาว",
+      "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด (CUTTING POINT INNOVATION CO., LTD.) ให้บริการรับทำเว็บไซต์ ระบบ POS ระบบจองที่พัก คลาวด์ และระบบบริหารธุรกิจครบวงจร สำหรับองค์กร ร้านค้า ร้านอาหาร โรงแรม และรีสอร์ทที่ต้องการความน่าเชื่อถือ ประสิทธิภาพ และการเติบโตระยะยาว",
     ogLocale: "th_TH",
     alternateLocales: ["en_US", "lo_LA"],
   },
   en: {
-    title: "CUTTING POINT TECH COMPANY LIMITED | Websites and Business Systems",
+    title: "CUTTING POINT INNOVATION CO., LTD. | Websites and Business Systems",
     description:
-      "CUTTING POINT TECH COMPANY LIMITED builds professional websites, business systems, and digital solutions for organizations that need credibility, performance, and long-term growth.",
+      "CUTTING POINT INNOVATION CO., LTD. builds professional websites, business systems, and digital solutions for organizations that need credibility, performance, and long-term growth.",
     ogLocale: "en_US",
     alternateLocales: ["th_TH"],
   },
   lo: {
-    title: "CUTTING POINT TECH COMPANY LIMITED | Website and Business Systems",
+    title: "CUTTING POINT INNOVATION CO., LTD. | Website and Business Systems",
     description:
-      "CUTTING POINT TECH COMPANY LIMITED provides professional website development and business system solutions for growing organizations.",
+      "CUTTING POINT INNOVATION CO., LTD. provides professional website development and business system solutions for growing organizations.",
     ogLocale: "lo_LA",
     alternateLocales: ["th_TH", "en_US"],
   },
@@ -77,7 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase,
     title: {
       default: meta.title,
-      template: "%s | CUTTING POINT TECH",
+      template: "%s | CUTTING POINT INNOVATION",
     },
     description: meta.description,
     alternates: {
@@ -90,7 +90,7 @@ export async function generateMetadata(): Promise<Metadata> {
       alternateLocale: meta.alternateLocales,
       type: "website",
       url: "/",
-      siteName: "CUTTING POINT TECH COMPANY LIMITED",
+      siteName: "CUTTING POINT INNOVATION CO., LTD.",
     },
     icons: {
       icon: [{ url: "/brand/logo-icon.png", type: "image/png" }],

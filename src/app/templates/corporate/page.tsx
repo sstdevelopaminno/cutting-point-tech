@@ -5,7 +5,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import StructuredData from "@/components/StructuredData";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 const showcase = [
   {
@@ -23,8 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = SITE_URL.replace(/\/+$/, "");
   const title =
     locale === "th"
-      ? "เว็บไซต์องค์กร | CUTTING POINT TECH"
-      : "Corporate Website Templates | CUTTING POINT TECH";
+      ? "เว็บไซต์องค์กร | CUTTING POINT INNOVATION"
+      : "Corporate Website Templates | CUTTING POINT INNOVATION";
   const description =
     locale === "th"
       ? "ตัวอย่างเว็บไซต์องค์กร 2 รูปแบบ เพื่อช่วยเลือกแนวทางดีไซน์และโครงสร้างก่อนเริ่มทำเว็บไซต์จริง"

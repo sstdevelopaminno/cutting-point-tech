@@ -1,4 +1,4 @@
-# AI Context for Cutting Point Tech
+# AI Context for Cutting Point Innovation
 
 Use this file as the first project guardrail before any AI-assisted development. Keep responses and investigation concise to save tokens.
 
@@ -9,15 +9,15 @@ Use this file as the first project guardrail before any AI-assisted development.
 4. After every change, update docs/DEVELOPMENT_LOG.md with what changed and how it was verified.
 
 ## Project Identity
-- Project: Cutting Point Tech website.
-- Company TH: บริษัท คัตติ้งพอยท์ เทค จำกัด.
-- Company EN: CUTTING POINT TECH COMPANY LIMITED.
+- Project: Cutting Point Innovation website.
+- Company TH: บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด.
+- Company EN: CUTTING POINT INNOVATION CO., LTD..
 - GitHub: https://github.com/sstdevelopaminno/cutting-point-tech.git.
-- Production URL: https://cuttingpointtech.vercel.app.
+- Production URL: https://cuttingpointinnovation.vercel.app.
 - Deployment target: Vercel, GitHub main branch.
 
 ## Scope Guardrails
-- Work only on the Cutting Point Tech website unless the owner explicitly names another project.
+- Work only on the Cutting Point Innovation website unless the owner explicitly names another project.
 - Do not bring back SST INNOVATION branding, POS Preview logic, SST iPOS backend flows, or unrelated admin/POS features.
 - Keep changes narrow and aligned with the current Next.js App Router marketing website.
 - Do not replace existing working flows unless the owner explicitly requests it.

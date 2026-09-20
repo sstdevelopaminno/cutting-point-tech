@@ -446,7 +446,7 @@ export default LeadNotificationCard;
 // Example usage:
 // const mockData: LeadNotificationData = {
 //   title: "New lead",
-//   org: "CUTTING POINT TECH",
+//   org: "CUTTING POINT INNOVATION",
 //   refId: "LD-6916-93FA",
 //   name: "\u0e1e\u0e34\u0e0a\u0e0d\u0e4c\u0e1e\u0e25\u0020\u0e28\u0e34\u0e23\u0e34\u0e1b\u0e23\u0e30\u0e40\u0e2a\u0e23\u0e34\u0e10",
 //   phone: "0843374982",

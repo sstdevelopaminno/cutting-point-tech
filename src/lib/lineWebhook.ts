@@ -61,7 +61,7 @@ function formatText(payload: LeadNotificationPayload, leadRef: string | null) {
       : [];
 
   const lines = [
-    isEstimate ? "NEW QUOTE REQUEST | CUTTING POINT TECH" : "NEW LEAD | CUTTING POINT TECH",
+    isEstimate ? "NEW QUOTE REQUEST | CUTTING POINT INNOVATION" : "NEW LEAD | CUTTING POINT INNOVATION",
     "--------------------",
     leadRef ? `Ref: ${leadRef}` : null,
     `Name: ${payload.name}`,

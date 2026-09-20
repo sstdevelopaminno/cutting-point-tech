@@ -1,6 +1,6 @@
-# Cutting Point Tech Website
+# Cutting Point Innovation Website
 
-Marketing website for บริษัท คัตติ้งพอยท์ เทค จำกัด (CUTTING POINT TECH COMPANY LIMITED), built with Next.js App Router, TypeScript, and Tailwind CSS.
+Marketing website for บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด (CUTTING POINT INNOVATION CO., LTD.), built with Next.js App Router, TypeScript, and Tailwind CSS.
 
 ## Run locally
 
@@ -82,6 +82,48 @@ create table if not exists events (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public_api_rate_limits (
+  limit_key text primary key,
+  window_start timestamptz not null,
+  count integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+alter table public_api_rate_limits enable row level security;
+
+create or replace function consume_public_rate_limit(
+  p_limit_key text,
+  p_window_seconds integer,
+  p_max_requests integer
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  reset_before timestamptz := now() - make_interval(secs => p_window_seconds);
+  next_count integer;
+begin
+  insert into public_api_rate_limits as rl (limit_key, window_start, count, updated_at)
+  values (p_limit_key, now(), 1, now())
+  on conflict (limit_key) do update
+  set
+    window_start = case when rl.window_start <= reset_before then now() else rl.window_start end,
+    count = case when rl.window_start <= reset_before then 1 else rl.count + 1 end,
+    updated_at = now()
+  returning count into next_count;
+
+  delete from public_api_rate_limits
+  where updated_at < now() - interval '1 day';
+
+  return next_count <= p_max_requests;
+end;
+$$;
+
+revoke all on function consume_public_rate_limit(text, integer, integer) from anon, authenticated;
+grant execute on function consume_public_rate_limit(text, integer, integer) to service_role;
+
 alter table leads add column if not exists service text;
 alter table leads add column if not exists estimate_id uuid references estimates(id);
 ```
@@ -99,7 +141,7 @@ Current environment variable surface:
 
 | Variable | Scope | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | public | Canonical site URL used by metadata and structured data. Defaults to `https://cuttingpointtech.vercel.app`. |
+| `NEXT_PUBLIC_SITE_URL` | public | Canonical site URL used by metadata and structured data. Defaults to `https://cuttingpointinnovation.vercel.app`. |
 | `NEXT_PUBLIC_SUPABASE_URL` | public/server | Supabase project URL used by client/server helpers. |
 | `SUPABASE_SERVICE_ROLE_KEY` | server only | Supabase service-role key for lead, estimate, and event writes. Never expose in browser code. |
 | `SMTP_HOST` | server only | SMTP host for admin lead notifications. |

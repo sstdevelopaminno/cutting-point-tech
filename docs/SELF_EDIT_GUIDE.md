@@ -1,4 +1,4 @@
-# Cutting Point Tech Self-Edit Guide
+# Cutting Point Innovation Self-Edit Guide
 
 คู่มือนี้ทำไว้สำหรับเจ้าของโปรเจคที่ต้องการแก้เว็บเองโดยไม่ต้องไล่หาไฟล์ใหม่ทุกครั้ง และช่วยลดการใช้โทเคนเวลาขอให้ AI ช่วยตรวจเฉพาะจุด
 
@@ -52,7 +52,7 @@ code E:\Cutting-Point-Tech
 
 | ส่วนบนจอ | ไฟล์ / คำค้น |
 | --- | --- |
-| โลโก้ + ชื่อบริษัท | `src/components/Navbar.tsx`, ค้น `logo-icon.png` หรือ `CUTTING POINT TECH` |
+| โลโก้ + ชื่อบริษัท | `src/components/Navbar.tsx`, ค้น `logo-icon.png` หรือ `CUTTING POINT INNOVATION` |
 | เมนู หน้าแรก/จุดเด่น/บริการ/แพ็กเกจ | `src/components/Navbar.tsx`, ค้น `navItems` |
 | ข้อความในเมนู dropdown | `src/components/Navbar.tsx`, ค้น `servicesOverview`, `packagesWebsite` |
 | ปุ่มเปลี่ยนภาษา | `src/components/Navbar.tsx`, ค้น `langFlagSrcResolved` |

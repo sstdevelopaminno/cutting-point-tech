@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enforcePublicApiRateLimit, getClientIp, internalServerError, logRouteError } from "@/lib/apiSecurity";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { sendLeadNotification } from "@/lib/email";
 import { notifyLineViaCloudflare } from "@/lib/lineWebhook";
@@ -22,68 +23,7 @@ const MAX_EMAIL_LENGTH = 120;
 const MAX_MESSAGE_LENGTH = 2000;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_MAX_ENTRIES = 2_000;
-const RATE_LIMIT_CLEANUP_INTERVAL = 50;
 const SPAM_ERROR = "Spam detected";
-
-type RateLimitEntry = {
-  count: number;
-  windowStart: number;
-};
-
-const rateLimitByIp = new Map<string, RateLimitEntry>();
-let rateLimitCheckCount = 0;
-
-function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0]?.trim() || "unknown";
-  }
-  return req.headers.get("x-real-ip") || "unknown";
-}
-
-function isRateLimited(ip: string, now: number): boolean {
-  const entry = rateLimitByIp.get(ip);
-  if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
-    rateLimitByIp.set(ip, { count: 1, windowStart: now });
-    return false;
-  }
-
-  entry.count += 1;
-  return entry.count > RATE_LIMIT_MAX;
-}
-
-function cleanupRateLimitMap(now: number) {
-  rateLimitCheckCount += 1;
-  const shouldSweepByInterval = rateLimitCheckCount % RATE_LIMIT_CLEANUP_INTERVAL === 0;
-  const shouldSweepBySize = rateLimitByIp.size > RATE_LIMIT_MAX_ENTRIES;
-
-  if (!shouldSweepByInterval && !shouldSweepBySize) {
-    return;
-  }
-
-  for (const [ip, entry] of rateLimitByIp.entries()) {
-    if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
-      rateLimitByIp.delete(ip);
-    }
-  }
-
-  if (rateLimitByIp.size <= RATE_LIMIT_MAX_ENTRIES) {
-    return;
-  }
-
-  const staleFirst = Array.from(rateLimitByIp.entries()).sort(
-    (a, b) => a[1].windowStart - b[1].windowStart
-  );
-  const overflow = rateLimitByIp.size - RATE_LIMIT_MAX_ENTRIES;
-  for (let index = 0; index < overflow; index += 1) {
-    const stale = staleFirst[index];
-    if (!stale) {
-      break;
-    }
-    rateLimitByIp.delete(stale[0]);
-  }
-}
 
 function isTooFast(startedAt: string | number | undefined, now: number): boolean {
   if (startedAt === undefined || startedAt === null || startedAt === "") {
@@ -101,17 +41,18 @@ export async function POST(req: Request) {
   const requestId = crypto.randomUUID();
   const now = Date.now();
   const ip = getClientIp(req);
-  cleanupRateLimitMap(now);
 
   try {
-    const body = (await req.json().catch(() => null)) as LeadPayload | null;
+    const rateLimitResponse = await enforcePublicApiRateLimit({
+      route: "api/contact",
+      ip,
+      limit: RATE_LIMIT_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
+      requestId,
+    });
+    if (rateLimitResponse) return rateLimitResponse;
 
-    if (isRateLimited(ip, now)) {
-      return NextResponse.json(
-        { ok: false, requestId, error: SPAM_ERROR },
-        { status: 429 }
-      );
-    }
+    const body = (await req.json().catch(() => null)) as LeadPayload | null;
 
     const name = String(body?.name ?? "")
       .trim()
@@ -172,11 +113,9 @@ export async function POST(req: Request) {
       .single();
 
     if (insertError || !lead?.id) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error("Lead insert failed", { requestId, insertError });
-      }
+      console.error("Lead insert failed", { requestId, insertError });
       return NextResponse.json(
-        { ok: false, requestId, error: "Database insert failed" },
+        { ok: false, requestId, error: "Unable to save request" },
         { status: 500 }
       );
     }
@@ -231,7 +170,6 @@ export async function POST(req: Request) {
       });
     }
 
-    // Record notification status in events table (if present)
     try {
       await supabase.from("events").insert([
         {
@@ -255,11 +193,7 @@ export async function POST(req: Request) {
       notifications: { email: emailStatus, line: lineStatus },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error({ requestId, error: err });
-    return NextResponse.json(
-      { ok: false, requestId, error: message },
-      { status: 500 }
-    );
+    logRouteError("api/contact", requestId, err);
+    return internalServerError(requestId);
   }
 }

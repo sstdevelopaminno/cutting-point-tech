@@ -1,4 +1,4 @@
-﻿# Pre-Development Review - 2026-09-03
+# Pre-Development Review - 2026-09-03
 
 This document records the current project state before further improvement or feature development. No runtime code changes are included in this review.
 
@@ -65,7 +65,7 @@ Note: `README.md` documents most of this surface, but it currently omits `NEXT_P
 
 - The latest development log entries focus on homepage visual refinements, product showcase assets, favicon/app icon alignment, and the business partner CLEXPERT logo section.
 - Several recent entries intentionally left commit and deployment pending per owner request until the final partner-logo update on 2026-09-03.
-- Historical production behavior: after Vercel production deploys, the preferred primary domain `https://cuttingpointtech.vercel.app` may need manual alias reassignment because automatic aliasing often targets `https://cutting-point-tech.vercel.app`.
+- Historical production behavior: after Vercel production deploys, the preferred primary domain `https://cuttingpointinnovation.vercel.app` may need manual alias reassignment because automatic aliasing often targets `https://cuttingpointinnovation.vercel.app`.
 
 ## Guardrails For Next Work
 

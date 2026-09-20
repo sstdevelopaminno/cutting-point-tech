@@ -14,7 +14,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import StructuredData from "@/components/StructuredData";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 type LocaleContent = {
   meta: { title: string; description: string };
@@ -76,7 +76,7 @@ type LocaleContent = {
 const content: Record<"th" | "en", LocaleContent> = {
   th: {
     meta: {
-      title: "AI SEO | CUTTING POINT TECH",
+      title: "AI SEO | CUTTING POINT INNOVATION",
       description:
         "บริการ AI SEO สำหรับเว็บไซต์องค์กร: On-page SEO, CRO, Generative AI Optimization และรายงานเชิงลึก เพื่อเพิ่มโอกาสติดหน้าแรก Google อย่างยั่งยืน",
     },
@@ -211,7 +211,7 @@ const content: Record<"th" | "en", LocaleContent> = {
   },
   en: {
     meta: {
-      title: "AI SEO | CUTTING POINT TECH",
+      title: "AI SEO | CUTTING POINT INNOVATION",
       description:
         "AI SEO for corporate websites: on-page SEO, CRO, Generative AI Optimization, and actionable analytics to improve Google visibility sustainably.",
     },

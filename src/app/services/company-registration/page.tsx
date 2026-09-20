@@ -5,7 +5,7 @@ import ServiceLinks from "@/components/ServiceLinks";
 import StructuredData from "@/components/StructuredData";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 type ContentSection = {
   h2: string;
@@ -26,7 +26,7 @@ type ContentLocale = {
 const content = {
   th: {
     meta: {
-      title: "บริการจดทะเบียนบริษัทครบวงจร | CUTTING POINT TECH",
+      title: "บริการจดทะเบียนบริษัทครบวงจร | CUTTING POINT INNOVATION",
       description:
         "บริการจดทะเบียนบริษัทครบวงจร ดูแลเอกสาร ให้คำปรึกษา และติดตามผลอย่างเป็นระบบ เพื่อให้ธุรกิจเริ่มต้นอย่างถูกต้องและมั่นใจ",
     },
@@ -45,7 +45,7 @@ const content = {
       {
         h2: "จดทะเบียนบริษัทอย่างถูกต้องตั้งแต่ครั้งแรก",
         paragraphs: [
-          "การจดทะเบียนบริษัทเป็นขั้นตอนสำคัญที่จะกำหนดโครงสร้างและความน่าเชื่อถือของธุรกิจ หากเริ่มต้นผิดพลาดอาจทำให้ต้องแก้ไขภายหลังและเสียเวลา CUTTING POINT TECH ให้บริการ จดทะเบียนบริษัท แบบครบวงจร ตั้งแต่การให้คำปรึกษา การเตรียมเอกสาร ไปจนถึงการยื่นคำขออย่างถูกต้อง",
+          "การจดทะเบียนบริษัทเป็นขั้นตอนสำคัญที่จะกำหนดโครงสร้างและความน่าเชื่อถือของธุรกิจ หากเริ่มต้นผิดพลาดอาจทำให้ต้องแก้ไขภายหลังและเสียเวลา CUTTING POINT INNOVATION ให้บริการ จดทะเบียนบริษัท แบบครบวงจร ตั้งแต่การให้คำปรึกษา การเตรียมเอกสาร ไปจนถึงการยื่นคำขออย่างถูกต้อง",
           "เราช่วยวางโครงสร้างผู้ถือหุ้น กำหนดทุนจดทะเบียน วัตถุประสงค์ทางธุรกิจ และรูปแบบเอกสารให้เหมาะสมกับกิจการของคุณ เพื่อให้ขั้นตอนผ่านได้อย่างราบรื่น พร้อมคำแนะนำที่เข้าใจง่ายสำหรับผู้ประกอบการที่เพิ่งเริ่มต้น",
           "นอกจากเอกสาร เราให้ความสำคัญกับการอธิบายข้อกำหนดทางกฎหมายและผลกระทบทางธุรกิจ เพื่อให้คุณตัดสินใจได้อย่างมั่นใจและวางแผนได้ถูกต้องตั้งแต่วันแรกของการดำเนินงาน",
           "การเริ่มต้นอย่างเป็นระบบยังช่วยให้คุณสร้างความเชื่อมั่นกับคู่ค้าและลูกค้าได้เร็วขึ้น เพราะเอกสารและโครงสร้างองค์กรพร้อมใช้งานสำหรับการทำสัญญาและการเปิดบัญชีธุรกิจ",
@@ -123,9 +123,9 @@ const content = {
   },
   en: {
     meta: {
-      title: "Company Registration Service | CUTTING POINT TECH",
+      title: "Company Registration Service | CUTTING POINT INNOVATION",
       description:
-        "End-to-end company registration service with structured guidance, documentation support, and compliance-ready setup by CUTTING POINT TECH.",
+        "End-to-end company registration service with structured guidance, documentation support, and compliance-ready setup by CUTTING POINT INNOVATION.",
     },
     hero: {
       title: "Company registration with professional guidance and clarity",
@@ -142,7 +142,7 @@ const content = {
       {
         h2: "Register your company correctly from the start",
         paragraphs: [
-          "Company registration is a foundational step that shapes your legal structure and credibility. Mistakes can lead to delays and extra costs. CUTTING POINT TECH provides an end-to-end company registration service, covering consultation, documentation, and submission in a structured process.",
+          "Company registration is a foundational step that shapes your legal structure and credibility. Mistakes can lead to delays and extra costs. CUTTING POINT INNOVATION provides an end-to-end company registration service, covering consultation, documentation, and submission in a structured process.",
           "We help define shareholder structure, registered capital, and business objectives that align with your operations. This ensures a smoother approval process and a clear foundation for future growth.",
           "Beyond paperwork, we explain the legal and business implications so you can make confident decisions and start your company with clarity.",
           "Starting with a well-structured setup also builds trust with partners and clients, as your documentation is ready for contracts, banking, and formal engagements.",

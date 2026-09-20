@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-mist px-6">
       <div className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-card-soft">
-        <p className="text-xs uppercase tracking-[0.4em] text-blue-600">CUTTING POINT TECH</p>
+        <p className="text-xs uppercase tracking-[0.4em] text-blue-600">CUTTING POINT INNOVATION</p>
         <h1 className="mt-4 font-[var(--font-heading)] text-3xl font-semibold text-slate-900">
           Page not found
         </h1>

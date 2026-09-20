@@ -5,14 +5,14 @@ import { getRequestedLocale } from "@/lib/locale";
 import { isEstimatorService } from "@/lib/estimate";
 import type { EstimatorService } from "@/lib/estimateConfig";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getRequestedLocale();
   const title =
     locale === "th"
-      ? "คำนวณช่วงราคาเบื้องต้น | CUTTING POINT TECH"
-      : locale === "lo" ? "ຄຳນວນຊ່ວງລາຄາເບື້ອງຕົ້ນ | CUTTING POINT TECH" : "Service Estimator | CUTTING POINT TECH";
+      ? "คำนวณช่วงราคาเบื้องต้น | CUTTING POINT INNOVATION"
+      : locale === "lo" ? "ຄຳນວນຊ່ວງລາຄາເບື້ອງຕົ້ນ | CUTTING POINT INNOVATION" : "Service Estimator | CUTTING POINT INNOVATION";
   const description =
     locale === "th"
       ? "คำนวณช่วงราคาเบื้องต้นแบบ rule-based สำหรับเว็บไซต์ ระบบหอพัก/รีสอร์ท และ analytics"
@@ -52,7 +52,7 @@ export default async function EstimatePage({
       <section className="border-b border-slate-200 bg-gradient-to-b from-white to-mist py-10">
         <div className="mx-auto w-full max-w-6xl space-y-4 px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-600">
-            CUTTING POINT TECH
+            CUTTING POINT INNOVATION
           </p>
           <h1 className="font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
             {locale === "th" ? "คำนวณช่วงราคาเบื้องต้น" : locale === "lo" ? "ຄຳນວນຊ່ວງລາຄາເບື້ອງຕົ້ນ" : "Service Estimator"}

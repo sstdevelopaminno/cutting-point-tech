@@ -16,14 +16,20 @@ This file records documentation-first development notes for the Cutting Point Te
 
 
 
+## 2026-09-20
+- Prepared production URL rename from `https://cuttingpointtech.vercel.app` to `https://cuttingpointinnovation.vercel.app` by updating default `NEXT_PUBLIC_SITE_URL` fallbacks, canonical metadata, sitemap/robots defaults, and project docs. Verification: old URL/name scans passed, `npm run lint` passed, and `npm run build` passed. Commit, push, deployment, and Vercel alias verification are being completed in this release run.
+- Rebranded current public copy, metadata, structured data, notifications, and navbar text from Cutting Point Tech to CUTTING POINT INNOVATION CO., LTD. / บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด. Updated the mobile navbar brand title to CPInno, hid the long Thai subtitle on mobile, added a Downloads nav item after Contact, and added a lightweight /downloads placeholder page for later content. Verification: old company-name source scan passed, `npm run lint` passed, `npm run build` passed, and `git diff --check` passed with Windows LF/CRLF warnings only. Commit, push, and deployment were intentionally not run.
+- Added security headers and serverless-aware public API rate limiting. `next.config.ts` now disables `X-Powered-By` and sends CSP, frame, MIME, referrer, DNS prefetch, and permissions headers. Added `src/lib/apiSecurity.ts` with Supabase RPC-backed rate limiting plus in-memory fallback, wired it into all public POST APIs, replaced internal catch error messages with generic 500 responses, and documented the required Supabase SQL function/table in `README.md`. Verification: `npm run lint` passed, `npm run build` passed, `npm audit --audit-level=moderate` reported 0 vulnerabilities, `git diff --check` passed with Windows LF/CRLF warnings only, and local `curl -I http://localhost:3000` confirmed the new security headers with no `X-Powered-By` response header. Production deployment was not run in this step.
+- Security dependency maintenance: upgraded runtime/framework dependencies to close the audit findings from the security review, including Next.js, React, React DOM, Supabase JS, Nodemailer, Next ESLint config, and related React/Nodemailer type packages. Ran `npm audit fix` for remaining transitive tooling advisories. Verified that `npm audit --audit-level=moderate` reports 0 vulnerabilities, `npm run build` passes on Next.js 16.3.5, `npm run lint` passes, and `git ls-files` only tracks `.env.example` among the checked env files. Production deployment was not run in this step.
+
 ## 2026-09-04
 - Refreshed the homepage hero to use the owner-provided technology banner background, restored the original hero copy, removed the two hero CTA buttons, reduced the right-side slider artwork size, and kept the rotating product/service visuals. Updated the navbar so it is transparent over the banner at the top and switches to a soft light gray translucent bar while scrolling. Reworked the additional-services section into a wider modern full-page band, changed feature icons from black to logo-blue, and corrected Thai SEO metadata in `src/app/layout.tsx`. Verification: targeted lint passed, `npm run build` passed, local SEO markup and the new banner asset returned OK, and production commit/deploy are being completed in this run.
 
 ## 2026-09-03
 - Expanded the top navbar container and removed the Packages and Templates menu entries from desktop and mobile navigation, including their dropdown labels, state, refs, links, and close handlers, while leaving the Services menu intact for the next planned pass. Verification: targeted Navbar source search found no packages/templates nav references, git diff --check passed with only Windows LF/CRLF warnings, npm run build passed, and localhost homepage returned HTTP 200 with no /packages or /templates hrefs in the markup. Commit and production deployment remain pending.
 - Removed the business partner connector throw lines entirely from src/components/sections/business-partner-section.tsx, including the connector SVG paths and line animation CSS, leaving only the two logo panels and center handshake mark. Verification: targeted source search found no connector class/path/keyframe, git diff --check passed with only Windows LF/CRLF warnings, npm run build passed, localhost homepage returned HTTP 200, and HTML output confirmed no connector class, no line-throw keyframe, and no old connector viewBox while the transparent CLEXPERT logo still loaded. Commit and production deployment remain pending.
-- Adjusted the business partner connector lines again so they sit close to the center handshake circle and stay below the logo/card layer instead of crossing over the CUTTING POINT TECH or CLEXPERT logos. Verification: targeted source search confirmed z-[5] and shortened left/right connector paths near the circle; git diff --check passed with only Windows LF/CRLF warnings; npm run build passed.
-- Removed the visible white background from the CLEXPERT business partner logo by creating `public/brand/business-partner-clexpert-logo-transparent.png`, updated the homepage to use that cache-busting transparent asset, removed logo `mix-blend-multiply`, and raised/widened the business partner connector SVG so both CUTTING POINT TECH and CLEXPERT sides show visible throw lines toward the center. Verification: transparent asset alpha check passed, targeted source search confirmed the new asset path plus left/right connector paths, `git diff --check` passed with only Windows LF/CRLF warnings, `npm run build` passed, localhost homepage returned HTTP 200 with the transparent logo reference, and both the direct asset and Next image optimizer URL returned HTTP 200. Commit and production deployment remain pending.
+- Adjusted the business partner connector lines again so they sit close to the center handshake circle and stay below the logo/card layer instead of crossing over the CUTTING POINT INNOVATION or CLEXPERT logos. Verification: targeted source search confirmed z-[5] and shortened left/right connector paths near the circle; git diff --check passed with only Windows LF/CRLF warnings; npm run build passed.
+- Removed the visible white background from the CLEXPERT business partner logo by creating `public/brand/business-partner-clexpert-logo-transparent.png`, updated the homepage to use that cache-busting transparent asset, removed logo `mix-blend-multiply`, and raised/widened the business partner connector SVG so both CUTTING POINT INNOVATION and CLEXPERT sides show visible throw lines toward the center. Verification: transparent asset alpha check passed, targeted source search confirmed the new asset path plus left/right connector paths, `git diff --check` passed with only Windows LF/CRLF warnings, `npm run build` passed, localhost homepage returned HTTP 200 with the transparent logo reference, and both the direct asset and Next image optimizer URL returned HTTP 200. Commit and production deployment remain pending.
 - Added `docs/PRE_DEVELOPMENT_REVIEW_2026-09-03.md` as a pre-development code and documentation review before further improvements. Scope: documentation only. Review covered required docs, package/dependency surface, source map, API/data flows, environment variables, git status, current guardrails, and recommended next improvements. Verification: targeted file/source reads and `git status -sb` completed; lint/build not run because website runtime behavior did not change.
 - Added the owner-provided CLEXPERT partner logo from C:\\Users\\Admins\\Downloads\\55995889.png as public/brand/business-partner-clexpert-logo.png, reduced the business partner section/card/logo sizing further, and kept the paired connector curves throwing inward from both sides toward the center. Verification: source and copied asset SHA256 hashes match, `npm run build` passed, localhost served the PNG with HTTP 200, and agent-browser confirmed two logo images, four active connector curves, two active logo spin elements, and no browser errors. Commit and production deployment are being completed in this run.
 
@@ -86,7 +92,7 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Reviewed existing documentation: README.md.
 
-- Current production URL: https://cuttingpointtech.vercel.app.
+- Current production URL: https://cuttingpointinnovation.vercel.app.
 
 - Current GitHub repository: https://github.com/sstdevelopaminno/cutting-point-tech.git.
 
@@ -128,15 +134,15 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Released commit 2f73184 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/7AU5TSytaYv2LdGFMgQSKz8A6Zvy.
 
-- Verification: https://cuttingpointtech.vercel.app returned HTTP 200 for public access after deployment; https://cutting-point-tech.vercel.app also returned HTTP 200.
+- Verification: https://cuttingpointinnovation.vercel.app returned HTTP 200 for public access after deployment; https://cuttingpointinnovation.vercel.app also returned HTTP 200.
 
 ## 2026-07-02
 
-- Investigated why https://cuttingpointtech.vercel.app still showed the old hero while https://cutting-point-tech.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
+- Investigated why https://cuttingpointinnovation.vercel.app still showed the old hero while https://cuttingpointinnovation.vercel.app showed the latest hero slideshow. Root cause: the latest production deployment was aliased to the hyphenated project domain, while the preferred primary domain was still serving an older deployment.
 
-- Reassigned https://cuttingpointtech.vercel.app to the newest ready production deployment with Vercel CLI after each deployment, because Vercel's automatic production alias still targets the hyphenated project domain.
+- Reassigned https://cuttingpointinnovation.vercel.app to the newest ready production deployment with Vercel CLI after each deployment, because Vercel's automatic production alias still targets the hyphenated project domain.
 
-- Verification: cache-busted HTML checks for both domains returned the new hero slideshow markup, no old CTA button markup, and no old gradient-only hero markup; https://cuttingpointtech.vercel.app returned HTTP 200.
+- Verification: cache-busted HTML checks for both domains returned the new hero slideshow markup, no old CTA button markup, and no old gradient-only hero markup; https://cuttingpointinnovation.vercel.app returned HTTP 200.
 
 - Reviewed README.md, docs/AI_CONTEXT.md, and this development log before continuing development setup.
 
@@ -158,9 +164,9 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Released commit 6c051c2 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/39btyKHpuToNhSwPQhWQ67tFbEM1.
 
-- Reassigned https://cuttingpointtech.vercel.app to the latest deployment https://cuttingpointtech-d61y15nnh-sstdevelopaminnos-projects.vercel.app because the automatic production alias targets https://cutting-point-tech.vercel.app.
+- Reassigned https://cuttingpointinnovation.vercel.app to the latest deployment https://cuttingpointtech-d61y15nnh-sstdevelopaminnos-projects.vercel.app because the automatic production alias targets https://cuttingpointinnovation.vercel.app.
 
-- Verification: https://cuttingpointtech.vercel.app returned HTTP 200, and cache-busted HTML for both the direct deployment URL and primary domain contained `main-services`, `service-01-pos`, and `การบริการหลักของเรา`.
+- Verification: https://cuttingpointinnovation.vercel.app returned HTTP 200, and cache-busted HTML for both the direct deployment URL and primary domain contained `main-services`, `service-01-pos`, and `การบริการหลักของเรา`.
 
 
 
@@ -178,9 +184,9 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Released performance commit e72f683 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/FUXSs9Fa87NvRdj5Qr4ciaw61LBU.
 
-- Production deployment URL: https://cuttingpointtech-pgiocpubb-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Production deployment URL: https://cuttingpointtech-pgiocpubb-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointinnovation.vercel.app to this deployment because the automatic production alias targeted https://cuttingpointinnovation.vercel.app.
 
-- Post-deploy verification: https://cuttingpointtech.vercel.app and https://cutting-point-tech.vercel.app both returned HTTP 200 on 2026-07-03.
+- Post-deploy verification: https://cuttingpointinnovation.vercel.app and https://cuttingpointinnovation.vercel.app both returned HTTP 200 on 2026-07-03.
 
 - Updated the top navigation contact CTA so both desktop and mobile navbar contact buttons use the contact phone number from `copy.footer.phone` and open `tel:0843374982` instead of navigating to `/contact`.
 
@@ -190,9 +196,9 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Released navbar phone CTA commit 20137d3 to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/B7jVdLGJ96WtjytkAQVyhQDL1sNd.
 
-- Production deployment URL: https://cuttingpointtech-ou9aux0k7-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Production deployment URL: https://cuttingpointtech-ou9aux0k7-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointinnovation.vercel.app to this deployment because the automatic production alias targeted https://cuttingpointinnovation.vercel.app.
 
-- Post-deploy verification: https://cuttingpointtech.vercel.app returned HTTP 200 and the homepage HTML contained `href="tel:0843374982"` on 2026-07-03.
+- Post-deploy verification: https://cuttingpointinnovation.vercel.app returned HTTP 200 and the homepage HTML contained `href="tel:0843374982"` on 2026-07-03.
 
 
 
@@ -208,9 +214,9 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Released logo asset commit `8fe4176` to GitHub main and deployed production with Vercel CLI. Deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/CjWmiGXrSheypb2YEd7wPX9fzV5M.
 
-- Production deployment URL: https://cuttingpointtech-e5f3h4wik-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Production deployment URL: https://cuttingpointtech-e5f3h4wik-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointinnovation.vercel.app to this deployment because the automatic production alias targeted https://cuttingpointinnovation.vercel.app.
 
-- Post-deploy verification: https://cuttingpointtech.vercel.app and https://cutting-point-tech.vercel.app returned HTTP 200; `/brand/logo-icon.png` and `/icon.png` returned HTTP 200 with the new 239398-byte assets; production HTML referenced `/brand/logo-icon.png` and `/icon.png`; Vercel error log scan for the deployment returned no logs found.
+- Post-deploy verification: https://cuttingpointinnovation.vercel.app and https://cuttingpointinnovation.vercel.app returned HTTP 200; `/brand/logo-icon.png` and `/icon.png` returned HTTP 200 with the new 239398-byte assets; production HTML referenced `/brand/logo-icon.png` and `/icon.png`; Vercel error log scan for the deployment returned no logs found.
 
 
 
@@ -222,9 +228,9 @@ This file records documentation-first development notes for the Cutting Point Te
 
 - Production deployment inspect URL: https://vercel.com/sstdevelopaminnos-projects/cuttingpointtech/DwhTfxAve2UrmZb11hVQVpHF7zcg.
 
-- Production deployment URL: https://cuttingpointtech-mn6k99meq-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointtech.vercel.app to this deployment because the automatic production alias targeted https://cutting-point-tech.vercel.app.
+- Production deployment URL: https://cuttingpointtech-mn6k99meq-sstdevelopaminnos-projects.vercel.app. Reassigned https://cuttingpointinnovation.vercel.app to this deployment because the automatic production alias targeted https://cuttingpointinnovation.vercel.app.
 
-- Verification on 2026-07-21: `npm run lint` passed, `npm run build` passed, https://cuttingpointtech.vercel.app returned HTTP 200, https://cutting-point-tech.vercel.app returned HTTP 200, the direct deployment URL returned HTTP 200, and https://cuttingpointtech.vercel.app/brand/logo-icon.png returned HTTP 200 with `Content-Length: 69557`, matching the latest local `public/brand/logo-icon.png` asset.
+- Verification on 2026-07-21: `npm run lint` passed, `npm run build` passed, https://cuttingpointinnovation.vercel.app returned HTTP 200, https://cuttingpointinnovation.vercel.app returned HTTP 200, the direct deployment URL returned HTTP 200, and https://cuttingpointinnovation.vercel.app/brand/logo-icon.png returned HTTP 200 with `Content-Length: 69557`, matching the latest local `public/brand/logo-icon.png` asset.
 
 ## 2026-09-03 - Responsive website showcase section
 

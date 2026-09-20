@@ -159,7 +159,7 @@ export const sendLeadNotification = async (
     <div style="font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background:#f4f6fb; padding:32px;">
       <div style="max-width:680px; margin:0 auto; background:#ffffff; border-radius:16px; padding:28px; box-shadow:0 14px 40px rgba(15,23,42,0.12);">
         <p style="font-size:12px; text-transform:uppercase; letter-spacing:0.2em; color:#1d4ed8; margin:0 0 8px;">
-          CUTTING POINT TECH
+          CUTTING POINT INNOVATION
         </p>
         <h2 style="margin:0 0 16px; font-size:24px; color:#0f172a;">New Web Lead</h2>
         <p style="margin:0 0 20px; color:#475569; font-size:14px;">

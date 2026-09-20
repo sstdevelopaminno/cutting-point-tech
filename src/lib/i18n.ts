@@ -10,6 +10,7 @@ type Dict = {
     portfolio: string;
     articles: string;
     contact: string;
+    downloads: string;
   };
   hero: {
     title: string;
@@ -96,9 +97,10 @@ export const dict: Record<Lang, Dict> = {
       portfolio: "เทมเพลต",
       articles: "บทความ",
       contact: "ติดต่อ",
+      downloads: "ดาวน์โหลด",
     },
     hero: {
-      title: "Pro จาก CUTTING POINT TECH",
+      title: "Pro จาก CUTTING POINT INNOVATION",
       subtitle:
         "โซลูชันเว็บไซต์องค์กรระดับพรีเมียมที่ยกระดับภาพลักษณ์ พร้อมรองรับการเติบโตระยะยาว",
       primaryCta: "ขอใบเสนอราคา",
@@ -106,7 +108,7 @@ export const dict: Record<Lang, Dict> = {
       trust: "ได้รับความไว้วางใจจากองค์กรและลูกค้า ร้านค้า ทั่วไป",
     },
     features: {
-      title: "ทำไมต้อง CUTTING POINT TECH Pro",
+      title: "ทำไมต้อง CUTTING POINT INNOVATION Pro",
       subtitle: "ออกแบบเพื่อธุรกิจที่ต้องการความแตกต่างและความน่าเชื่อถือ",
       items: [
         {
@@ -191,7 +193,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     packages: {
-      title: "แพ็กเกจ CUTTING POINT TECH Pro",
+      title: "แพ็กเกจ CUTTING POINT INNOVATION Pro",
       subtitle: "ยืดหยุ่นตามขนาดธุรกิจ พร้อมบริการหลังการขาย",
       items: [
         {
@@ -272,7 +274,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     footer: {
-      company: "บริษัท คัตติ้งพอยท์ เทค จำกัด",
+      company: "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด",
       address:
         "บ้านเลขที่ 66/497 หมู่บ้านคันทรีพาร์ค 14 หมู่ 5 ซอย 2 ถนนปทุมธานีลาดหลุมแก้ว ตำบลบางเตย อำเภอสามโคก จังหวัดปทุมธานี 12160",
       phone: "0843374982",
@@ -291,9 +293,10 @@ export const dict: Record<Lang, Dict> = {
       portfolio: "Templates",
       articles: "Articles",
       contact: "Contact",
+      downloads: "Downloads",
     },
     hero: {
-      title: "Pro by CUTTING POINT TECH",
+      title: "Pro by CUTTING POINT INNOVATION",
       subtitle:
         "Premium enterprise website solutions that elevate credibility and support long-term growth.",
       primaryCta: "Request a Quote",
@@ -301,7 +304,7 @@ export const dict: Record<Lang, Dict> = {
       trust: "Trusted by organizations, businesses, and everyday customers.",
     },
     features: {
-      title: "Why CUTTING POINT TECH Pro",
+      title: "Why CUTTING POINT INNOVATION Pro",
       subtitle: "Built for brands that demand elegance, clarity, and performance.",
       items: [
         {
@@ -386,7 +389,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     packages: {
-      title: "CUTTING POINT TECH Pro packages",
+      title: "CUTTING POINT INNOVATION Pro packages",
       subtitle: "Flexible by business size, with after-sales support.",
       items: [
         {
@@ -467,7 +470,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     footer: {
-      company: "CUTTING POINT TECH COMPANY LIMITED",
+      company: "CUTTING POINT INNOVATION CO., LTD.",
       address:
         "66/497 Country Park 14 Village, Moo 5, Soi 2, Pathum Thani-Lat Lum Kaeo Road, Bang Toei, Sam Khok, Pathum Thani 12160",
       phone: "+66 84 337 4982",
@@ -486,9 +489,10 @@ export const dict: Record<Lang, Dict> = {
       portfolio: "ແມ່ແບບ",
       articles: "ບົດຄວາມ",
       contact: "ຕິດຕໍ່",
+      downloads: "ດາວໂຫຼດ",
     },
     hero: {
-      title: "Pro ຈາກ CUTTING POINT TECH",
+      title: "Pro ຈາກ CUTTING POINT INNOVATION",
       subtitle:
         "ໂຊລູຊັນເວັບໄຊອົງກອນລະດັບພຣີເມຍມ ເພື່ອຍົກລະດັບຄວາມນ່າເຊື່ອຖື ແລະ ຮອງຮັບການເຕີບໂຕໃນລະຍະຍາວ",
       primaryCta: "ຂໍໃບສະເໜີລາຄາ",
@@ -496,7 +500,7 @@ export const dict: Record<Lang, Dict> = {
       trust: "ໄດ້ຮັບຄວາມໄວ້ວາງໃຈຈາກອົງກອນ ແລະ ລູກຄ້າທົ່ວໄປ",
     },
     features: {
-      title: "ເປັນຫຍັງຕ້ອງ CUTTING POINT TECH Pro",
+      title: "ເປັນຫຍັງຕ້ອງ CUTTING POINT INNOVATION Pro",
       subtitle: "ອອກແບບເພື່ອທຸລະກິດທີ່ຕ້ອງການຄວາມແຕກຕ່າງ ແລະ ຄວາມນ່າເຊື່ອຖື",
       items: [
         {
@@ -585,7 +589,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     packages: {
-      title: "ແພັກເກັດ CUTTING POINT TECH Pro",
+      title: "ແພັກເກັດ CUTTING POINT INNOVATION Pro",
       subtitle: "ປັບໄດ້ຕາມຂະໜາດທຸລະກິດ ພ້ອມການດູແລຫຼັງການຂາຍ",
       items: [
         {
@@ -666,7 +670,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     footer: {
-      company: "CUTTING POINT TECH COMPANY LIMITED",
+      company: "CUTTING POINT INNOVATION CO., LTD.",
       address:
         "66/497 Country Park 14 Village, Moo 5, Soi 2, Pathum Thani-Lat Lum Kaeo Road, Bang Toei, Sam Khok, Pathum Thani 12160",
       phone: "0843374982",

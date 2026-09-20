@@ -14,6 +14,7 @@ const navItems = [
   { href: "/#services", key: "services" },
   { href: "/articles", key: "articles" },
   { href: "/contact", key: "contact" },
+  { href: "/downloads", key: "downloads" },
 ] as const;
 
 type NavKey = (typeof navItems)[number]["key"];
@@ -88,7 +89,7 @@ export default function Navbar({
   const brandTitleClass = `block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] transition-colors sm:text-lg ${
     isScrolled ? "text-slate-950" : "text-white"
   }`;
-  const brandSubtitleClass = `block whitespace-nowrap text-[10px] font-semibold transition-colors sm:text-xs ${
+  const brandSubtitleClass = `hidden whitespace-nowrap text-[10px] font-semibold transition-colors sm:block sm:text-xs ${
     isScrolled ? "text-slate-500" : "text-slate-200/82"
   }`;
   const navClass = `hidden items-center gap-6 text-sm font-medium transition-colors lg:flex xl:gap-8 ${
@@ -201,7 +202,7 @@ export default function Navbar({
         <Link href="/#top" className="flex min-w-0 items-center gap-2.5">
           <Image
             src="/brand/logo-icon.png"
-            alt="โลโก้บริษัท คัตติ้งพอยท์ เทค จำกัด"
+            alt="โลโก้บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด"
             width={64}
             height={64}
             className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12"
@@ -209,10 +210,11 @@ export default function Navbar({
           />
           <span className="min-w-0 leading-tight">
             <span className={brandTitleClass}>
-              CUTTING POINT TECH
+              <span className="sm:hidden">CPInno</span>
+              <span className="hidden sm:inline">CUTTING POINT INNOVATION</span>
             </span>
             <span className={brandSubtitleClass}>
-              บริษัท คัตติ้งพอยท์ เทค จำกัด
+              บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด
             </span>
           </span>
         </Link>
@@ -510,6 +512,30 @@ export default function Navbar({
                         className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
                       >
                         {labels.articles}
+                      </Link>
+
+                      <Link
+                        href="/contact"
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setMobileFeaturesOpen(false);
+                          setMobileServicesOpen(false);
+                        }}
+                        className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
+                      >
+                        {labels.contact}
+                      </Link>
+
+                      <Link
+                        href="/downloads"
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setMobileFeaturesOpen(false);
+                          setMobileServicesOpen(false);
+                        }}
+                        className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
+                      >
+                        {labels.downloads}
                       </Link>
 
                       <div className="mt-3 flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2">

@@ -209,7 +209,7 @@ export default function ContactPageClient() {
       <section className="border-b border-slate-200 bg-gradient-to-b from-white to-mist py-10">
         <div className="mx-auto w-full max-w-6xl space-y-4 px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-600">
-            CUTTING POINT TECH
+            CUTTING POINT INNOVATION
           </p>
           <h1 className="font-[var(--font-heading)] text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
             {copy.contact.title}

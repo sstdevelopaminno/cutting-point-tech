@@ -872,7 +872,7 @@ export default function EstimateClient({
                   <div className="grid h-12 w-12 place-items-center rounded-2xl border border-slate-200 bg-white shadow-sm sm:h-14 sm:w-14">
                     <Image
                       src={QUOTE_LOGO_SRC}
-                      alt="CUTTING POINT TECH"
+                      alt="CUTTING POINT INNOVATION"
                       width={56}
                       height={56}
                       className="h-9 w-9 object-contain sm:h-10 sm:w-10"
@@ -884,7 +884,7 @@ export default function EstimateClient({
                   </div>
                   <div className="min-w-0">
                     <div className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                      CUTTING POINT TECH
+                      CUTTING POINT INNOVATION
                     </div>
                   </div>
                 </div>
@@ -1003,7 +1003,7 @@ export default function EstimateClient({
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-600">
-                      CUTTING POINT TECH
+                      CUTTING POINT INNOVATION
                     </p>
                     <h3 className="mt-2 font-[var(--font-heading)] text-xl font-semibold text-slate-900">
                       {locale === "th" ? "ส่งข้อมูลเพื่อรับใบเสนอราคา" : "Send details for quotation"}

@@ -4,12 +4,12 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ServiceLinks from "@/components/ServiceLinks";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 const content = {
   th: {
     meta: {
-      title: "บทความธุรกิจและดิจิทัล | CUTTING POINT TECH",
+      title: "บทความธุรกิจและดิจิทัล | CUTTING POINT INNOVATION",
       description:
         "บทความเชิงกลยุทธ์เกี่ยวกับการรับทำเว็บไซต์ โปรแกรมบริหารหอพัก/รีสอร์ท และการจดทะเบียนบริษัท เพื่อช่วยธุรกิจตัดสินใจได้อย่างมั่นใจ",
     },
@@ -42,7 +42,7 @@ const content = {
   },
   en: {
     meta: {
-      title: "Business & Digital Articles | CUTTING POINT TECH",
+      title: "Business & Digital Articles | CUTTING POINT INNOVATION",
       description:
         "Strategic articles about website development, dormitory/resort management systems, and company registration to support confident business decisions.",
     },
@@ -75,7 +75,7 @@ const content = {
   },
   lo: {
     meta: {
-      title: "ບົດຄວາມທຸລະກິດ ແລະ ດິຈິຕອນ | CUTTING POINT TECH",
+      title: "ບົດຄວາມທຸລະກິດ ແລະ ດິຈິຕອນ | CUTTING POINT INNOVATION",
       description:
         "ບົດຄວາມແນວກົນລະຍຸດກ່ຽວກັບການພັດທະນາເວັບໄຊ, ລະບົບບໍລິຫານຫໍພັກ/ຣີສອດ, ແລະ ການຈົດທະບຽນບໍລິສັດ ເພື່ອຊ່ວຍໃຫ້ທ່ານຕັດສິນໃຈໄດ້ຢ່າງມັ່ນໃຈ.",
     },

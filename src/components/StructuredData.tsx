@@ -25,7 +25,7 @@ type StructuredDataProps = {
   service?: ServiceSchema;
 };
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 const CONTACT = {
   email: "cuttingpointtech@gmail.com",
@@ -36,22 +36,22 @@ const CONTACT = {
 
 const companyInfo = {
   th: {
-    name: "บริษัท คัตติ้งพอยท์ เทค จำกัด",
-    alternateName: "CUTTING POINT TECH COMPANY LIMITED",
+    name: "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด",
+    alternateName: "CUTTING POINT INNOVATION CO., LTD.",
     description:
-      "บริษัท คัตติ้งพอยท์ เทค จำกัด ให้บริการพัฒนาเว็บไซต์ ระบบธุรกิจ และโซลูชันดิจิทัลสำหรับองค์กรที่ต้องการความน่าเชื่อถือ ประสิทธิภาพ และการเติบโตระยะยาว",
+      "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด ให้บริการพัฒนาเว็บไซต์ ระบบธุรกิจ และโซลูชันดิจิทัลสำหรับองค์กรที่ต้องการความน่าเชื่อถือ ประสิทธิภาพ และการเติบโตระยะยาว",
   },
   en: {
-    name: "CUTTING POINT TECH COMPANY LIMITED",
-    alternateName: "บริษัท คัตติ้งพอยท์ เทค จำกัด",
+    name: "CUTTING POINT INNOVATION CO., LTD.",
+    alternateName: "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด",
     description:
-      "CUTTING POINT TECH COMPANY LIMITED builds professional websites, business systems, and digital solutions for organizations that need credibility, performance, and long-term growth.",
+      "CUTTING POINT INNOVATION CO., LTD. builds professional websites, business systems, and digital solutions for organizations that need credibility, performance, and long-term growth.",
   },
   lo: {
-    name: "CUTTING POINT TECH COMPANY LIMITED",
-    alternateName: "บริษัท คัตติ้งพอยท์ เทค จำกัด",
+    name: "CUTTING POINT INNOVATION CO., LTD.",
+    alternateName: "บริษัท คัตติ้ง พอยท์ อินโนเวชั่น จำกัด",
     description:
-      "CUTTING POINT TECH COMPANY LIMITED provides professional website development and business system solutions for growing organizations.",
+      "CUTTING POINT INNOVATION CO., LTD. provides professional website development and business system solutions for growing organizations.",
   },
 };
 function uniqueGraphId(id: string) {
@@ -140,7 +140,7 @@ export default function StructuredData({
       "@type": "WebSite",
       "@id": websiteId,
       url: `${baseUrl}/`,
-      name: "CUTTING POINT TECH COMPANY LIMITED",
+      name: "CUTTING POINT INNOVATION CO., LTD.",
       publisher: { "@id": organizationId },
       inLanguage: locale,
     });
@@ -176,7 +176,7 @@ export default function StructuredData({
       url: pageUrl,
       name:
         service?.name ??
-        (locale === "th" ? "คำถามที่พบบ่อย | CUTTING POINT TECH" : "FAQ | CUTTING POINT TECH COMPANY LIMITED"),
+        (locale === "th" ? "คำถามที่พบบ่อย | CUTTING POINT INNOVATION" : "FAQ | CUTTING POINT INNOVATION CO., LTD."),
       isPartOf: { "@id": websiteId },
       inLanguage: locale,
       mainEntity: faqs.map((item) => ({
@@ -213,7 +213,7 @@ export default function StructuredData({
         "@type": "WebSite",
         "@id": websiteId,
         url: `${baseUrl}/`,
-        name: "CUTTING POINT TECH COMPANY LIMITED",
+        name: "CUTTING POINT INNOVATION CO., LTD.",
         publisher: { "@id": organizationId },
         inLanguage: locale,
       });

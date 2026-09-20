@@ -128,7 +128,7 @@ export default function Footer({
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-slate-500">
-        2026 CUTTING POINT TECH COMPANY LIMITED. All rights reserved.
+        2026 CUTTING POINT INNOVATION CO., LTD.. All rights reserved.
       </div>
     </footer>
   );

@@ -5,7 +5,7 @@ import ServiceLinks from "@/components/ServiceLinks";
 import StructuredData from "@/components/StructuredData";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 type ContentSection = {
   h2: string;
@@ -26,9 +26,9 @@ type ContentLocale = {
 const content = {
   th: {
     meta: {
-      title: "รับทำเว็บไซต์ระดับมืออาชีพ | CUTTING POINT TECH",
+      title: "รับทำเว็บไซต์ระดับมืออาชีพ | CUTTING POINT INNOVATION",
       description:
-        "รับทำเว็บไซต์องค์กรที่เน้นผลลัพธ์ รองรับ SEO และขยายต่อได้ง่าย โดยทีม CUTTING POINT TECH ดูแลครบวงจรตั้งแต่กลยุทธ์ ออกแบบ พัฒนา ไปจนถึงดูแลหลังส่งมอบ",
+        "รับทำเว็บไซต์องค์กรที่เน้นผลลัพธ์ รองรับ SEO และขยายต่อได้ง่าย โดยทีม CUTTING POINT INNOVATION ดูแลครบวงจรตั้งแต่กลยุทธ์ ออกแบบ พัฒนา ไปจนถึงดูแลหลังส่งมอบ",
     },
     hero: {
       title: "บริการรับทำเว็บไซต์ระดับมืออาชีพสำหรับองค์กรที่ต้องการความน่าเชื่อถือ",
@@ -45,7 +45,7 @@ const content = {
       {
         h2: "ทำไมการรับทำเว็บไซต์ต้องเริ่มที่กลยุทธ์",
         paragraphs: [
-          "การ รับทำเว็บไซต์ ไม่ใช่แค่การสร้างหน้าเว็บสวย ๆ แต่เป็นกระบวนการวางโครงสร้างธุรกิจบนโลกดิจิทัลอย่างเป็นระบบ ที่ CUTTING POINT TECH เราเริ่มจากการวิเคราะห์เป้าหมายทางธุรกิจ กลุ่มเป้าหมาย และพฤติกรรมผู้ใช้ เพื่อกำหนดตำแหน่งของแบรนด์ให้ชัดเจน เว็บไซต์ที่ดีต้องตอบโจทย์ทั้งภาพลักษณ์และการสร้างผลลัพธ์ เช่น การสร้างลีด การติดต่อ และการปิดการขาย",
+          "การ รับทำเว็บไซต์ ไม่ใช่แค่การสร้างหน้าเว็บสวย ๆ แต่เป็นกระบวนการวางโครงสร้างธุรกิจบนโลกดิจิทัลอย่างเป็นระบบ ที่ CUTTING POINT INNOVATION เราเริ่มจากการวิเคราะห์เป้าหมายทางธุรกิจ กลุ่มเป้าหมาย และพฤติกรรมผู้ใช้ เพื่อกำหนดตำแหน่งของแบรนด์ให้ชัดเจน เว็บไซต์ที่ดีต้องตอบโจทย์ทั้งภาพลักษณ์และการสร้างผลลัพธ์ เช่น การสร้างลีด การติดต่อ และการปิดการขาย",
           "จากกลยุทธ์ เราออกแบบโครงสร้างข้อมูลและการเดินทางของผู้ใช้ (User Journey) ให้ครบ ตั้งแต่การสร้างความสนใจ ไปจนถึงการตัดสินใจติดต่อ ทีมของเราวางระบบการสื่อสารด้วยคำและภาพอย่างสอดคล้องกัน เพื่อให้ผู้เข้าชมรับรู้คุณค่าแบรนด์ได้รวดเร็ว พร้อมวาง Call-to-Action ที่เหมาะสมในทุกจุดสำคัญ",
           "เมื่อโครงสร้างชัดเจน การออกแบบและพัฒนาจะมีทิศทางที่แม่นยำมากขึ้น ลดการแก้ไขซ้ำซ้อนและทำให้เว็บไซต์พร้อมขยายในอนาคต ไม่ว่าจะเพิ่มบริการ เพิ่มภาษา หรือเชื่อมต่อระบบอื่น ๆ ทั้งหมดถูกคิดไว้ตั้งแต่ต้น เพื่อให้เว็บไซต์เป็นสินทรัพย์ที่เติบโตไปพร้อมธุรกิจของคุณ",
           "เรายังวางแผนคอนเทนต์เชิงกลยุทธ์ เช่น หน้าแนะนำบริการ หน้าเคสตัวอย่าง และหน้า FAQ เพื่อช่วยให้เว็บไซต์ตอบโจทย์ทั้งผู้ใช้และเครื่องมือค้นหาอย่างสมดุล การทำงานเชิงระบบนี้ช่วยเพิ่มโอกาสในการถูกค้นพบในคำค้นที่สำคัญ โดยไม่ต้องพึ่งการโฆษณาตลอดเวลา",
@@ -129,9 +129,9 @@ const content = {
   },
   en: {
     meta: {
-      title: "Professional Website Development | CUTTING POINT TECH",
+      title: "Professional Website Development | CUTTING POINT INNOVATION",
       description:
-        "Professional website development for organizations that need credibility, SEO readiness, and scalable architecture, delivered end-to-end by CUTTING POINT TECH.",
+        "Professional website development for organizations that need credibility, SEO readiness, and scalable architecture, delivered end-to-end by CUTTING POINT INNOVATION.",
     },
     hero: {
       title: "Professional website development for brands that demand credibility",
@@ -148,7 +148,7 @@ const content = {
       {
         h2: "Why professional website development starts with strategy",
         paragraphs: [
-          "Website development is not just design. It is the digital foundation of your business. At CUTTING POINT TECH, we begin with strategy: business goals, customer expectations, and competitive positioning. This ensures your website communicates value clearly and supports measurable outcomes such as inquiries, qualified leads, and conversions.",
+          "Website development is not just design. It is the digital foundation of your business. At CUTTING POINT INNOVATION, we begin with strategy: business goals, customer expectations, and competitive positioning. This ensures your website communicates value clearly and supports measurable outcomes such as inquiries, qualified leads, and conversions.",
           "We translate strategy into user journeys and information architecture, mapping how visitors discover your brand and make decisions. Clear messaging, persuasive structure, and focused calls to action help your site perform as a true growth channel rather than a static brochure.",
           "With a strong foundation, design and development become more precise. The result is a scalable platform that can grow with new services, languages, and integrations without rework, saving time and cost over the long term.",
           "We also align content planning with SEO priorities, ensuring each page supports search visibility while still communicating real business value. This balance helps you build long-term organic growth without relying solely on ads.",

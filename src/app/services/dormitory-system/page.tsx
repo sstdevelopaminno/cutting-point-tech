@@ -5,7 +5,7 @@ import ServiceLinks from "@/components/ServiceLinks";
 import StructuredData from "@/components/StructuredData";
 import { getRequestedLocale } from "@/lib/locale";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointtech.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 
 type ContentSection = {
   h2: string;
@@ -26,9 +26,9 @@ type ContentLocale = {
 const content = {
   th: {
     meta: {
-      title: "โปรแกรมบริหารหอพัก/รีสอร์ท | CUTTING POINT TECH",
+      title: "โปรแกรมบริหารหอพัก/รีสอร์ท | CUTTING POINT INNOVATION",
       description:
-        "ระบบบริหารหอพักและรีสอร์ทแบบครบวงจร ช่วยจัดการห้องพัก สัญญา การชำระเงิน และรายงานได้อย่างเป็นระบบ โดย CUTTING POINT TECH",
+        "ระบบบริหารหอพักและรีสอร์ทแบบครบวงจร ช่วยจัดการห้องพัก สัญญา การชำระเงิน และรายงานได้อย่างเป็นระบบ โดย CUTTING POINT INNOVATION",
     },
     hero: {
       title: "โปรแกรมบริหารหอพัก/รีสอร์ทที่ช่วยลดงานซ้ำซ้อนและเพิ่มความแม่นยำ",
@@ -45,7 +45,7 @@ const content = {
       {
         h2: "ระบบบริหารหอพักและรีสอร์ทที่ออกแบบจากการใช้งานจริง",
         paragraphs: [
-          "ผู้ประกอบการหอพักและรีสอร์ทจำนวนมากยังต้องใช้การบันทึกแบบกระดาษหรือไฟล์กระจัดกระจาย ทำให้ข้อมูลไม่ตรงกันและเกิดความผิดพลาดง่าย โปรแกรมบริหารหอพัก ของ CUTTING POINT TECH ถูกออกแบบจากกระบวนการทำงานจริง ตั้งแต่การจอง การทำสัญญา การรับชำระ ไปจนถึงรายงานที่ช่วยให้ผู้บริหารเห็นภาพรวมทันที",
+          "ผู้ประกอบการหอพักและรีสอร์ทจำนวนมากยังต้องใช้การบันทึกแบบกระดาษหรือไฟล์กระจัดกระจาย ทำให้ข้อมูลไม่ตรงกันและเกิดความผิดพลาดง่าย โปรแกรมบริหารหอพัก ของ CUTTING POINT INNOVATION ถูกออกแบบจากกระบวนการทำงานจริง ตั้งแต่การจอง การทำสัญญา การรับชำระ ไปจนถึงรายงานที่ช่วยให้ผู้บริหารเห็นภาพรวมทันที",
           "เราเน้นระบบที่ใช้งานง่ายสำหรับทีมงานหน้างาน แต่ให้ข้อมูลเชิงลึกสำหรับผู้บริหาร ทำให้ทั้งฝ่ายต้อนรับ ฝ่ายบัญชี และผู้จัดการสามารถทำงานร่วมกันได้โดยไม่สับสน ลดงานซ้ำซ้อน และเพิ่มความโปร่งใสในการบริหาร",
           "ระบบยังรองรับการปรับแต่งตามรูปแบบธุรกิจ เช่น หอพักรายเดือน รีสอร์ทรายคืน หรือที่พักแบบผสม พร้อมรองรับการกำหนดสิทธิ์ผู้ใช้งาน การบันทึกประวัติ และการตรวจสอบย้อนหลังอย่างเป็นระบบ",
           "การมีข้อมูลที่เป็นระบบช่วยให้คุณวางแผนการตลาดได้แม่นยำขึ้น เช่น การวิเคราะห์ช่วงพีค การทำโปรโมชัน และการจัดการค่าใช้จ่ายตามฤดูกาล ซึ่งทั้งหมดช่วยเพิ่มรายได้และลดความเสี่ยงในการบริหาร",
@@ -129,7 +129,7 @@ const content = {
   },
   en: {
     meta: {
-      title: "Dormitory & Resort Management System | CUTTING POINT TECH",
+      title: "Dormitory & Resort Management System | CUTTING POINT INNOVATION",
       description:
         "A complete dormitory and resort management system to handle rooms, contracts, payments, and reporting with accuracy and efficiency.",
     },
@@ -148,7 +148,7 @@ const content = {
       {
         h2: "Built from real operational workflows",
         paragraphs: [
-          "Many property operators still rely on spreadsheets or paper records, which leads to inconsistencies and delays. The CUTTING POINT TECH dormitory and resort management system is designed around real workflows: booking, contracts, billing, and reporting, all in one place.",
+          "Many property operators still rely on spreadsheets or paper records, which leads to inconsistencies and delays. The CUTTING POINT INNOVATION dormitory and resort management system is designed around real workflows: booking, contracts, billing, and reporting, all in one place.",
           "The system is easy for front-desk staff while providing management with insights needed for decision making. This alignment reduces repeated tasks, improves transparency, and enables consistent service quality across teams.",
           "It supports monthly dormitories, nightly resorts, and mixed property types, with role-based access and audit trails that reduce risk and keep operations organized.",
           "With clean data, operators can evaluate occupancy trends and revenue performance, helping them plan pricing, promotions, and operational improvements more effectively.",

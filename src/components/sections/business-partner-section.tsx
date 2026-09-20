@@ -128,7 +128,7 @@ export default function BusinessPartnerSection({
         </div>
 
         <div className="relative mt-8 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-7">
-          <LogoPanel label="CUTTING POINT TECH" logoSrc={companyLogoSrc} side="left" isVisible={isVisible} />
+          <LogoPanel label="CUTTING POINT INNOVATION" logoSrc={companyLogoSrc} side="left" isVisible={isVisible} />
           <HandshakeMark isVisible={isVisible} />
           <LogoPanel label={partnerName} logoSrc={partnerLogoSrc} placeholder={`${partnerName} LOGO`} side="right" isVisible={isVisible} />
         </div>

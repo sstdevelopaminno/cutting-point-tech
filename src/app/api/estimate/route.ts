@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enforcePublicApiRateLimit, getClientIp, internalServerError, logRouteError } from "@/lib/apiSecurity";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { calculateEstimate, isEstimatorService } from "@/lib/estimate";
 import { estimatorConfig } from "@/lib/estimateConfig";
@@ -8,12 +9,24 @@ type EstimatePayload = {
   inputs?: Record<string, unknown>;
 };
 
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 20;
 const pickKeys = (value: unknown) => (Array.isArray(value) ? value : []);
 
 export async function POST(req: Request) {
   const requestId = crypto.randomUUID();
+  const ip = getClientIp(req);
 
   try {
+    const rateLimitResponse = await enforcePublicApiRateLimit({
+      route: "api/estimate",
+      ip,
+      limit: RATE_LIMIT_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
+      requestId,
+    });
+    if (rateLimitResponse) return rateLimitResponse;
+
     const body = (await req.json().catch(() => null)) as EstimatePayload | null;
     const service = typeof body?.service === "string" ? body?.service : null;
     const inputs = body?.inputs ?? {};
@@ -103,7 +116,7 @@ export async function POST(req: Request) {
     if (error) {
       console.error({ requestId, error });
       return NextResponse.json(
-        { ok: false, requestId, error: "Database insert failed" },
+        { ok: false, requestId, error: "Unable to save estimate" },
         { status: 500 }
       );
     }
@@ -128,11 +141,7 @@ export async function POST(req: Request) {
       priceMax: result.priceMax,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error({ requestId, error: err });
-    return NextResponse.json(
-      { ok: false, requestId, error: message },
-      { status: 500 }
-    );
+    logRouteError("api/estimate", requestId, err);
+    return internalServerError(requestId);
   }
 }

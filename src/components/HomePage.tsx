@@ -159,8 +159,8 @@ export default function HomePage() {
     lang === "th" ? "แบรนด์ที่ไว้วางใจเรา" : "Trusted by Leading Brands";
   const customerSectionSubtitle =
     lang === "th"
-      ? "พันธมิตรและลูกค้าจากหลากหลายธุรกิจ ที่ร่วมเติบโตไปกับ CUTTING POINT TECH"
-      : "Partners and clients across industries who trust CUTTING POINT TECH.";
+      ? "พันธมิตรและลูกค้าจากหลากหลายธุรกิจ ที่ร่วมเติบโตไปกับ CUTTING POINT INNOVATION"
+      : "Partners and clients across industries who trust CUTTING POINT INNOVATION.";
   const uniqueCustomerLogoShowcase = useMemo(
     () =>
       customerLogoShowcase.filter(
@@ -254,17 +254,17 @@ const seoContent = useMemo(
           h1: "ยกระดับธุรกิจของคุณ ด้วยเว็บไซต์และระบบบริหารธุรกิจครบวงจร",
           sections: [
             {
-              h2: "CUTTING POINT TECH COMPANY LIMITED",
+              h2: "CUTTING POINT INNOVATION CO., LTD.",
               intro: [
-                "CUTTING POINT TECH คือทีมผู้เชี่ยวชาญที่ทำงานแบบครบวงจร ตั้งแต่กลยุทธ์ดิจิทัล การออกแบบ การพัฒนา ไปจนถึงการดูแลหลังส่งมอบ เราเน้นความโปร่งใส คุณภาพ และผลลัพธ์เชิงธุรกิจของเรา และเป็นธุรกิจขนาดเล็กที่เน้นบริการที่ดี ให้บริการด้านไอทีทั้งซอฟต์แวร์ ฮาร์ดแวร์ และระบบอื่น ๆ ของเว็บไซต์ รวมถึงด้านธุรกิจอาหารและเครื่องดื่ม และรีสอร์ท/โรงแรม ครอบคลุมระบบการจองและระบบที่เกี่ยวข้องอื่น ๆ ด้วยทีมงานมืออาชีพและการดูแลหลังการขาย",
+                "CUTTING POINT INNOVATION คือทีมผู้เชี่ยวชาญที่ทำงานแบบครบวงจร ตั้งแต่กลยุทธ์ดิจิทัล การออกแบบ การพัฒนา ไปจนถึงการดูแลหลังส่งมอบ เราเน้นความโปร่งใส คุณภาพ และผลลัพธ์เชิงธุรกิจของเรา และเป็นธุรกิจขนาดเล็กที่เน้นบริการที่ดี ให้บริการด้านไอทีทั้งซอฟต์แวร์ ฮาร์ดแวร์ และระบบอื่น ๆ ของเว็บไซต์ รวมถึงด้านธุรกิจอาหารและเครื่องดื่ม และรีสอร์ท/โรงแรม ครอบคลุมระบบการจองและระบบที่เกี่ยวข้องอื่น ๆ ด้วยทีมงานมืออาชีพและการดูแลหลังการขาย",
               ],
               h3: [],
             },
             {
               h2: "บริการรับทำเว็บไซต์ระดับมืออาชีพ",
               intro: [
-                "CUTTING POINT TECH ให้บริการ รับทำเว็บไซต์ สำหรับองค์กรและธุรกิจที่ต้องการภาพลักษณ์พรีเมียม เราเริ่มจากการวิเคราะห์แบรนด์ กลุ่มเป้าหมาย และเส้นทางลูกค้า เพื่อออกแบบโครงสร้างเว็บที่สื่อสารคุณค่าได้ชัดเจนและสร้างความน่าเชื่อถือในระยะยาว เป้าหมายของเราคือทำให้เว็บไซต์เป็นสินทรัพย์ทางธุรกิจ ไม่ใช่แค่หน้าสวย ๆ",
-                "ทุกโครงการของเราเน้นมาตรฐาน UX/UI ที่เข้าใจผู้ใช้งานจริง ความเร็วโหลดสูง รองรับ SEO และการแสดงผลบนทุกอุปกรณ์ พร้อมวางระบบที่ขยายได้ในอนาคต ไม่ว่าจะเป็นเว็บไซต์บริษัท เว็บไซต์ธุรกิจขนาดกลาง ไปจนถึงเว็บไซต์องค์กรที่มีหลายภาษาและหลายสาขา เมื่อคุณต้องการทีมมืออาชีพที่ดูแลทั้งกลยุทธ์และเทคนิค การ รับทำเว็บไซต์ กับ CUTTING POINT TECH จะช่วยให้การเริ่มต้นเป็นระบบและคุ้มค่า",
+                "CUTTING POINT INNOVATION ให้บริการ รับทำเว็บไซต์ สำหรับองค์กรและธุรกิจที่ต้องการภาพลักษณ์พรีเมียม เราเริ่มจากการวิเคราะห์แบรนด์ กลุ่มเป้าหมาย และเส้นทางลูกค้า เพื่อออกแบบโครงสร้างเว็บที่สื่อสารคุณค่าได้ชัดเจนและสร้างความน่าเชื่อถือในระยะยาว เป้าหมายของเราคือทำให้เว็บไซต์เป็นสินทรัพย์ทางธุรกิจ ไม่ใช่แค่หน้าสวย ๆ",
+                "ทุกโครงการของเราเน้นมาตรฐาน UX/UI ที่เข้าใจผู้ใช้งานจริง ความเร็วโหลดสูง รองรับ SEO และการแสดงผลบนทุกอุปกรณ์ พร้อมวางระบบที่ขยายได้ในอนาคต ไม่ว่าจะเป็นเว็บไซต์บริษัท เว็บไซต์ธุรกิจขนาดกลาง ไปจนถึงเว็บไซต์องค์กรที่มีหลายภาษาและหลายสาขา เมื่อคุณต้องการทีมมืออาชีพที่ดูแลทั้งกลยุทธ์และเทคนิค การ รับทำเว็บไซต์ กับ CUTTING POINT INNOVATION จะช่วยให้การเริ่มต้นเป็นระบบและคุ้มค่า",
                 "เรายังให้ความสำคัญกับเนื้อหาเชิงธุรกิจ ตั้งแต่โครงสร้างข้อความ การจัดลำดับข้อมูล ไปจนถึงการวาง Call-to-Action ที่เหมาะสม เพื่อให้เว็บไซต์ช่วยสร้างโอกาสทางการขายจริง ไม่ว่าจะเป็นการเก็บข้อมูลผู้สนใจ การสร้างความเชื่อมั่น หรือการนำเสนอข้อเสนอที่ชัดเจน ทีมของเราทำงานร่วมกับคุณอย่างใกล้ชิด เพื่อให้เว็บไซต์สะท้อนตัวตนของแบรนด์อย่างถูกต้อง",
               ],
               h3: [
@@ -327,9 +327,9 @@ const seoContent = useMemo(
             h1: "ຍົກລະດັບທຸລະກິດຂອງທ່ານ ດ້ວຍເວັບໄຊແລະລະບົບທຸລະກິດແບບຄົບວົງຈອນ",
             sections: [
               {
-                h2: "CUTTING POINT TECH COMPANY LIMITED",
+                h2: "CUTTING POINT INNOVATION CO., LTD.",
                 intro: [
-                  "CUTTING POINT TECH ແມ່ນທີມງານຜູ້ຊ່ຽວຊານແບບຄົບວົງຈອນ: ວາງກົນລະຍຸດດິຈິຕອນ, ອອກແບບ, ພັດທະນາ ແລະ ດູແລຫຼັງສົ່ງມອບ. ພວກເຮົາເນັ້ນຄວາມໂປ່ງໃສ, ຄຸນນະພາບ ແລະ ຜົນລັບທາງທຸລະກິດທີ່ວັດໄດ້.",
+                  "CUTTING POINT INNOVATION ແມ່ນທີມງານຜູ້ຊ່ຽວຊານແບບຄົບວົງຈອນ: ວາງກົນລະຍຸດດິຈິຕອນ, ອອກແບບ, ພັດທະນາ ແລະ ດູແລຫຼັງສົ່ງມອບ. ພວກເຮົາເນັ້ນຄວາມໂປ່ງໃສ, ຄຸນນະພາບ ແລະ ຜົນລັບທາງທຸລະກິດທີ່ວັດໄດ້.",
                 ],
                 h3: [],
               },
@@ -361,17 +361,17 @@ const seoContent = useMemo(
           h1: "Elevate your business with full-service websites and business systems",
           sections: [
             {
-              h2: "CUTTING POINT TECH COMPANY LIMITED",
+              h2: "CUTTING POINT INNOVATION CO., LTD.",
               intro: [
-                "CUTTING POINT TECH is an end-to-end expert team—from digital strategy, design, and development to post-launch support. We emphasize transparency, quality, and real business outcomes. As a small, service-minded company, we provide IT services across software, hardware, and website systems, as well as solutions for food & beverage businesses and resorts/hotels, including complete booking systems and related operational systems—backed by a professional team and after-sales support.",
+                "CUTTING POINT INNOVATION is an end-to-end expert team—from digital strategy, design, and development to post-launch support. We emphasize transparency, quality, and real business outcomes. As a small, service-minded company, we provide IT services across software, hardware, and website systems, as well as solutions for food & beverage businesses and resorts/hotels, including complete booking systems and related operational systems—backed by a professional team and after-sales support.",
               ],
               h3: [],
             },
             {
               h2: "Professional website development services",
               intro: [
-                "CUTTING POINT TECH delivers professional website development for brands that require premium positioning and measurable outcomes. We start with strategy, audience insights, and user journeys, then translate those into a structure that communicates value, builds trust, and converts visitors into customers. Your website becomes a business asset, not just a digital brochure.",
-                "Our builds emphasize performance, SEO readiness, and consistent experience across devices. We design systems that scale as your business grows, whether you need a corporate website, a multi-service business site, or a multilingual platform. If you are looking for a partner that combines strategy and technology, CUTTING POINT TECH provides a reliable end-to-end website development service.",
+                "CUTTING POINT INNOVATION delivers professional website development for brands that require premium positioning and measurable outcomes. We start with strategy, audience insights, and user journeys, then translate those into a structure that communicates value, builds trust, and converts visitors into customers. Your website becomes a business asset, not just a digital brochure.",
+                "Our builds emphasize performance, SEO readiness, and consistent experience across devices. We design systems that scale as your business grows, whether you need a corporate website, a multi-service business site, or a multilingual platform. If you are looking for a partner that combines strategy and technology, CUTTING POINT INNOVATION provides a reliable end-to-end website development service.",
                 "Content structure is part of the strategy. We help shape messaging, information hierarchy, and calls to action so that your website generates real business outcomes, from qualified inquiries to stronger brand credibility. Our team collaborates closely with you to ensure the final experience reflects your identity accurately.",
               ],
               h3: [
@@ -414,7 +414,7 @@ const seoContent = useMemo(
             {
               h2: "Complete company registration service",
               intro: [
-                "CUTTING POINT TECH also offers end-to-end company registration service. We guide you through naming, objectives, documentation, and required steps to establish your business correctly and efficiently. This reduces friction for new founders and ensures a professional start.",
+                "CUTTING POINT INNOVATION also offers end-to-end company registration service. We guide you through naming, objectives, documentation, and required steps to establish your business correctly and efficiently. This reduces friction for new founders and ensures a professional start.",
                 "Our advisory team provides practical guidance on business structure, compliance, and documentation so your company begins with a solid foundation. You can focus on growth while we handle the administrative details.",
                 "From preparation to submission and follow-up, we keep the process organized and transparent. You gain clarity on legal requirements and practical business considerations, ensuring your company starts with confidence.",
               ],
@@ -587,7 +587,7 @@ const seoContent = useMemo(
           <div className="relative mx-auto grid min-h-[calc(100svh-96px)] w-full max-w-7xl items-center gap-8 px-6 py-12 sm:min-h-[calc(100svh-112px)] lg:grid-cols-[0.88fr_1.12fr] lg:px-12 xl:px-4">
             <div className="z-10 max-w-[620px] pt-8 lg:pt-0">
               <p className="text-xs font-semibold uppercase tracking-[0.38em] text-[#20a4ff] sm:text-sm">
-                CUTTING POINT TECH
+                CUTTING POINT INNOVATION
               </p>
               <h1 className="mt-6 font-[var(--font-body)] text-[34px] font-extrabold leading-[1.08] tracking-normal text-white sm:text-[46px] lg:text-[56px]">
                 {seoContent.h1}

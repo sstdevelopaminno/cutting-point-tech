@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enforcePublicApiRateLimit, getClientIp, internalServerError, logRouteError } from "@/lib/apiSecurity";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { sendLeadNotification } from "@/lib/email";
 import { notifyLineViaCloudflare } from "@/lib/lineWebhook";
@@ -32,32 +33,6 @@ const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
 const SPAM_ERROR = "Spam detected";
 
-type RateLimitEntry = {
-  count: number;
-  windowStart: number;
-};
-
-const rateLimitByIp = new Map<string, RateLimitEntry>();
-
-function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0]?.trim() || "unknown";
-  }
-  return req.headers.get("x-real-ip") || "unknown";
-}
-
-function isRateLimited(ip: string, now: number): boolean {
-  const entry = rateLimitByIp.get(ip);
-  if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
-    rateLimitByIp.set(ip, { count: 1, windowStart: now });
-    return false;
-  }
-
-  entry.count += 1;
-  return entry.count > RATE_LIMIT_MAX;
-}
-
 function isTooFast(startedAt: string | number | undefined, now: number): boolean {
   if (startedAt === undefined || startedAt === null || startedAt === "") {
     return true;
@@ -76,14 +51,16 @@ export async function POST(req: Request) {
   const ip = getClientIp(req);
 
   try {
-    const body = (await req.json().catch(() => null)) as LeadPayload | null;
+    const rateLimitResponse = await enforcePublicApiRateLimit({
+      route: "api/estimate/lead",
+      ip,
+      limit: RATE_LIMIT_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
+      requestId,
+    });
+    if (rateLimitResponse) return rateLimitResponse;
 
-    if (isRateLimited(ip, now)) {
-      return NextResponse.json(
-        { ok: false, requestId, error: SPAM_ERROR },
-        { status: 429 }
-      );
-    }
+    const body = (await req.json().catch(() => null)) as LeadPayload | null;
 
     const name = String(body?.name ?? "")
       .trim()
@@ -190,12 +167,11 @@ export async function POST(req: Request) {
     if (error) {
       console.error({ requestId, error });
       return NextResponse.json(
-        { ok: false, requestId, error: "Database insert failed" },
+        { ok: false, requestId, error: "Unable to save request" },
         { status: 500 }
       );
     }
 
-    // Notifications are awaited so they reliably run in Vercel serverless (background tasks may be cut off).
     let emailStatus: "sent" | "skipped" | "failed" = "skipped";
     let lineStatus: "sent" | "skipped" | "failed" = "skipped";
 
@@ -260,7 +236,6 @@ export async function POST(req: Request) {
       });
     }
 
-    // Record event/notification status (best-effort)
     try {
       await supabaseAdmin.from("events").insert([
         {
@@ -296,11 +271,7 @@ export async function POST(req: Request) {
       notifications: { email: emailStatus, line: lineStatus },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error({ requestId, error: err });
-    return NextResponse.json(
-      { ok: false, requestId, error: message },
-      { status: 500 }
-    );
+    logRouteError("api/estimate/lead", requestId, err);
+    return internalServerError(requestId);
   }
 }

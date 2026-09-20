@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enforcePublicApiRateLimit, getClientIp, internalServerError, logRouteError } from "@/lib/apiSecurity";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { isEstimatorService } from "@/lib/estimate";
 
@@ -8,6 +9,8 @@ type EventPayload = {
   meta?: Record<string, unknown> | null;
 };
 
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 60;
 const ALLOWED_EVENTS = new Set([
   "service_click",
   "estimate_start",
@@ -17,8 +20,18 @@ const ALLOWED_EVENTS = new Set([
 
 export async function POST(req: Request) {
   const requestId = crypto.randomUUID();
+  const ip = getClientIp(req);
 
   try {
+    const rateLimitResponse = await enforcePublicApiRateLimit({
+      route: "api/events",
+      ip,
+      limit: RATE_LIMIT_MAX,
+      windowMs: RATE_LIMIT_WINDOW_MS,
+      requestId,
+    });
+    if (rateLimitResponse) return rateLimitResponse;
+
     const body = (await req.json().catch(() => null)) as EventPayload | null;
     const eventName = String(body?.eventName ?? "");
     const service = body?.service ?? null;
@@ -52,18 +65,14 @@ export async function POST(req: Request) {
       }
       console.error({ requestId, error });
       return NextResponse.json(
-        { ok: false, requestId, error: "Database insert failed" },
+        { ok: false, requestId, error: "Unable to save event" },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ ok: true, requestId });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error({ requestId, error: err });
-    return NextResponse.json(
-      { ok: false, requestId, error: message },
-      { status: 500 }
-    );
+    logRouteError("api/events", requestId, err);
+    return internalServerError(requestId);
   }
 }
