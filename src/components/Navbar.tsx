@@ -36,8 +36,8 @@ export default function Navbar({
 }: NavbarProps) {
   const langCode = lang === "th" ? "TH" : lang === "en" ? "EN" : "LO";
   const contactPhoneHref = `tel:${contactPhone.replace(/[^\d+]/g, "")}`;
-  const signupHref = process.env.NEXT_PUBLIC_CPIPOS_SIGNUP_URL?.trim() ||
-    "https://cp-ipos-it-web.vercel.app/register-store";
+  // Keep signups on the company site until IT registration is verified on Production.
+  const signupHref = "/register-store";
   const langFlagSrc =
     lang === "th"
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/pngtree-spherical-thailand-flag-png-image_3510746.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3BuZ3RyZWUtc3BoZXJpY2FsLXRoYWlsYW5kLWZsYWctcG5nLWltYWdlXzM1MTA3NDYuanBnIiwiaWF0IjoxNzcwNzQ2NTA2LCJleHAiOjE4MDIyODI1MDZ9.qt45pLITCBp9F2YaRCrcPF2bKnq6JplnXBuXaJR-nDM"
