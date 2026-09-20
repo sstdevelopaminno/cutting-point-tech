@@ -268,7 +268,7 @@ export default function Navbar({
                     <div
                       id="cpipos-signup-menu"
                       role="menu"
-                      className="absolute right-0 top-full z-50 mt-3 w-60 rounded-2xl border border-slate-200 bg-white p-2 text-slate-800 shadow-xl"
+                      className="absolute right-0 top-full z-50 w-60 rounded-2xl border border-slate-200 bg-white p-2 text-slate-800 shadow-xl"
                     >
                       <a
                         role="menuitem"
