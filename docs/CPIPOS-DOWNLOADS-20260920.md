@@ -18,3 +18,7 @@ Uploaded binary originals, verified by local SHA-256 and staged in a **private**
 The server-rendered `/downloads` page uses HTTPS URLs from `CPIPOS_WINDOWS_DOWNLOAD_URL` and `CPIPOS_ANDROID_DOWNLOAD_URL`, explicitly showing "กำลังจัดเตรียมลิงก์ดาวน์โหลด" when absent. Set the two environment variables only after confirming both URLs work in a browser without being signed in; never use a ChatGPT sandbox link or a private Drive file URL. Deploy/refresh after setting environment values.
 
 Website component uses the existing `/brand/logo-icon.png`; no mock logo assets or main POS web repo edits. Verify `npm run lint`, `npx tsc --noEmit`, `npm run build`, desktop/mobile submenu, and target anchors before merging the PR.
+
+## Company website production release gate
+
+Safe partial release approved 2026-09-20: publish signup dropdown, local signup landing (/register-store) and download catalog while binary buttons remain disabled until public URLs are verified. Do not link the menu to the still-Draft IT application form, and do not misrepresent a private Drive file as accessible to customers. The core POS customer application and IT repository are untouched by the company-site deployment.
