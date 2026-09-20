@@ -14,7 +14,7 @@ const navItems = [
   { href: "/#services", key: "services" },
   { href: "/articles", key: "articles" },
   { href: "/contact", key: "contact" },
-  { href: "/downloads", key: "downloads" },
+  { href: "/register-store", key: "signup" },
 ] as const;
 
 type NavKey = (typeof navItems)[number]["key"];
@@ -22,7 +22,7 @@ type NavKey = (typeof navItems)[number]["key"];
 type NavbarProps = {
   lang: Lang;
   onToggleLang: () => void;
-  labels: Record<NavKey, string>;
+  labels: Record<NavKey | "downloads", string>;
   cta: string;
   contactPhone: string;
 };
@@ -36,6 +36,8 @@ export default function Navbar({
 }: NavbarProps) {
   const langCode = lang === "th" ? "TH" : lang === "en" ? "EN" : "LO";
   const contactPhoneHref = `tel:${contactPhone.replace(/[^\d+]/g, "")}`;
+  // Keep signups on the company site until IT registration is verified on Production.
+  const signupHref = "/register-store";
   const langFlagSrc =
     lang === "th"
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/pngtree-spherical-thailand-flag-png-image_3510746.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL3BuZ3RyZWUtc3BoZXJpY2FsLXRoYWlsYW5kLWZsYWctcG5nLWltYWdlXzM1MTA3NDYuanBnIiwiaWF0IjoxNzcwNzQ2NTA2LCJleHAiOjE4MDIyODI1MDZ9.qt45pLITCBp9F2YaRCrcPF2bKnq6JplnXBuXaJR-nDM"
@@ -114,6 +116,10 @@ export default function Navbar({
       : "border-white/30 bg-white/92 text-slate-950 shadow-black/10 hover:bg-white"
   }${isEnglishStyle ? " md:uppercase md:tracking-[0.18em]" : ""}`;
   const onNavClick = (key: NavKey) => {
+    if (key === "signup") {
+      trackGaEvent("cpipos_signup_click", { location: "navbar", destination: "cpipos_it" });
+      return;
+    }
     if (key !== "services") {
       return;
     }
@@ -127,16 +133,19 @@ export default function Navbar({
 
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false);
   const featuresMenuDesktopRef = useRef<HTMLDivElement | null>(null);
   const servicesMenuDesktopRef = useRef<HTMLDivElement | null>(null);
+  const signupMenuDesktopRef = useRef<HTMLDivElement | null>(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileSignupOpen, setMobileSignupOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!featuresOpen && !servicesOpen && !mobileMenuOpen) {
+    if (!featuresOpen && !servicesOpen && !signupOpen && !mobileMenuOpen) {
       return;
     }
 
@@ -144,9 +153,11 @@ export default function Navbar({
       if (event.key === "Escape") {
         setFeaturesOpen(false);
         setServicesOpen(false);
+        setSignupOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
+        setMobileSignupOpen(false);
       }
     };
 
@@ -154,6 +165,7 @@ export default function Navbar({
       const containers = [
         featuresMenuDesktopRef.current,
         servicesMenuDesktopRef.current,
+        signupMenuDesktopRef.current,
         mobileMenuRef.current,
       ].filter((node): node is HTMLDivElement => Boolean(node));
       if (!containers.length) {
@@ -166,9 +178,11 @@ export default function Navbar({
       if (containers.every((container) => !container.contains(target))) {
         setFeaturesOpen(false);
         setServicesOpen(false);
+        setSignupOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
+        setMobileSignupOpen(false);
       }
     };
 
@@ -178,7 +192,7 @@ export default function Navbar({
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [featuresOpen, servicesOpen, mobileMenuOpen]);
+  }, [featuresOpen, servicesOpen, signupOpen, mobileMenuOpen]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -220,6 +234,65 @@ export default function Navbar({
         </Link>
         <nav className={navClass}>
           {navItems.map((item) => {
+            if (item.key === "signup") {
+              const menuLinkClass =
+                "block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-sky-50 hover:text-blue-800 focus-visible:bg-sky-50 focus-visible:outline-none";
+              return (
+                <div
+                  key={item.key}
+                  ref={signupMenuDesktopRef}
+                  className="relative"
+                  onMouseEnter={() => setSignupOpen(true)}
+                  onMouseLeave={() => setSignupOpen(false)}
+                >
+                  <button
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-expanded={signupOpen}
+                    aria-controls="cpipos-signup-menu"
+                    onClick={() => {
+                      setSignupOpen((prev) => !prev);
+                      setServicesOpen(false);
+                      setFeaturesOpen(false);
+                    }}
+                    className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
+                      isScrolled
+                        ? "bg-sky-100 text-blue-800 hover:bg-sky-200"
+                        : "bg-sky-400/15 text-sky-100 ring-1 ring-sky-300/45 hover:bg-sky-400/25"
+                    }`}
+                  >
+                    {labels.signup}
+                    <ChevronDown className={`h-3.5 w-3.5 transition-transform ${signupOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {signupOpen ? (
+                    <div
+                      id="cpipos-signup-menu"
+                      role="menu"
+                      className="absolute right-0 top-full z-50 w-60 rounded-2xl border border-slate-200 bg-white p-2 text-slate-800 shadow-xl"
+                    >
+                      <a
+                        role="menuitem"
+                        href={signupHref}
+                        onClick={() => {
+                          onNavClick("signup");
+                          setSignupOpen(false);
+                        }}
+                        className={menuLinkClass}
+                      >
+                        {lang === "th" ? "สมัครใช้งาน CpIPOS" : lang === "lo" ? "ສະໝັກໃຊ້ງານ CpIPOS" : "Sign up for CpIPOS"}
+                      </a>
+                      <div className="mx-2 my-1 border-t border-slate-100" />
+                      <Link role="menuitem" href="/downloads#windows" onClick={() => setSignupOpen(false)} className={menuLinkClass}>
+                        {lang === "th" ? "ดาวน์โหลด Windows" : lang === "lo" ? "ດາວໂຫຼດ Windows" : "Download Windows"}
+                      </Link>
+                      <Link role="menuitem" href="/downloads#android" onClick={() => setSignupOpen(false)} className={menuLinkClass}>
+                        {lang === "th" ? "ดาวน์โหลด Android" : lang === "lo" ? "ດາວໂຫຼດ Android" : "Download Android"}
+                      </Link>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
             if (item.key !== "features" && item.key !== "services") {
               return (
                 <Link
@@ -526,17 +599,37 @@ export default function Navbar({
                         {labels.contact}
                       </Link>
 
-                      <Link
-                        href="/downloads"
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          setMobileFeaturesOpen(false);
-                          setMobileServicesOpen(false);
-                        }}
-                        className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
+                      <button
+                        type="button"
+                        aria-expanded={mobileSignupOpen}
+                        aria-controls="cpipos-mobile-signup"
+                        onClick={() => setMobileSignupOpen((prev) => !prev)}
+                        className="my-2 flex w-full items-center justify-between rounded-xl bg-blue-600 px-4 py-3 text-base font-bold text-white shadow-sm transition hover:bg-blue-700"
                       >
-                        {labels.downloads}
-                      </Link>
+                        <span>{labels.signup}</span>
+                        <ChevronDown className={`h-5 w-5 transition-transform ${mobileSignupOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      {mobileSignupOpen ? (
+                        <div id="cpipos-mobile-signup" className="space-y-1 rounded-xl bg-sky-50 px-3 py-2">
+                          <a
+                            href={signupHref}
+                            onClick={() => {
+                              onNavClick("signup");
+                              setMobileSignupOpen(false);
+                              setMobileMenuOpen(false);
+                            }}
+                            className="block rounded-lg px-3 py-3 text-sm font-semibold text-blue-900 hover:bg-white"
+                          >
+                            {lang === "th" ? "สมัครใช้งาน CpIPOS" : lang === "lo" ? "ສະໝັກໃຊ້ງານ CpIPOS" : "Sign up for CpIPOS"}
+                          </a>
+                          <Link href="/downloads#windows" onClick={() => { setMobileSignupOpen(false); setMobileMenuOpen(false); }} className="block rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-white">
+                            {lang === "th" ? "ดาวน์โหลด Windows" : lang === "lo" ? "ດາວໂຫຼດ Windows" : "Download Windows"}
+                          </Link>
+                          <Link href="/downloads#android" onClick={() => { setMobileSignupOpen(false); setMobileMenuOpen(false); }} className="block rounded-lg px-3 py-3 text-sm font-semibold text-slate-800 hover:bg-white">
+                            {lang === "th" ? "ดาวน์โหลด Android" : lang === "lo" ? "ດາວໂຫຼດ Android" : "Download Android"}
+                          </Link>
+                        </div>
+                      ) : null}
 
                       <div className="mt-3 flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2">
                         <span className="text-sm font-semibold text-slate-700">{t.language}</span>
