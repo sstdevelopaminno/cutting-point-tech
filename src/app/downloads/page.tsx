@@ -74,8 +74,8 @@ export default async function DownloadsPage() {
   return (
     <main className="relative isolate min-h-[calc(100dvh-80px)] overflow-hidden bg-[#090e1c] text-white">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_8%_10%,rgba(17,120,191,.16),transparent_34%),radial-gradient(ellipse_at_94%_84%,rgba(17,130,115,.12),transparent_29%)]" />
-      <section className="mx-auto w-full max-w-6xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16 lg:pt-20">
-        <div className="mb-14 flex items-center justify-between gap-4 sm:mb-16">
+      <section className="mx-auto w-full max-w-6xl px-5 pb-12 pt-6 sm:px-8 sm:pt-9 lg:pt-10">
+        <div className="mb-9 flex items-center justify-between gap-4 sm:mb-10">
           <div className="flex items-center gap-3">
             <Image src="/brand/logo-icon.png" alt="CpIPOS" width={46} height={46} className="h-11 w-11 object-contain" priority />
             <span className="flex flex-col leading-tight">
@@ -85,7 +85,7 @@ export default async function DownloadsPage() {
           </div>
           <span className="hidden text-[10px] font-semibold tracking-[.37em] text-slate-500 sm:block">SIMPLE · STABLE</span>
         </div>
-        <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-14">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-11">
           <span aria-hidden="true" className="mx-auto mb-5 block h-px w-20 bg-sky-300" />
           <h1 className="text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl lg:text-7xl">
             {item.heading} <span className="bg-gradient-to-r from-sky-200 to-cyan-400 bg-clip-text text-transparent">CpIPOS</span>

@@ -47,7 +47,6 @@ export default function Navbar({
       ? "https://kyjtswuxuyqzidnxvsax.supabase.co/storage/v1/object/sign/sstinnovation/flag-laos-with-red-blue-stripes-white-circle-vector-icon-design_877269-3713.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8wZTI4NThhOC01MWIxLTQ0NTktYTg0My1kMjUzM2EyMTIxMTciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzc3Rpbm5vdmF0aW9uL2ZsYWctbGFvcy13aXRoLXJlZC1ibHVlLXN0cmlwZXMtd2hpdGUtY2lyY2xlLXZlY3Rvci1pY29uLWRlc2lnbl84NzcyNjktMzcxMy5qcGciLCJpYXQiOjE3NzA3OTgwOTYsImV4cCI6MTgwMjMzNDA5Nn0.jN6soZsQ12XHB27BFZC1zW5pGyXJlDeo45AF2miok0I"
       : langFlagSrc;
   const langFlagAlt = lang === "th" ? "Thailand flag" : lang === "en" ? "UK flag" : "Laos flag";
-  const [isScrolled, setIsScrolled] = useState(false);
   const isEnglishStyle = lang === "en";
   const featuresOverviewLabel = isEnglishStyle ? "Highlights overview" : labels.features;
   const featuresSeoAiLabel = "SEO AI";
@@ -83,38 +82,24 @@ export default function Navbar({
           language: "Language",
         };
 
-  const headerClass = `sticky top-0 z-50 w-full border-b transition-all duration-300 ${
-    isScrolled
-      ? "border-slate-200/80 bg-slate-50/88 text-slate-950 shadow-[0_12px_34px_rgba(15,23,42,0.08)] backdrop-blur-xl"
-      : "border-white/10 bg-transparent text-white backdrop-blur-[2px]"
-  }`;
-  const brandTitleClass = `block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] transition-colors sm:text-lg ${
-    isScrolled ? "text-slate-950" : "text-white"
-  }`;
-  const brandSubtitleClass = `hidden whitespace-nowrap text-[10px] font-semibold transition-colors sm:block sm:text-xs ${
-    isScrolled ? "text-slate-500" : "text-slate-200/82"
-  }`;
-  const navClass = `hidden items-center gap-6 text-sm font-medium transition-colors lg:flex xl:gap-8 ${
-    isScrolled ? "text-slate-700" : "text-white/86"
-  }`;
-  const navLinkClass = `inline-flex items-center gap-1 transition-colors ${
-    isScrolled ? "hover:text-slate-950" : "hover:text-white"
-  }`;
-  const iconButtonClass = `flex items-center justify-center rounded-full border p-2 shadow-sm transition ${
-    isScrolled
-      ? "border-slate-200 bg-white/90 text-slate-800 shadow-slate-900/5 hover:border-slate-300 hover:bg-white"
-      : "border-white/25 bg-white/12 text-white shadow-black/10 hover:bg-white/18"
-  }`;
-  const langButtonClass = `flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold shadow-sm transition ${
-    isScrolled
-      ? "border-slate-200 bg-white/90 text-slate-800 shadow-slate-900/5 hover:border-slate-300 hover:bg-white"
-      : "border-white/25 bg-white/12 text-white shadow-black/10 hover:bg-white/18"
-  }`;
-  const ctaClass = `inline-flex items-center gap-2 rounded-full border p-2 shadow-sm transition md:px-4 md:py-2 md:text-xs md:font-semibold ${
-    isScrolled
-      ? "border-slate-200 bg-white text-slate-950 shadow-slate-900/5 hover:border-slate-300"
-      : "border-white/30 bg-white/92 text-slate-950 shadow-black/10 hover:bg-white"
-  }${isEnglishStyle ? " md:uppercase md:tracking-[0.18em]" : ""}`;
+  // Consistent dark navigation on both the white company pages and the dark CpIPOS pages.
+  // Never rely on scroll position to decide foreground contrast.
+  const headerClass =
+    "sticky top-0 z-50 w-full border-b border-white/10 bg-[#0c162a] text-white shadow-[0_6px_20px_rgba(2,6,23,0.18)]";
+  const brandTitleClass =
+    "block whitespace-nowrap text-[15px] font-extrabold tracking-[0.08em] text-white sm:text-lg";
+  const brandSubtitleClass =
+    "hidden whitespace-nowrap text-[10px] font-semibold text-slate-300 sm:block sm:text-xs";
+  const navClass =
+    "hidden items-center gap-6 text-sm font-medium text-slate-100 lg:flex xl:gap-8";
+  const navLinkClass =
+    "inline-flex items-center gap-1 transition-colors hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300";
+  const iconButtonClass =
+    "flex items-center justify-center rounded-full border border-white/25 bg-white/10 p-2 text-white shadow-sm transition hover:bg-white/20";
+  const langButtonClass =
+    "flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-white/20";
+  const ctaClass =
+    `inline-flex items-center gap-2 rounded-full border border-white/30 bg-white px-2 py-2 text-slate-950 shadow-sm transition hover:bg-slate-100 md:px-4 md:py-2 md:text-xs md:font-semibold${isEnglishStyle ? " md:uppercase md:tracking-[0.18em]" : ""}`;
   const onNavClick = (key: NavKey) => {
     if (key === "signup") {
       trackGaEvent("cpipos_signup_click", { location: "navbar", destination: "cpipos_it" });
@@ -203,12 +188,6 @@ export default function Navbar({
     };
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    const updateScrolled = () => setIsScrolled(window.scrollY > 12);
-    updateScrolled();
-    window.addEventListener("scroll", updateScrolled, { passive: true });
-    return () => window.removeEventListener("scroll", updateScrolled);
-  }, []);
 
   return (
     <header className={headerClass}>
@@ -255,11 +234,7 @@ export default function Navbar({
                       setServicesOpen(false);
                       setFeaturesOpen(false);
                     }}
-                    className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
-                      isScrolled
-                        ? "bg-sky-100 text-blue-800 hover:bg-sky-200"
-                        : "bg-sky-400/15 text-sky-100 ring-1 ring-sky-300/45 hover:bg-sky-400/25"
-                    }`}
+                    className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 bg-sky-400/15 text-sky-100 ring-1 ring-sky-300/45 hover:bg-sky-400/25`}
                   >
                     {labels.signup}
                     <ChevronDown className={`h-3.5 w-3.5 transition-transform ${signupOpen ? "rotate-180" : ""}`} />
