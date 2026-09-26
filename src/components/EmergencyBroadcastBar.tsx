@@ -60,8 +60,7 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
   }, []);
 
   useEffect(() => {
-    void load();
-
+    const initialId = window.setTimeout(() => void load(), 0);
     const intervalId = window.setInterval(() => void load(), REFRESH_MS);
     const onFocus = () => void load();
     const onVisibilityChange = () => {
@@ -72,6 +71,7 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
     document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
+      window.clearTimeout(initialId);
       window.clearInterval(intervalId);
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onVisibilityChange);
