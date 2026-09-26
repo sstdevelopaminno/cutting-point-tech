@@ -2,6 +2,7 @@
 
 import { type ReactNode } from "react";
 import Footer from "@/components/Footer";
+import EmergencyBroadcastBar from "@/components/EmergencyBroadcastBar";
 import { LangProvider, useLang } from "@/components/LangContext";
 import Navbar from "@/components/Navbar";
 import { getCopy, type Lang } from "@/lib/i18n";
@@ -19,6 +20,7 @@ function Chrome({ children }: { children: ReactNode }) {
         cta={copy.nav.contact}
         contactPhone={copy.footer.phone}
       />
+      <EmergencyBroadcastBar lang={lang} />
       {children}
       <Footer {...copy.footer} />
     </div>
