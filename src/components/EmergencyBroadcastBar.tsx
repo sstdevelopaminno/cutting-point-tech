@@ -94,7 +94,6 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
   if (!broadcast || !text || dismissedVersion === broadcast.updated_at) return null;
 
   const dismiss = () => {
-    if (!broadcast.dismissible) return;
     try {
       window.localStorage.setItem(
         `cpi:emergency-broadcast:dismissed:${broadcast.updated_at}`,
@@ -145,16 +144,14 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
           </a>
         ) : null}
 
-        {broadcast.dismissible ? (
-          <button
-            type="button"
-            onClick={dismiss}
-            aria-label={lang === "th" ? "ปิดข้อความแจ้งเตือน" : "Close alert"}
-            className="shrink-0 rounded-lg px-2 py-1 text-xl font-black leading-none transition hover:bg-black/10"
-          >
-            ×
-          </button>
-        ) : null}
+        <button
+          type="button"
+          onClick={dismiss}
+          aria-label={lang === "th" ? "ปิดข้อความแจ้งเตือน" : "Close alert"}
+          className="shrink-0 rounded-lg px-2 py-1 text-xl font-black leading-none transition hover:bg-black/10"
+        >
+          ×
+        </button>
       </div>
     </div>
   );
