@@ -23,8 +23,6 @@ type Broadcast = {
   updated_at: string;
 };
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_CPIPOS_IT_PUBLIC_URL ?? "https://cp-ipos-it-web.vercel.app";
 const REFRESH_MS = 120_000;
 
 export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
@@ -35,10 +33,10 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
     if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
 
     try {
-      const response = await fetch(
-        `${API_BASE.replace(/\/$/, "")}/api/public/emergency-broadcast?target=company_web`,
-        { cache: "no-store", credentials: "omit" }
-      );
+      const response = await fetch("/api/public/emergency-broadcast", {
+        cache: "no-store",
+        credentials: "same-origin",
+      });
       if (!response.ok) return;
       const payload = await response.json();
       const next = (payload?.data?.broadcast ?? null) as Broadcast | null;
