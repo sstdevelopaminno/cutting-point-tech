@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
+import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
+
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://deejlitaivfnsbwqdugy.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "sb_publishable_nGX5abZtEmd7Ynzyofop1A_caORaUII";
 
 type BroadcastRow = {
   id: string;
@@ -30,7 +35,9 @@ const SELECT =
 
 export async function GET() {
   try {
-    const supabase = getSupabaseAdmin();
+    const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
     const result = await supabase
       .from("platform_emergency_broadcast")
       .select(SELECT)
