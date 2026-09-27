@@ -4,6 +4,12 @@ import { getRequestedLocale } from "@/lib/locale";
 import { DownloadPlatformCard } from "@/components/downloads/DownloadPlatformCard";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
+const ANDROID_FINAL_RELEASE = {
+  version: "v1.0.23",
+  versionCode: 32,
+  fileName: "CpIPOS-Android-POS-1.0.23.apk",
+  url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.23-final/CpIPOS-Android-POS-1.0.23.apk",
+} as const;
 
 const copy = {
   th: {
@@ -82,7 +88,7 @@ export default async function DownloadsPage() {
   const lang = (await getRequestedLocale()) as Lang;
   const item = copy[lang];
   const windowsUrl = approvedHttpsUrl(process.env.CPIPOS_WINDOWS_DOWNLOAD_URL);
-  const androidUrl = approvedHttpsUrl(process.env.CPIPOS_ANDROID_DOWNLOAD_URL);
+  const androidUrl = approvedHttpsUrl(ANDROID_FINAL_RELEASE.url);
   const jumpLinkClass =
     "inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.08] px-5 text-sm font-extrabold text-white transition hover:border-sky-200/50 hover:bg-white/[0.12] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300";
 
@@ -144,8 +150,8 @@ export default async function DownloadsPage() {
             eyebrow={item.androidEyebrow}
             title="Android"
             description={item.androidCaption}
-            version="v1.0.23"
-            fileName="CpIPOS-Android-POS-1.0.23-MDM-RC-DEBUG.apk"
+            version={ANDROID_FINAL_RELEASE.version}
+            fileName={ANDROID_FINAL_RELEASE.fileName}
             buttonLabel={item.androidButton}
             noLinkLabel={item.noLink}
             href={androidUrl}
