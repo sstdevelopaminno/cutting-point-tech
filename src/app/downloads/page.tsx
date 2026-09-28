@@ -4,6 +4,12 @@ import { getRequestedLocale } from "@/lib/locale";
 import { DownloadPlatformCard } from "@/components/downloads/DownloadPlatformCard";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
+const WINDOWS_FINAL_RELEASE = {
+  version: "v0.3.4",
+  fileName: "CpIPOS.Desktop_0.3.4_x64-setup.exe",
+  url: "https://github.com/sstdevelopaminno/cp-ipos-desktop/releases/download/v0.3.4/CpIPOS.Desktop_0.3.4_x64-setup.exe",
+} as const;
+
 const ANDROID_FINAL_RELEASE = {
   version: "v1.0.23",
   versionCode: 32,
@@ -87,7 +93,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function DownloadsPage() {
   const lang = (await getRequestedLocale()) as Lang;
   const item = copy[lang];
-  const windowsUrl = approvedHttpsUrl(process.env.CPIPOS_WINDOWS_DOWNLOAD_URL);
+  const windowsUrl = approvedHttpsUrl(WINDOWS_FINAL_RELEASE.url);
   const androidUrl = approvedHttpsUrl(ANDROID_FINAL_RELEASE.url);
   const jumpLinkClass =
     "inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.08] px-5 text-sm font-extrabold text-white transition hover:border-sky-200/50 hover:bg-white/[0.12] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300";
@@ -137,8 +143,8 @@ export default async function DownloadsPage() {
             eyebrow={item.windowsEyebrow}
             title="Windows Desktop"
             description={item.windowsCaption}
-            version="v0.3.3"
-            fileName="CpIPOS.Desktop_0.3.3_x64-setup.exe"
+            version={WINDOWS_FINAL_RELEASE.version}
+            fileName={WINDOWS_FINAL_RELEASE.fileName}
             buttonLabel={item.windowsButton}
             noLinkLabel={item.noLink}
             href={windowsUrl}
