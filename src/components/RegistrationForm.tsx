@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./register-store.module.css";
 
-type Package = { id: string; code: string; name: string; monthly_price: number; max_branches: number; max_devices: number };
+type Package = { id: string; code: string; name: string; monthly_price: number; effective_monthly_price?: number | null; max_branches: number; max_devices: number; quota_mode?: string; contact_sales?: boolean };
 type SalesModes = { takeaway: boolean; dine_in: boolean; general_sale: boolean };
 const labels: Array<{key:keyof SalesModes;label:string;description:string}> = [
   {key:"takeaway",label:"ขายกลับบ้าน",description:"รับออเดอร์ / สั่งกลับบ้าน"},
@@ -21,6 +21,7 @@ export default function RegisterStoreForm() {
   const [ownerName,setOwnerName]=useState("");
   const [ownerPhone,setOwnerPhone]=useState("");
   const [ownerEmail,setOwnerEmail]=useState("");
+  const [customRequirements,setCustomRequirements]=useState("");
   const [consent,setConsent]=useState(false);
   const [honeypot,setHoneypot]=useState("");
   const [startedAt]=useState(() => Date.now());
@@ -38,15 +39,18 @@ export default function RegisterStoreForm() {
       .finally(()=>{if(!controller.signal.aborted)setLoading(false);});
     return()=>controller.abort();
   },[]);
+  const selectedPackage=packages.find(p=>p.id===packageId)??null;
+  const isCustom=selectedPackage?.contact_sales===true||selectedPackage?.quota_mode==="custom"||selectedPackage?.code==="custom";
   async function submit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if(submitting||!Object.values(modes).some(Boolean)) {setError("กรุณาเลือกโหมดขายอย่างน้อยหนึ่งรายการ");return;}
+    if(isCustom&&customRequirements.trim().length<10){setError("กรุณาระบุความต้องการสำหรับ CUSTOM อย่างน้อย 10 ตัวอักษร");return;}
     setSubmitting(true);setError("");
     try {
       const response=await fetch("/api/store-registration",{method:"POST",headers:{"content-type":"application/json"},
         body:JSON.stringify({submission_key:submissionKey,store_name:storeName,business_type:businessType,
           owner_name:ownerName,owner_phone:ownerPhone,owner_email:ownerEmail,
-          package_id:packageId,sales_modes:modes,consent,website:honeypot,started_at:startedAt})});
+          package_id:packageId,sales_modes:modes,custom_requirements:isCustom?customRequirements.trim():"",consent,website:honeypot,started_at:startedAt})});
       const payload=await response.json().catch(()=>null) as {error?:string;id?:string}|null;
       if(!response.ok)throw new Error(payload?.error??"บันทึกคำขอไม่สำเร็จ");
       setDone(true);setSubmissionKey(globalThis.crypto.randomUUID());
@@ -63,7 +67,7 @@ export default function RegisterStoreForm() {
         <span className={styles.check}>✓</span><h1>ได้รับคำขอของคุณแล้ว</h1>
         <p>ทีมงานจะตรวจสอบข้อมูลและเปิดร้านทดลองใช้ 7 วันเมื่ออนุมัติ โดยจะแจ้งรหัสร้านและขั้นตอนเข้าใช้งานให้ทราบ</p>
         <p>ยังไม่มีการเปิดร้านหรือเริ่มนับวันทดลองจนกว่าผู้ดูแลจะยืนยันเปิดใช้งาน</p>
-        <button onClick={()=>{setDone(false);setStoreName("");setOwnerName("");setOwnerPhone("");setOwnerEmail("");setConsent(false);}}>ส่งคำขอใหม่</button>
+        <button onClick={()=>{setDone(false);setStoreName("");setOwnerName("");setOwnerPhone("");setOwnerEmail("");setCustomRequirements("");setConsent(false);}}>ส่งคำขอใหม่</button>
       </section>:<div className={styles.grid}>
       <aside className={styles.intro}><span className={styles.eyebrow}>CPIPOS STORE ONBOARDING</span>
         <h1>เริ่มต้นร้านค้าของคุณ<br/>กับ CpiPOS</h1>
@@ -86,9 +90,17 @@ export default function RegisterStoreForm() {
         </div>
         <div className={styles.group}><h3>เลือกแพ็กเกจ</h3>
           <select required disabled={loading} value={packageId} onChange={e=>setPackageId(e.target.value)}>
-            {packages.map(p=><option key={p.id} value={p.id}>{p.name} · {formatPrice(p.monthly_price)}/เดือน หลังทดลอง · {p.max_branches} สาขา · {p.max_devices} เครื่อง</option>)}
-          </select><small>ไม่มีการเรียกเก็บเงินจากแบบฟอร์มนี้ การเปิดใช้งานแบบชำระเงินต้องผ่านขั้นตอนอนุมัติแยกต่างหาก</small>
+            {packages.map(p=><option key={p.id} value={p.id}>{p.contact_sales||p.quota_mode==="custom"||p.code==="custom"
+              ? `${p.name} · ให้ทีม IT ติดต่อกำหนดรายละเอียด`
+              : `${p.name} · ${formatPrice(p.effective_monthly_price??p.monthly_price)}/เดือน หลังทดลอง · ${p.max_branches} สาขา · ${p.max_devices} เครื่อง`}</option>)}
+          </select><small>{isCustom?"ส่งความต้องการให้ IT ตรวจสอบและตกลงก่อนเปิดร้าน":"ไม่มีการเรียกเก็บเงินจากแบบฟอร์มนี้ การเปิดใช้งานแบบชำระเงินต้องผ่านขั้นตอนอนุมัติแยกต่างหาก"}</small>
         </div>
+        {isCustom?<div className={styles.group}><h3>ความต้องการ CUSTOM</h3>
+          <textarea required minLength={10} maxLength={1500} rows={4} value={customRequirements}
+            onChange={e=>setCustomRequirements(e.target.value)}
+            placeholder="เช่น ต้องการ 3 สาขา 6 เครื่อง ผู้ใช้ 20 คน เก็บข้อมูล 12 เดือน หรือฟีเจอร์เพิ่มเติม"/>
+          <small>ระบุเฉพาะสิ่งที่ต้องการ ทีม IT จะติดต่อกลับเพื่อยืนยันราคาและขอบเขต</small>
+        </div>:null}
         <fieldset className={styles.group}><legend>เลือกโหมดขาย (เลือกได้หลายแบบ)</legend><div className={styles.modeGrid}>
           {labels.map(l=><label key={l.key} className={styles.mode}>
             <input type="checkbox" checked={modes[l.key]} onChange={e=>setModes(v=>({...v,[l.key]:e.target.checked}))}/>
