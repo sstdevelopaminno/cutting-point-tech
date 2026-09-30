@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const ORIGIN = "https://cp-ipos-it-web.vercel.app";
+const ORIGIN = (
+  process.env.CPIPOS_IT_PUBLIC_URL?.trim() ||
+  process.env.NEXT_PUBLIC_CPIPOS_IT_PUBLIC_URL?.trim() ||
+  "https://cp-ipos-it-web.vercel.app"
+).replace(/\/+$/, "");
 const endpoint = `${ORIGIN}/api/store-registration`;
 const respond = (payload: unknown, status: number) =>
   NextResponse.json(payload, { status, headers: { "cache-control": "private, no-store" } });
