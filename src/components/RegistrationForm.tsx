@@ -47,7 +47,7 @@ export default function RegisterStoreForm() {
     if(storeName.trim().length<2){setError("กรุณากรอกชื่อร้านอย่างน้อย 2 ตัวอักษร");return;}
     if(!businessType.trim()){setError("กรุณาเลือกประเภทร้านค้า");return;}
     if(ownerName.trim().length<2){setError("กรุณากรอกชื่อเจ้าของร้านอย่างน้อย 2 ตัวอักษร");return;}
-    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(ownerEmail.trim())){setError("รูปแบบอีเมลเจ้าของร้านไม่ถูกต้อง");return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail.trim())){setError("รูปแบบอีเมลเจ้าของร้านไม่ถูกต้อง");return;}
     if(!/^[+0-9 ()-]{8,40}$/.test(ownerPhone.trim())){setError("รูปแบบเบอร์ติดต่อไม่ถูกต้อง ใช้ตัวเลข เครื่องหมาย + เว้นวรรค วงเล็บ หรือขีดกลางได้");return;}
     if(!Object.values(modes).some(Boolean)){setError("กรุณาเลือกโหมดขายอย่างน้อยหนึ่งรายการ");return;}
     if(isCustom&&customRequirements.trim().length<10){setError("กรุณาระบุความต้องการสำหรับ CUSTOM อย่างน้อย 10 ตัวอักษร");return;}
