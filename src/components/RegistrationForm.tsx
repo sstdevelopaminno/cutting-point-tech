@@ -24,7 +24,7 @@ export default function RegisterStoreForm() {
   const [customRequirements,setCustomRequirements]=useState("");
   const [consent,setConsent]=useState(false);
   const [honeypot,setHoneypot]=useState("");
-  const [startedAt]=useState(() => Date.now());
+  const [startedAt,setStartedAt]=useState(() => Date.now());
   const [submissionKey,setSubmissionKey]=useState(() => globalThis.crypto.randomUUID());
   const [submitting,setSubmitting]=useState(false);
   const [done,setDone]=useState(false);
@@ -43,17 +43,30 @@ export default function RegisterStoreForm() {
   const isCustom=selectedPackage?.contact_sales===true||selectedPackage?.quota_mode==="custom"||selectedPackage?.code==="custom";
   async function submit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if(submitting||!Object.values(modes).some(Boolean)) {setError("กรุณาเลือกโหมดขายอย่างน้อยหนึ่งรายการ");return;}
+    if(submitting)return;
+    if(storeName.trim().length<2){setError("กรุณากรอกชื่อร้านอย่างน้อย 2 ตัวอักษร");return;}
+    if(!businessType.trim()){setError("กรุณาเลือกประเภทร้านค้า");return;}
+    if(ownerName.trim().length<2){setError("กรุณากรอกชื่อเจ้าของร้านอย่างน้อย 2 ตัวอักษร");return;}
+    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(ownerEmail.trim())){setError("รูปแบบอีเมลเจ้าของร้านไม่ถูกต้อง");return;}
+    if(!/^[+0-9 ()-]{8,40}$/.test(ownerPhone.trim())){setError("รูปแบบเบอร์ติดต่อไม่ถูกต้อง ใช้ตัวเลข เครื่องหมาย + เว้นวรรค วงเล็บ หรือขีดกลางได้");return;}
+    if(!Object.values(modes).some(Boolean)){setError("กรุณาเลือกโหมดขายอย่างน้อยหนึ่งรายการ");return;}
     if(isCustom&&customRequirements.trim().length<10){setError("กรุณาระบุความต้องการสำหรับ CUSTOM อย่างน้อย 10 ตัวอักษร");return;}
+    if(!consent){setError("กรุณายืนยันการยินยอมให้ใช้ข้อมูลเพื่อพิจารณาเปิดร้าน");return;}
     setSubmitting(true);setError("");
     try {
       const response=await fetch("/api/store-registration",{method:"POST",headers:{"content-type":"application/json"},
         body:JSON.stringify({submission_key:submissionKey,store_name:storeName,business_type:businessType,
           owner_name:ownerName,owner_phone:ownerPhone,owner_email:ownerEmail,
           package_id:packageId,sales_modes:modes,custom_requirements:isCustom?customRequirements.trim():"",consent,website:honeypot,started_at:startedAt})});
-      const payload=await response.json().catch(()=>null) as {error?:string;id?:string}|null;
-      if(!response.ok)throw new Error(payload?.error??"บันทึกคำขอไม่สำเร็จ");
-      setDone(true);setSubmissionKey(globalThis.crypto.randomUUID());
+      const payload=await response.json().catch(()=>null) as {error?:string;code?:string;field?:string;retry_after_seconds?:number;id?:string}|null;
+      if(!response.ok){
+        if(payload?.code==="form_session_expired"){
+          setStartedAt(Date.now());
+          setSubmissionKey(globalThis.crypto.randomUUID());
+        }
+        throw new Error(payload?.error??"บันทึกคำขอไม่สำเร็จ");
+      }
+      setDone(true);setSubmissionKey(globalThis.crypto.randomUUID());setStartedAt(Date.now());
     }catch(e){setError(e instanceof Error?e.message:"ส่งคำขอไม่สำเร็จ");}
     finally{setSubmitting(false);}
   }
@@ -67,7 +80,7 @@ export default function RegisterStoreForm() {
         <span className={styles.check}>✓</span><h1>ได้รับคำขอของคุณแล้ว</h1>
         <p>ทีมงานจะตรวจสอบข้อมูลและเปิดร้านทดลองใช้ 7 วันเมื่ออนุมัติ โดยจะแจ้งรหัสร้านและขั้นตอนเข้าใช้งานให้ทราบ</p>
         <p>ยังไม่มีการเปิดร้านหรือเริ่มนับวันทดลองจนกว่าผู้ดูแลจะยืนยันเปิดใช้งาน</p>
-        <button onClick={()=>{setDone(false);setStoreName("");setOwnerName("");setOwnerPhone("");setOwnerEmail("");setCustomRequirements("");setConsent(false);}}>ส่งคำขอใหม่</button>
+        <button onClick={()=>{setDone(false);setStoreName("");setBusinessType("");setOwnerName("");setOwnerPhone("");setOwnerEmail("");setCustomRequirements("");setConsent(false);setStartedAt(Date.now());setSubmissionKey(globalThis.crypto.randomUUID());}}>ส่งคำขอใหม่</button>
       </section>:<div className={styles.grid}>
       <aside className={styles.intro}><span className={styles.eyebrow}>CPIPOS STORE ONBOARDING</span>
         <h1>เริ่มต้นร้านค้าของคุณ<br/>กับ CpiPOS</h1>
