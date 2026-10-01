@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./register-store.module.css";
 
-type Package = { id: string; code: string; name: string; monthly_price: number; effective_monthly_price?: number | null; max_branches: number; max_devices: number; quota_mode?: string; contact_sales?: boolean };
+type Package = { id: string; code: string; name: string; monthly_price: number; effective_monthly_price?: number | null; max_branches: number; max_devices: number; quota_mode?: string; contact_sales?: boolean; sales_mode_limit?: number | null };
 type SalesModes = { takeaway: boolean; dine_in: boolean; general_sale: boolean };
 const labels: Array<{key:keyof SalesModes;label:string;description:string}> = [
   {key:"takeaway",label:"ขายกลับบ้าน",description:"รับออเดอร์ / สั่งกลับบ้าน"},
@@ -11,6 +11,13 @@ const labels: Array<{key:keyof SalesModes;label:string;description:string}> = [
   {key:"general_sale",label:"ร้านชำ / ขายทั่วไป",description:"บาร์โค้ด / SKU / ร้านค้าปลีก"}
 ];
 const formatPrice = (n:number) => new Intl.NumberFormat("th-TH", { style:"currency",currency:"THB",maximumFractionDigits:0 }).format(n);
+const countSelectedModes = (modes:SalesModes) => labels.reduce((count,item)=>count+(modes[item.key]?1:0),0);
+const resolveSalesModeLimit = (pkg:Package|null) => {
+  if(!pkg)return 1;
+  if(pkg.contact_sales===true||pkg.quota_mode==="custom"||pkg.code==="custom")return labels.length;
+  const parsed=Number(pkg.sales_mode_limit ?? 1);
+  return Math.max(1,Math.min(labels.length,Number.isFinite(parsed)?Math.trunc(parsed):1));
+};
 export default function RegisterStoreForm() {
   const [packages,setPackages]=useState<Package[]>([]);
   const [loading,setLoading]=useState(true);
@@ -41,6 +48,21 @@ export default function RegisterStoreForm() {
   },[]);
   const selectedPackage=packages.find(p=>p.id===packageId)??null;
   const isCustom=selectedPackage?.contact_sales===true||selectedPackage?.quota_mode==="custom"||selectedPackage?.code==="custom";
+  const salesModeLimit=resolveSalesModeLimit(selectedPackage);
+  const selectedModeCount=countSelectedModes(modes);
+  useEffect(()=>{
+    setModes(current=>{
+      if(countSelectedModes(current)<=salesModeLimit)return current;
+      let kept=0;
+      const next={...current};
+      for(const item of labels){
+        if(!current[item.key])continue;
+        kept+=1;
+        next[item.key]=kept<=salesModeLimit;
+      }
+      return next;
+    });
+  },[salesModeLimit]);
   async function submit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if(submitting)return;
@@ -50,6 +72,7 @@ export default function RegisterStoreForm() {
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ownerEmail.trim())){setError("รูปแบบอีเมลเจ้าของร้านไม่ถูกต้อง");return;}
     if(!/^[+0-9 ()-]{8,40}$/.test(ownerPhone.trim())){setError("รูปแบบเบอร์ติดต่อไม่ถูกต้อง ใช้ตัวเลข เครื่องหมาย + เว้นวรรค วงเล็บ หรือขีดกลางได้");return;}
     if(!Object.values(modes).some(Boolean)){setError("กรุณาเลือกโหมดขายอย่างน้อยหนึ่งรายการ");return;}
+    if(!isCustom&&selectedModeCount>salesModeLimit){setError(`แพ็กเกจนี้เลือกโหมดขายได้สูงสุด ${salesModeLimit} โหมด`);return;}
     if(isCustom&&customRequirements.trim().length<10){setError("กรุณาระบุความต้องการสำหรับ CUSTOM อย่างน้อย 10 ตัวอักษร");return;}
     if(!consent){setError("กรุณายืนยันการยินยอมให้ใช้ข้อมูลเพื่อพิจารณาเปิดร้าน");return;}
     setSubmitting(true);setError("");
@@ -114,9 +137,26 @@ export default function RegisterStoreForm() {
             placeholder="เช่น ต้องการ 3 สาขา 6 เครื่อง ผู้ใช้ 20 คน เก็บข้อมูล 12 เดือน หรือฟีเจอร์เพิ่มเติม"/>
           <small>ระบุเฉพาะสิ่งที่ต้องการ ทีม IT จะติดต่อกลับเพื่อยืนยันราคาและขอบเขต</small>
         </div>:null}
-        <fieldset className={styles.group}><legend>เลือกโหมดขาย (เลือกได้หลายแบบ)</legend><div className={styles.modeGrid}>
+        <fieldset className={styles.group}><legend>เลือกโหมดขาย (เลือกได้หลายแบบ)</legend>
+          <small>{isCustom
+            ? "CUSTOM เลือกได้ตามความต้องการในแบบฟอร์มนี้"
+            : `แพ็กเกจ ${selectedPackage?.name??""} เลือกได้สูงสุด ${salesModeLimit} โหมด · เลือกแล้ว ${selectedModeCount}/${salesModeLimit}`}</small>
+          <div className={styles.modeGrid}>
           {labels.map(l=><label key={l.key} className={styles.mode}>
-            <input type="checkbox" checked={modes[l.key]} onChange={e=>setModes(v=>({...v,[l.key]:e.target.checked}))}/>
+            <input
+              type="checkbox"
+              checked={modes[l.key]}
+              disabled={!modes[l.key]&&!isCustom&&selectedModeCount>=salesModeLimit}
+              onChange={e=>{
+                const checked=e.target.checked;
+                if(checked&&!isCustom&&selectedModeCount>=salesModeLimit){
+                  setError(`แพ็กเกจ ${selectedPackage?.name??""} เลือกโหมดขายได้สูงสุด ${salesModeLimit} โหมด`);
+                  return;
+                }
+                setError("");
+                setModes(v=>({...v,[l.key]:checked}));
+              }}
+            />
             <span><strong>{l.label}</strong><small>{l.description}</small></span>
           </label>)}</div></fieldset>
         <label className={styles.consent}><input required type="checkbox" checked={consent} onChange={e=>setConsent(e.target.checked)}/>
