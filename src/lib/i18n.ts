@@ -9,6 +9,7 @@ type Dict = {
     packages: string;
     portfolio: string;
     articles: string;
+    trial: string;
     contact: string;
     signup: string;
     downloads: string;
@@ -97,6 +98,7 @@ export const dict: Record<Lang, Dict> = {
       packages: "แพ็กเกจ",
       portfolio: "เทมเพลต",
       articles: "บทความ",
+      trial: "ทดลองใช้งาน",
       contact: "ติดต่อ",
       signup: "สมัครใช้งาน",
       downloads: "ดาวน์โหลด",
@@ -294,6 +296,7 @@ export const dict: Record<Lang, Dict> = {
       packages: "Packages",
       portfolio: "Templates",
       articles: "Articles",
+      trial: "Try it",
       contact: "Contact",
       signup: "Start Free Trial",
       downloads: "Downloads",
@@ -491,6 +494,7 @@ export const dict: Record<Lang, Dict> = {
       packages: "ແພັກເກັດ",
       portfolio: "ແມ່ແບບ",
       articles: "ບົດຄວາມ",
+      trial: "ທົດລອງໃຊ້ງານ",
       contact: "ຕິດຕໍ່",
       signup: "ສະໝັກໃຊ້ງານ",
       downloads: "ດາວໂຫຼດ",

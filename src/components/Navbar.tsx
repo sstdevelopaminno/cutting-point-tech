@@ -12,7 +12,7 @@ const navItems = [
   { href: "/#top", key: "home" },
   { href: "/#features", key: "features" },
   { href: "/#services", key: "services" },
-  { href: "/articles", key: "articles" },
+  { href: "/trial", key: "trial" },
   { href: "/contact", key: "contact" },
   { href: "/register-store", key: "signup" },
 ] as const;
@@ -58,6 +58,8 @@ export default function Navbar({
           servicesWebsite: "รับทำเว็บไซต์",
           servicesDorm: "ระบบหอพัก/รีสอร์ท",
           servicesCompany: "จดทะเบียนบริษัท",
+          contactOverview: "ติดต่อเรา",
+          contactArticles: "บทความ",
           menu: "เมนู",
           close: "ปิด",
           language: "ภาษา",
@@ -68,6 +70,8 @@ export default function Navbar({
             servicesWebsite: "ພັດທະນາເວັບໄຊ",
             servicesDorm: "ລະບົບຫໍພັກ/ຣີສອດ",
             servicesCompany: "ຈົດທະບຽນບໍລິສັດ",
+            contactOverview: "ຕິດຕໍ່ພວກເຮົາ",
+            contactArticles: "ບົດຄວາມ",
             menu: "ເມນູ",
             close: "ປິດ",
             language: "ພາສາ",
@@ -77,6 +81,8 @@ export default function Navbar({
           servicesWebsite: "Website Development",
           servicesDorm: "Dormitory/Resort System",
           servicesCompany: "Company Registration",
+          contactOverview: "Contact us",
+          contactArticles: "Articles",
           menu: "Menu",
           close: "Close",
           language: "Language",
@@ -118,19 +124,22 @@ export default function Navbar({
 
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
   const featuresMenuDesktopRef = useRef<HTMLDivElement | null>(null);
   const servicesMenuDesktopRef = useRef<HTMLDivElement | null>(null);
+  const contactMenuDesktopRef = useRef<HTMLDivElement | null>(null);
   const signupMenuDesktopRef = useRef<HTMLDivElement | null>(null);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFeaturesOpen, setMobileFeaturesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileContactOpen, setMobileContactOpen] = useState(false);
   const [mobileSignupOpen, setMobileSignupOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!featuresOpen && !servicesOpen && !signupOpen && !mobileMenuOpen) {
+    if (!featuresOpen && !servicesOpen && !contactOpen && !signupOpen && !mobileMenuOpen) {
       return;
     }
 
@@ -138,10 +147,12 @@ export default function Navbar({
       if (event.key === "Escape") {
         setFeaturesOpen(false);
         setServicesOpen(false);
+        setContactOpen(false);
         setSignupOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
+        setMobileContactOpen(false);
         setMobileSignupOpen(false);
       }
     };
@@ -150,6 +161,7 @@ export default function Navbar({
       const containers = [
         featuresMenuDesktopRef.current,
         servicesMenuDesktopRef.current,
+        contactMenuDesktopRef.current,
         signupMenuDesktopRef.current,
         mobileMenuRef.current,
       ].filter((node): node is HTMLDivElement => Boolean(node));
@@ -163,10 +175,12 @@ export default function Navbar({
       if (containers.every((container) => !container.contains(target))) {
         setFeaturesOpen(false);
         setServicesOpen(false);
+        setContactOpen(false);
         setSignupOpen(false);
         setMobileMenuOpen(false);
         setMobileFeaturesOpen(false);
         setMobileServicesOpen(false);
+        setMobileContactOpen(false);
         setMobileSignupOpen(false);
       }
     };
@@ -177,7 +191,7 @@ export default function Navbar({
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [featuresOpen, servicesOpen, signupOpen, mobileMenuOpen]);
+  }, [featuresOpen, servicesOpen, contactOpen, signupOpen, mobileMenuOpen]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -232,6 +246,7 @@ export default function Navbar({
                     onClick={() => {
                       setSignupOpen((prev) => !prev);
                       setServicesOpen(false);
+                      setContactOpen(false);
                       setFeaturesOpen(false);
                     }}
                     className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 bg-sky-400/15 text-sky-100 ring-1 ring-sky-300/45 hover:bg-sky-400/25`}
@@ -268,6 +283,50 @@ export default function Navbar({
                 </div>
               );
             }
+            if (item.key === "contact") {
+              return (
+                <div key={item.key} ref={contactMenuDesktopRef} className="relative">
+                  <button
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-expanded={contactOpen}
+                    onClick={() => {
+                      setContactOpen((prev) => !prev);
+                      setFeaturesOpen(false);
+                      setServicesOpen(false);
+                      setSignupOpen(false);
+                    }}
+                    className={navLinkClass}
+                  >
+                    {labels.contact}
+                    <ChevronDown className={`h-4 w-4 transition-transform ${contactOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {contactOpen ? (
+                    <div
+                      role="menu"
+                      className="absolute right-0 top-full mt-3 w-64 rounded-2xl border border-slate-200 bg-white p-2 text-slate-800 shadow-lg"
+                    >
+                      <Link
+                        role="menuitem"
+                        href="/contact"
+                        onClick={() => setContactOpen(false)}
+                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                      >
+                        {t.contactOverview}
+                      </Link>
+                      <Link
+                        role="menuitem"
+                        href="/articles"
+                        onClick={() => setContactOpen(false)}
+                        className="block rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                      >
+                        {t.contactArticles}
+                      </Link>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            }
             if (item.key !== "features" && item.key !== "services") {
               return (
                 <Link
@@ -291,6 +350,8 @@ export default function Navbar({
                     onClick={() => {
                       setFeaturesOpen((prev) => !prev);
                       setServicesOpen(false);
+                      setContactOpen(false);
+                      setSignupOpen(false);
                     }}
                     className={navLinkClass}
                   >
@@ -334,6 +395,8 @@ export default function Navbar({
                   onClick={() => {
                     setServicesOpen((prev) => !prev);
                     setFeaturesOpen(false);
+                    setContactOpen(false);
+                    setSignupOpen(false);
                   }}
                   className={navLinkClass}
                 >
@@ -419,6 +482,7 @@ export default function Navbar({
                     setMobileMenuOpen(false);
                     setMobileFeaturesOpen(false);
                     setMobileServicesOpen(false);
+                    setMobileContactOpen(false);
                   }}
                   className="fixed inset-0 bg-slate-950/55 backdrop-blur-[2px]"
                 />
@@ -551,28 +615,50 @@ export default function Navbar({
                       ) : null}
 
                       <Link
-                        href="/articles"
+                        href="/trial"
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setMobileFeaturesOpen(false);
                           setMobileServicesOpen(false);
+                          setMobileContactOpen(false);
                         }}
                         className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
                       >
-                        {labels.articles}
+                        {labels.trial}
                       </Link>
 
-                      <Link
-                        href="/contact"
-                        onClick={() => {
-                          setMobileMenuOpen(false);
-                          setMobileFeaturesOpen(false);
-                          setMobileServicesOpen(false);
-                        }}
-                        className="block rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
+                      <button
+                        type="button"
+                        onClick={() => setMobileContactOpen((prev) => !prev)}
+                        className="flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-50"
                       >
-                        {labels.contact}
-                      </Link>
+                        <span>{labels.contact}</span>
+                        <ChevronDown className={`h-5 w-5 transition-transform ${mobileContactOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      {mobileContactOpen ? (
+                        <div className="space-y-1 px-3 pb-2">
+                          <Link
+                            href="/contact"
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setMobileContactOpen(false);
+                            }}
+                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                          >
+                            {t.contactOverview}
+                          </Link>
+                          <Link
+                            href="/articles"
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setMobileContactOpen(false);
+                            }}
+                            className="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                          >
+                            {t.contactArticles}
+                          </Link>
+                        </div>
+                      ) : null}
 
                       <button
                         type="button"
