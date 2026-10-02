@@ -1,4 +1,4 @@
-import { ArrowRight, BadgeCheck, Hotel, MonitorSmartphone, Sparkles } from "lucide-react";
+import { ArrowRight, Briefcase, Globe2, Sparkles, Star } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getRequestedLocale } from "@/lib/locale";
@@ -83,7 +83,7 @@ export default async function TrialPage() {
       status: t.available,
       active: true,
       href: "/trial/pos",
-      icon: MonitorSmartphone,
+      icon: Globe2,
       tone: "from-blue-600 to-cyan-500",
     },
     {
@@ -101,7 +101,7 @@ export default async function TrialPage() {
       status: t.coming,
       active: false,
       href: "",
-      icon: Hotel,
+      icon: Briefcase,
       tone: "from-emerald-600 to-teal-500",
     },
   ];
@@ -130,7 +130,7 @@ export default async function TrialPage() {
                   <span className={`rounded-full px-2.5 py-1 text-[11px] font-black ${card.active ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
                     {card.status}
                   </span>
-                  {card.active ? <BadgeCheck className="h-4 w-4 text-emerald-600" /> : null}
+                  {card.active ? <Star className="h-4 w-4 text-emerald-600" /> : null}
                 </div>
                 <h2 className="mt-4 text-2xl font-black tracking-tight text-slate-950">{card.title}</h2>
                 <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{card.description}</p>

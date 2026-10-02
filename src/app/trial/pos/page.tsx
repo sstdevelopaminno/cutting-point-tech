@@ -1,4 +1,4 @@
-import { ArrowLeft, ExternalLink, MonitorSmartphone, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { ArrowRight, ExternalLink, Globe2, ShieldCheck, Sparkles, Star } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getRequestedLocale } from "@/lib/locale";
@@ -75,7 +75,7 @@ export default async function PosTrialPage() {
     <main className="min-h-screen bg-[#f5f8fc] text-slate-950">
       <section className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
         <Link href="/trial" className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-700">
-          <ArrowLeft className="h-4 w-4" />{t.back}
+          <ArrowRight className="h-4 w-4 rotate-180" />{t.back}
         </Link>
 
         <div className="mt-7 overflow-hidden rounded-[32px] border border-blue-100 bg-white shadow-[0_24px_70px_rgba(15,23,42,.10)]">
@@ -87,12 +87,12 @@ export default async function PosTrialPage() {
 
               <div className="mt-8 grid gap-3">
                 {[
-                  [Zap, t.feature1],
-                  [MonitorSmartphone, t.feature2],
+                  [Star, t.feature1],
+                  [Globe2, t.feature2],
                   [Sparkles, t.feature3],
                   [ShieldCheck, t.feature4],
                 ].map(([Icon, label]) => {
-                  const C = Icon as typeof Zap;
+                  const C = Icon as typeof Star;
                   return <div key={String(label)} className="flex items-start gap-3 rounded-2xl bg-slate-50 px-4 py-3">
                     <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><C className="h-4 w-4" /></span>
                     <span className="pt-2 text-sm font-semibold text-slate-700">{String(label)}</span>
