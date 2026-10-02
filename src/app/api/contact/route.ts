@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { enforcePublicApiRateLimit, getClientIp, internalServerError, logRouteError } from "@/lib/apiSecurity";
-import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { sendLeadNotification } from "@/lib/email";
 import { notifyLineViaCloudflare } from "@/lib/lineWebhook";
 
@@ -98,26 +97,56 @@ export async function POST(req: Request) {
       );
     }
 
-    const supabase = getSupabaseAdmin();
-    const { data: lead, error: insertError } = await supabase
-      .from("leads")
-      .insert({
-        name,
-        phone: phone || null,
-        email: email || null,
-        message,
-        locale,
-        source: "website",
-      })
-      .select("id")
-      .single();
+    const communicationsUrl =
+      process.env.COMMUNICATIONS_SUPABASE_URL?.trim() ||
+      "https://wznixoeezgyhtwurcswb.supabase.co";
+    const communicationsKey =
+      process.env.COMMUNICATIONS_SUPABASE_PUBLISHABLE_KEY?.trim() ||
+      "sb_publishable_G-lNDIwwsT7wthv4Ad4Qag_fz7R420Q";
 
-    if (insertError || !lead?.id) {
-      console.error("Lead insert failed", { requestId, insertError });
-      return NextResponse.json(
-        { ok: false, requestId, error: "Unable to save request" },
-        { status: 500 }
+    const communicationsController = new AbortController();
+    const communicationsTimeout = setTimeout(() => communicationsController.abort(), 8_000);
+    let lead: { id: string } | null = null;
+    try {
+      const communicationsResponse = await fetch(
+        `${communicationsUrl.replace(/\/$/, "")}/functions/v1/website-contact-api`,
+        {
+          method: "POST",
+          headers: {
+            apikey: communicationsKey,
+            "content-type": "application/json",
+            "x-contact-source": "cutting-point-innovation-website"
+          },
+          body: JSON.stringify({
+            action: "create",
+            name,
+            phone,
+            email: email || null,
+            message,
+            locale,
+            request_id: requestId
+          }),
+          cache: "no-store",
+          signal: communicationsController.signal
+        }
       );
+      const communicationsBody = await communicationsResponse.json().catch(() => null) as
+        | { ok?: boolean; id?: string; error?: string }
+        | null;
+      if (!communicationsResponse.ok || communicationsBody?.ok !== true || !communicationsBody.id) {
+        console.error("Communications contact insert failed", {
+          requestId,
+          status: communicationsResponse.status,
+          code: communicationsBody?.error ?? "unknown"
+        });
+        return NextResponse.json(
+          { ok: false, requestId, error: "Unable to save request" },
+          { status: 503 }
+        );
+      }
+      lead = { id: communicationsBody.id };
+    } finally {
+      clearTimeout(communicationsTimeout);
     }
 
     let emailStatus: "sent" | "skipped" | "failed" = "skipped";
@@ -168,22 +197,6 @@ export async function POST(req: Request) {
         requestId,
         error: lineResult.reason,
       });
-    }
-
-    try {
-      await supabase.from("events").insert([
-        {
-          event_name: "lead_notify",
-          meta: {
-            lead_id: lead.id,
-            source: "website",
-            email_status: emailStatus,
-            line_status: lineStatus,
-          },
-        },
-      ]);
-    } catch {
-      // ignore
     }
 
     return NextResponse.json({

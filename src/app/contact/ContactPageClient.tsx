@@ -337,21 +337,7 @@ export default function ContactPageClient() {
             </div>
 
             <div className="space-y-6">
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card-soft">
-                <h2 className="font-[var(--font-heading)] text-xl font-semibold text-slate-900">
-                  {copy.contact.detailsTitle}
-                </h2>
-                <p className="mt-2 text-sm text-slate-600">{copy.contact.detailsSubtitle}</p>
-                <div className="mt-4 space-y-3 text-sm text-slate-700">
-                  <p>{copy.footer.company}</p>
-                  <p>{copy.footer.address}</p>
-                  <p>{copy.footer.phone}</p>
-                  <p>{copy.footer.email}</p>
-                  <p>{copy.footer.line}</p>
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card-soft">
+              <div className="rounded-3xl border border-blue-100 bg-gradient-to-br from-white to-blue-50 p-6 shadow-card-soft">
                 <h2 className="font-[var(--font-heading)] text-xl font-semibold text-slate-900">
                   {lang === "th" ? "การดูแลหลังส่งมอบ" : "Post-launch care"}
                 </h2>
@@ -360,6 +346,11 @@ export default function ContactPageClient() {
                     ? "แพ็กเกจดูแลรายเดือน พร้อมทีมงานดูแลความปลอดภัยและอัปเดตระบบให้ต่อเนื่อง"
                     : "Monthly care plans with security monitoring and continuous updates."}
                 </p>
+                <div className="mt-4 rounded-2xl border border-blue-100 bg-white/80 p-4 text-xs leading-6 text-slate-600">
+                  {lang === "th"
+                    ? "ข้อมูลจากฟอร์มนี้จะส่งเข้าศูนย์ IT ของบริษัทโดยตรง และจัดเก็บแยกในฐาน CpiPOS-Communications"
+                    : "This form is sent directly to the company IT center and stored separately in CpiPOS-Communications."}
+                </div>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-600">
                   <li>SLA ระดับองค์กร</li>
                   <li>รายงานวิเคราะห์รายเดือน</li>
