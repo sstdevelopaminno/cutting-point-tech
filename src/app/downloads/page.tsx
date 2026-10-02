@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getRequestedLocale } from "@/lib/locale";
-import { DownloadPlatformCard } from "@/components/downloads/DownloadPlatformCard";
+import { DownloadPlatformSwitcher } from "@/components/downloads/DownloadPlatformSwitcher";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cuttingpointinnovation.vercel.app";
 const WINDOWS_FINAL_RELEASE = {
@@ -11,10 +11,10 @@ const WINDOWS_FINAL_RELEASE = {
 } as const;
 
 const ANDROID_FINAL_RELEASE = {
-  version: "v1.0.23",
-  versionCode: 32,
-  fileName: "CpIPOS-Android-POS-1.0.23.apk",
-  url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.23-final/CpIPOS-Android-POS-1.0.23.apk",
+  version: "v1.0.24",
+  versionCode: 33,
+  fileName: "CpIPOS-Android-POS-1.0.24.apk",
+  url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.24-print-stability/CpIPOS-Android-POS-1.0.24.apk",
 } as const;
 
 const copy = {
@@ -95,9 +95,6 @@ export default async function DownloadsPage() {
   const item = copy[lang];
   const windowsUrl = approvedHttpsUrl(WINDOWS_FINAL_RELEASE.url);
   const androidUrl = approvedHttpsUrl(ANDROID_FINAL_RELEASE.url);
-  const jumpLinkClass =
-    "inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.08] px-5 text-sm font-extrabold text-white transition hover:border-sky-200/50 hover:bg-white/[0.12] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sky-300";
-
   return (
     <main className="relative isolate min-h-[calc(100dvh-80px)] overflow-hidden bg-[#090e1c] text-white">
       <div
@@ -124,45 +121,37 @@ export default async function DownloadsPage() {
           <p className="mt-4 text-sm font-semibold text-slate-300 sm:text-lg">{item.subtitle}</p>
         </div>
 
-        <nav aria-label={item.choose} className="mx-auto mb-8 flex max-w-2xl flex-col gap-3 sm:flex-row sm:justify-center">
-          <a href="#windows" className={jumpLinkClass}>
-            <span aria-hidden="true">⊞</span>
-            {item.windowsEyebrow}
-          </a>
-          <a href="#android" className={jumpLinkClass}>
-            <span aria-hidden="true">▣</span>
-            {item.androidEyebrow}
-          </a>
-        </nav>
-
-        <div className="mx-auto grid max-w-5xl gap-5 lg:grid-cols-2">
-          <DownloadPlatformCard
-            id="windows"
-            tone="windows"
-            icon="windows"
-            eyebrow={item.windowsEyebrow}
-            title="Windows Desktop"
-            description={item.windowsCaption}
-            version={WINDOWS_FINAL_RELEASE.version}
-            fileName={WINDOWS_FINAL_RELEASE.fileName}
-            buttonLabel={item.windowsButton}
-            noLinkLabel={item.noLink}
-            href={windowsUrl}
-          />
-          <DownloadPlatformCard
-            id="android"
-            tone="android"
-            icon="android"
-            eyebrow={item.androidEyebrow}
-            title="Android"
-            description={item.androidCaption}
-            version={ANDROID_FINAL_RELEASE.version}
-            fileName={ANDROID_FINAL_RELEASE.fileName}
-            buttonLabel={item.androidButton}
-            noLinkLabel={item.noLink}
-            href={androidUrl}
-          />
-        </div>
+        <DownloadPlatformSwitcher
+          chooseLabel={item.choose}
+          windowsLabel={item.windowsEyebrow}
+          androidLabel={item.androidEyebrow}
+          windows={{
+            id: "windows",
+            tone: "windows",
+            icon: "windows",
+            eyebrow: item.windowsEyebrow,
+            title: "Windows Desktop",
+            description: item.windowsCaption,
+            version: WINDOWS_FINAL_RELEASE.version,
+            fileName: WINDOWS_FINAL_RELEASE.fileName,
+            buttonLabel: item.windowsButton,
+            noLinkLabel: item.noLink,
+            href: windowsUrl,
+          }}
+          android={{
+            id: "android",
+            tone: "android",
+            icon: "android",
+            eyebrow: item.androidEyebrow,
+            title: "Android",
+            description: item.androidCaption,
+            version: ANDROID_FINAL_RELEASE.version,
+            fileName: ANDROID_FINAL_RELEASE.fileName,
+            buttonLabel: item.androidButton,
+            noLinkLabel: item.noLink,
+            href: androidUrl,
+          }}
+        />
 
         <p className="mt-12 text-center text-xs font-semibold text-slate-500">© CpIPOS Download Center · {item.foot}</p>
       </section>
