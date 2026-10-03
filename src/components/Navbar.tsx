@@ -58,6 +58,7 @@ export default function Navbar({
           servicesWebsite: "รับทำเว็บไซต์",
           servicesDorm: "ระบบหอพัก/รีสอร์ท",
           servicesCompany: "จดทะเบียนบริษัท",
+          servicesPosPricing: "ราคาแพ็กเกจ POS",
           contactOverview: "ติดต่อเรา",
           contactArticles: "บทความ",
           menu: "เมนู",
@@ -70,6 +71,7 @@ export default function Navbar({
             servicesWebsite: "ພັດທະນາເວັບໄຊ",
             servicesDorm: "ລະບົບຫໍພັກ/ຣີສອດ",
             servicesCompany: "ຈົດທະບຽນບໍລິສັດ",
+            servicesPosPricing: "ລາຄາແພັກເກດ POS",
             contactOverview: "ຕິດຕໍ່ພວກເຮົາ",
             contactArticles: "ບົດຄວາມ",
             menu: "ເມນູ",
@@ -81,6 +83,7 @@ export default function Navbar({
           servicesWebsite: "Website Development",
           servicesDorm: "Dormitory/Resort System",
           servicesCompany: "Company Registration",
+          servicesPosPricing: "POS Package Pricing",
           contactOverview: "Contact us",
           contactArticles: "Articles",
           menu: "Menu",
@@ -422,6 +425,17 @@ export default function Navbar({
                     </Link>
                     <Link
                       role="menuitem"
+                      href="/packages/pos"
+                      onClick={() => {
+                        onNavClick("services");
+                        setServicesOpen(false);
+                      }}
+                      className="block rounded-xl px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 hover:text-blue-900"
+                    >
+                      {t.servicesPosPricing}
+                    </Link>
+                    <Link
+                      role="menuitem"
                       href="/services/website"
                       onClick={() => {
                         onNavClick("services");
@@ -575,7 +589,19 @@ export default function Navbar({
                           >
                             {t.servicesOverview}
                           </Link>
-                          <Link
+                                                    <Link
+                            href="/packages/pos"
+                            onClick={() => {
+                              onNavClick("services");
+                              setMobileMenuOpen(false);
+                              setMobileFeaturesOpen(false);
+                              setMobileServicesOpen(false);
+                            }}
+                            className="block rounded-xl px-3 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 hover:text-blue-900"
+                          >
+                            {t.servicesPosPricing}
+                          </Link>
+<Link
                             href="/services/website"
                             onClick={() => {
                               onNavClick("services");
