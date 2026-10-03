@@ -191,6 +191,7 @@ export default function CpiposPricingCheckout() {
   const [busy, setBusy] = useState(false);
   const [dialogError, setDialogError] = useState("");
   const [requestId, setRequestId] = useState("");
+  const [mobileCompareCode, setMobileCompareCode] = useState("growth");
 
   useEffect(() => {
     let active = true;
@@ -210,6 +211,8 @@ export default function CpiposPricingCheckout() {
       active = false;
     };
   }, []);
+
+  const mobileComparePackage = packages.find((pkg) => pkg.code === mobileCompareCode) ?? packages[0] ?? null;
 
   function openCheckout(pkg: PackageRow) {
     if (pkg.contact_sales) return;
@@ -444,65 +447,162 @@ export default function CpiposPricingCheckout() {
                 </p>
               </div>
 
-              <div className="overflow-x-auto px-4 pb-5 pt-3 sm:px-6">
-                <table className="min-w-[930px] w-full border-separate border-spacing-0 text-[13px]">
-                  <thead>
-                    <tr>
-                      <th className="rounded-l-[14px] bg-[#f3f7fc] px-4 py-3 text-left font-black text-[#253b5d]">ฟีเจอร์ / แพ็กเกจ</th>
-                      {packages.map((pkg, index) => (
-                        <th
+              <div className="px-4 pb-5 pt-4 sm:px-6">
+                <div className="lg:hidden">
+                  <div className="grid grid-cols-2 gap-2 rounded-[16px] bg-[#f2f6fb] p-2">
+                    {packages.map((pkg) => {
+                      const active = mobileComparePackage?.id === pkg.id;
+                      return (
+                        <button
                           key={pkg.id}
+                          type="button"
+                          onClick={() => setMobileCompareCode(pkg.code)}
                           className={
-                            "px-4 py-3 text-center text-[14px] font-black " +
-                            (pkg.code === "growth" ? "bg-[#e9f4ff] text-[#155eef]" : "bg-[#f3f7fc] text-[#0b1c3d]") +
-                            (index === packages.length - 1 ? " rounded-r-[14px]" : "")
+                            "rounded-[12px] px-3 py-3 text-sm font-black transition " +
+                            (active
+                              ? "bg-[#155eef] text-white shadow-[0_7px_16px_rgba(21,94,239,0.22)]"
+                              : "bg-white text-[#29415f] shadow-[0_2px_8px_rgba(21,55,95,0.05)]")
                           }
                         >
                           {pkg.name}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / เดือน</td>
-                      {packages.map((pkg) => (
-                        <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
-                          {pkg.contact_sales ? "ตามสัญญา" : money(pkg.monthly_price)}
-                        </td>
-                      ))}
-                    </tr>
-                    <tr>
-                      <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / ปี</td>
-                      {packages.map((pkg) => (
-                        <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
-                          {pkg.contact_sales ? "ตามสัญญา" : pkg.yearly_price ? money(pkg.yearly_price) : "—"}
-                        </td>
-                      ))}
-                    </tr>
-                    {compareRows.map((row) => (
-                      <tr key={row.label}>
-                        <td className="border-b border-[#e6edf5] px-4 py-3 font-semibold text-[#657791]">
-                          <span className="flex items-center gap-2">
-                            <FeatureIcon name={row.icon} className="h-4 w-4 text-[#155eef]" />
-                            {row.label}
-                          </span>
-                        </td>
-                        {packages.map((pkg) => (
-                          <td
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {mobileComparePackage ? (
+                    <div className="mt-4 overflow-hidden rounded-[18px] border border-[#dce6f2] bg-white">
+                      <div className="bg-[linear-gradient(135deg,#eef6ff,#f8fbff)] px-4 py-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6b82a1]">แพ็กเกจที่เลือก</p>
+                            <h3 className="mt-1 text-xl font-black text-[#0b1c3d]">{mobileComparePackage.name}</h3>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-[11px] font-bold text-[#72839a]">ราคาเริ่มต้น</p>
+                            <p className="mt-1 text-lg font-black text-[#155eef]">
+                              {mobileComparePackage.contact_sales ? "ตามสัญญา" : money(mobileComparePackage.monthly_price)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="divide-y divide-[#e8eef5]">
+                        <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-sm">
+                          <span className="font-semibold text-[#667991]">ราคา / เดือน</span>
+                          <strong className="text-right text-[#19304f]">
+                            {mobileComparePackage.contact_sales ? "ตามสัญญา" : money(mobileComparePackage.monthly_price)}
+                          </strong>
+                        </div>
+                        <div className="flex items-center justify-between gap-3 px-4 py-3.5 text-sm">
+                          <span className="font-semibold text-[#667991]">ราคา / ปี</span>
+                          <strong className="text-right text-[#19304f]">
+                            {mobileComparePackage.contact_sales
+                              ? "ตามสัญญา"
+                              : mobileComparePackage.yearly_price
+                                ? money(mobileComparePackage.yearly_price)
+                                : "—"}
+                          </strong>
+                        </div>
+                        {compareRows.map((row) => (
+                          <div key={row.label} className="flex items-center justify-between gap-4 px-4 py-3.5 text-sm">
+                            <span className="flex min-w-0 items-center gap-2 font-semibold text-[#667991]">
+                              <FeatureIcon name={row.icon} className="h-4 w-4 shrink-0 text-[#155eef]" />
+                              <span>{row.label}</span>
+                            </span>
+                            <strong className="max-w-[48%] text-right leading-5 text-[#19304f]">{row.value(mobileComparePackage)}</strong>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="border-t border-[#e3ebf4] bg-[#f9fbfd] p-4">
+                        {mobileComparePackage.contact_sales ? (
+                          <Link
+                            href="/contact"
+                            className="flex w-full items-center justify-center gap-2 rounded-[13px] border-2 border-[#2c78ff] bg-white px-4 py-3 text-sm font-black text-[#155eef]"
+                          >
+                            ขอใบเสนอราคา
+                            <LineIcon name="arrow" className="h-4 w-4" />
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => openCheckout(mobileComparePackage)}
+                            className="flex w-full items-center justify-center gap-2 rounded-[13px] bg-[linear-gradient(90deg,#0f79ff,#1658ef)] px-4 py-3 text-sm font-black text-white shadow-[0_8px_18px_rgba(21,94,239,0.2)]"
+                          >
+                            เลือกแพ็กเกจ {mobileComparePackage.name}
+                            <LineIcon name="arrow" className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <p className="mt-3 text-center text-[11px] leading-5 text-[#7b8ba1]">
+                    แตะชื่อแพ็กเกจด้านบนเพื่อดูรายละเอียดทั้งหมด โดยไม่ต้องเลื่อนตารางไปทางซ้ายหรือขวา
+                  </p>
+                </div>
+
+                <div className="hidden overflow-x-auto lg:block">
+                  <table className="min-w-[930px] w-full border-separate border-spacing-0 text-[13px]">
+                    <thead>
+                      <tr>
+                        <th className="rounded-l-[14px] bg-[#f3f7fc] px-4 py-3 text-left font-black text-[#253b5d]">ฟีเจอร์ / แพ็กเกจ</th>
+                        {packages.map((pkg, index) => (
+                          <th
                             key={pkg.id}
                             className={
-                              "border-b border-[#e6edf5] px-4 py-3 text-center font-semibold " +
-                              (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#304766]")
+                              "px-4 py-3 text-center text-[14px] font-black " +
+                              (pkg.code === "growth" ? "bg-[#e9f4ff] text-[#155eef]" : "bg-[#f3f7fc] text-[#0b1c3d]") +
+                              (index === packages.length - 1 ? " rounded-r-[14px]" : "")
                             }
                           >
-                            {row.value(pkg)}
+                            {pkg.name}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / เดือน</td>
+                        {packages.map((pkg) => (
+                          <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
+                            {pkg.contact_sales ? "ตามสัญญา" : money(pkg.monthly_price)}
                           </td>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                      <tr>
+                        <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / ปี</td>
+                        {packages.map((pkg) => (
+                          <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
+                            {pkg.contact_sales ? "ตามสัญญา" : pkg.yearly_price ? money(pkg.yearly_price) : "—"}
+                          </td>
+                        ))}
+                      </tr>
+                      {compareRows.map((row) => (
+                        <tr key={row.label}>
+                          <td className="border-b border-[#e6edf5] px-4 py-3 font-semibold text-[#657791]">
+                            <span className="flex items-center gap-2">
+                              <FeatureIcon name={row.icon} className="h-4 w-4 text-[#155eef]" />
+                              {row.label}
+                            </span>
+                          </td>
+                          {packages.map((pkg) => (
+                            <td
+                              key={pkg.id}
+                              className={
+                                "border-b border-[#e6edf5] px-4 py-3 text-center font-semibold " +
+                                (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#304766]")
+                              }
+                            >
+                              {row.value(pkg)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </section>
           </div>
