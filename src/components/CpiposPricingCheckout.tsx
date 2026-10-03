@@ -102,6 +102,55 @@ function LineIcon({ name, className = "h-5 w-5" }: { name: IconName; className?:
   );
 }
 
+function PlanIcon({ code }: { code: string }) {
+  const common = "h-7 w-7";
+  if (code === "starter") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={common} aria-hidden>
+        <path d="M4 10h16" />
+        <path d="M5 10V7l2-3h10l2 3v3" />
+        <path d="M6 10v9h12v-9" />
+        <path d="M9 19v-5h6v5" />
+      </svg>
+    );
+  }
+  if (code === "growth") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={common} aria-hidden>
+        <path d="M5 19V9" /><path d="M10 19V5" /><path d="M15 19v-7" /><path d="M20 19V3" />
+      </svg>
+    );
+  }
+  if (code === "business") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={common} aria-hidden>
+        <path d="M5 21V5h9v16" /><path d="M14 9h5v12" /><path d="M8 8h3M8 12h3M8 16h3M17 12h1M17 16h1" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={common} aria-hidden>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.12 2.12-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20.3h-3v-.08a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-2.12-2.12.06-.06A1.7 1.7 0 0 0 7 15a1.7 1.7 0 0 0-1.56-1.03H5.3v-3h.14A1.7 1.7 0 0 0 7 9.94a1.7 1.7 0 0 0-.34-1.88L6.6 8l2.12-2.12.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 11.7 4.7V4.6h3v.1a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06L19.8 8l-.06.06a1.7 1.7 0 0 0-.34 1.88 1.7 1.7 0 0 0 1.56 1.03h.14v3h-.14A1.7 1.7 0 0 0 19.4 15Z" />
+    </svg>
+  );
+}
+
+type FeatureIconName = "branch" | "device" | "users" | "product" | "bill" | "storage" | "history" | "mode" | "ai";
+
+function FeatureIcon({ name, className = "h-4 w-4" }: { name: FeatureIconName; className?: string }) {
+  const base = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  if (name === "branch") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><path d="M6 20v-7h12v7M4 13h16M5 13V8l2-3h10l2 3v5M9 20v-4h6v4" /></svg>;
+  if (name === "device") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8M12 17v4" /></svg>;
+  if (name === "users") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><circle cx="9" cy="8" r="3" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 6.5a2.5 2.5 0 0 1 0 5M17 14c2.2.4 3.5 2 3.5 5" /></svg>;
+  if (name === "product") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><path d="m4 7 8-4 8 4-8 4-8-4Z" /><path d="m4 7 8 4 8-4M4 7v10l8 4 8-4V7M12 11v10" /></svg>;
+  if (name === "bill") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z" /><path d="M9 8h6M9 12h6M9 16h4" /></svg>;
+  if (name === "storage") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><ellipse cx="12" cy="5" rx="7" ry="3" /><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" /></svg>;
+  if (name === "history") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>;
+  if (name === "mode") return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><path d="M12 3 9.5 8.5 4 11l5.5 2.5L12 19l2.5-5.5L20 11l-5.5-2.5L12 3Z" /></svg>;
+  return <svg viewBox="0 0 24 24" {...base} className={className} aria-hidden><path d="M8 5h8l2 3v8l-2 3H8l-2-3V8l2-3Z" /><path d="M9 10h.01M15 10h.01M9 15c1 .8 2 .9 3 .9s2-.1 3-.9M12 5V2" /></svg>;
+}
+
 function money(value: number | null) {
   if (value == null) return "ตามสัญญา";
   return new Intl.NumberFormat("th-TH", {
@@ -246,29 +295,37 @@ export default function CpiposPricingCheckout() {
     }
   }
 
-  const compareRows = [
-    { label: "สาขา", value: (p: PackageRow) => displayForCustom(p, number(p.max_branches)) },
-    { label: "เครื่อง POS", value: (p: PackageRow) => displayForCustom(p, number(p.max_devices)) },
-    { label: "ผู้ใช้งาน", value: (p: PackageRow) => displayForCustom(p, number(p.max_users)) },
-    { label: "สินค้า", value: (p: PackageRow) => displayForCustom(p, number(p.max_products)) },
-    { label: "บิล / เดือน", value: (p: PackageRow) => displayForCustom(p, number(p.monthly_bill_limit)) },
-    { label: "Storage", value: (p: PackageRow) => displayForCustom(p, p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB") },
-    { label: "เก็บข้อมูลยอดขาย", value: (p: PackageRow) => displayForCustom(p, number(p.retention_months, " เดือน")) },
-    { label: "โหมดการขาย", value: (p: PackageRow) => displayForCustom(p, p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด") },
-    { label: "CpiPOS AI", value: (p: PackageRow) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
+  const compareRows: Array<{ label: string; icon: FeatureIconName; value: (p: PackageRow) => string }> = [
+    { label: "สาขา", icon: "branch", value: (p) => displayForCustom(p, number(p.max_branches)) },
+    { label: "เครื่อง POS", icon: "device", value: (p) => displayForCustom(p, number(p.max_devices)) },
+    { label: "ผู้ใช้งาน", icon: "users", value: (p) => displayForCustom(p, number(p.max_users)) },
+    { label: "สินค้า", icon: "product", value: (p) => displayForCustom(p, number(p.max_products)) },
+    { label: "บิล / เดือน", icon: "bill", value: (p) => displayForCustom(p, number(p.monthly_bill_limit)) },
+    { label: "Storage", icon: "storage", value: (p) => displayForCustom(p, p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB") },
+    { label: "เก็บข้อมูลยอดขาย", icon: "history", value: (p) => displayForCustom(p, number(p.retention_months, " เดือน")) },
+    { label: "โหมดการขาย", icon: "mode", value: (p) => displayForCustom(p, p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด") },
+    { label: "CpiPOS AI", icon: "ai", value: (p) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
   ];
 
   return (
     <>
-      <section className="bg-[#f6f8fc]">
-        <div className="mx-auto max-w-[1240px] px-5 pb-16 pt-14 sm:px-8 lg:pb-20 lg:pt-20">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-black tracking-[-0.025em] text-[#08182f] sm:text-5xl">
-              เลือกแพ็กเกจ CpiPOS ที่เหมาะกับร้านคุณ
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#eaf5ff_0%,#f7fbff_44%,#ffffff_100%)]">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-24 top-8 h-72 w-72 rounded-full bg-[#6fb8ff]/20 blur-3xl" />
+          <div className="absolute right-[-120px] top-16 h-80 w-80 rounded-full bg-[#2a72ff]/12 blur-3xl" />
+          <div className="absolute left-1/2 top-0 h-px w-[78%] -translate-x-1/2 bg-gradient-to-r from-transparent via-[#8ec5ff]/70 to-transparent" />
+        </div>
+
+        <div className="relative mx-auto max-w-[1320px] px-5 pb-10 pt-12 sm:px-8 lg:pb-12 lg:pt-16">
+          <div className="mx-auto max-w-4xl text-center">
+            <p className="text-[11px] font-black uppercase tracking-[0.34em] text-[#6680a8]">แพ็กเกจและราคา</p>
+            <h1 className="mt-3 text-4xl font-black tracking-[-0.03em] text-[#071a38] sm:text-5xl">
+              เลือกแพ็กเกจ <span className="text-[#155eef]">CpiPOS</span> ที่เหมาะกับร้านคุณ
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#5f6f87]">
-              ราคาและสิทธิ์อ้างอิงจากระบบ CpiPOS โดยตรง เลือกแพ็กเกจและชำระได้จากเว็บไซต์
-              โดยยืนยันรหัสร้านและ PIN ของ Owner/Manager
+            <p className="mx-auto mt-4 max-w-3xl text-sm leading-6 text-[#5e708d] sm:text-base">
+              เปรียบเทียบราคาและสิทธิ์การใช้งานจากระบบ CpiPOS โดยตรง เลือกแพ็กเกจที่เหมาะกับขนาดธุรกิจของคุณ
+              <br className="hidden sm:block" />
+              ยืนยันรหัสร้านด้วย PIN ของ Owner/Manager แล้วชำระได้จากหน้านี้โดยไม่ต้องล็อกอินเข้า POS
             </p>
           </div>
 
@@ -278,10 +335,10 @@ export default function CpiposPricingCheckout() {
             </div>
           ) : null}
 
-          <div className="mt-11 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {loading
               ? Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className="h-[510px] animate-pulse rounded-[26px] border border-[#dce3ee] bg-white" />
+                  <div key={index} className="h-[590px] animate-pulse rounded-[22px] border border-[#d8e5f4] bg-white/80" />
                 ))
               : packages.map((pkg) => {
                   const featured = pkg.code === "growth";
@@ -290,79 +347,84 @@ export default function CpiposPricingCheckout() {
                     <article
                       key={pkg.id}
                       className={
-                        "relative flex min-h-[510px] flex-col rounded-[26px] border p-6 transition " +
+                        "relative flex min-h-[590px] flex-col overflow-visible rounded-[22px] border bg-white p-5 text-[#0b1c3d] transition duration-300 " +
                         (featured
-                          ? "border-[#0c4edb] bg-[#071a33] text-white shadow-[0_24px_70px_rgba(7,26,51,0.2)]"
+                          ? "border-[#1885ff] shadow-[0_20px_55px_rgba(24,133,255,0.16)] ring-1 ring-[#1885ff]/20"
                           : business
-                            ? "border-[#b9d0ff] bg-[#f0f5ff] text-[#08182f] shadow-[0_18px_45px_rgba(13,74,180,0.08)]"
-                            : "border-[#dce3ee] bg-white text-[#08182f] shadow-[0_14px_40px_rgba(15,23,42,0.06)]")
+                            ? "border-[#c8d9ef] shadow-[0_14px_40px_rgba(16,70,145,0.08)]"
+                            : "border-[#d8e5f4] shadow-[0_14px_36px_rgba(32,76,127,0.07)]")
                       }
                     >
                       {featured ? (
-                        <span className="absolute right-5 top-5 rounded-full bg-white/12 px-3 py-1 text-[11px] font-bold tracking-wide text-white ring-1 ring-white/15">
-                          แนะนำ
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[linear-gradient(90deg,#0d73ff,#2058e8)] px-4 py-1.5 text-[11px] font-black text-white shadow-[0_8px_18px_rgba(21,94,239,0.3)]">
+                          แพ็กเกจสำหรับร้านส่วนใหญ่
                         </span>
                       ) : business ? (
-                        <span className="absolute right-5 top-5 rounded-full bg-[#155eef] px-3 py-1 text-[11px] font-bold text-white">
+                        <span className="absolute right-4 top-4 rounded-full bg-[#eaf2ff] px-3 py-1 text-[10px] font-black text-[#155eef]">
                           สำหรับธุรกิจ
                         </span>
                       ) : null}
 
-                      <div className="min-h-[124px]">
-                        <p className={"text-[11px] font-bold uppercase tracking-[0.16em] " + (featured ? "text-[#73a6ff]" : "text-[#6e7e96]")}>
-                          {pkg.code === "custom" ? "Tailored plan" : "CpiPOS plan"}
-                        </p>
-                        <h2 className="mt-3 text-2xl font-black tracking-tight">{pkg.name}</h2>
-                        <p className={"mt-2 min-h-[44px] text-sm leading-6 " + (featured ? "text-[#b9c7db]" : "text-[#69788f]")}>
-                          {packageDescription(pkg.code)}
-                        </p>
+                      <div className="flex min-h-[78px] items-start gap-3">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] border border-[#d8e6fb] bg-[#f3f8ff] text-[#155eef] shadow-[0_5px_14px_rgba(21,94,239,0.08)]">
+                          <PlanIcon code={pkg.code} />
+                        </div>
+                        <div className="pt-0.5">
+                          <h2 className="text-[20px] font-black tracking-tight text-[#0b1c3d]">{pkg.name}</h2>
+                          <p className="mt-1 text-[12px] leading-5 text-[#6a7b95]">{packageDescription(pkg.code)}</p>
+                        </div>
                       </div>
 
                       <div className="mt-4">
-                        <div className={"text-4xl font-black tracking-tight " + (featured ? "text-white" : "text-[#08182f]")}>
-                          {pkg.contact_sales ? "Custom" : money(pkg.monthly_price)}
-                          {!pkg.contact_sales ? <span className={"ml-1 text-sm font-semibold " + (featured ? "text-[#a8b8cf]" : "text-[#6b7890]")}>/ เดือน</span> : null}
+                        <div className="text-[34px] font-black leading-none tracking-[-0.03em] text-[#155eef]">
+                          {pkg.contact_sales ? "ตามสัญญา" : money(pkg.monthly_price)}
+                          {!pkg.contact_sales ? <span className="ml-1 text-[13px] font-bold text-[#667892]">/ เดือน</span> : null}
                         </div>
                         {pkg.yearly_price ? (
-                          <p className={"mt-2 text-sm font-semibold " + (featured ? "text-[#9fb0c9]" : "text-[#6b7890]")}>
+                          <p className="mt-2 text-[13px] font-bold text-[#55708f]">
                             {money(pkg.yearly_price)} / ปี
                           </p>
                         ) : pkg.contact_sales ? (
-                          <p className={"mt-2 text-sm font-semibold " + (featured ? "text-[#9fb0c9]" : "text-[#6b7890]")}>ออกแบบตามสัญญา</p>
+                          <p className="mt-2 text-[13px] font-semibold text-[#6b7d96]">ออกแบบตามความต้องการของธุรกิจ</p>
                         ) : null}
                       </div>
 
-                      <div className={"my-6 h-px " + (featured ? "bg-white/12" : "bg-[#e4e9f1]")} />
+                      <div className="my-5 h-px bg-[#e2eaf4]" />
 
-                      <div className="space-y-3 text-sm">
-                        {compareRows.slice(0, 6).map((row) => (
-                          <div key={row.label} className="flex items-center justify-between gap-3">
-                            <span className={featured ? "text-[#b9c7db]" : "text-[#66758c]"}>{row.label}</span>
-                            <strong className={featured ? "text-white" : "text-[#17253b]"}>{row.value(pkg)}</strong>
+                      <div className="space-y-0 text-[13px]">
+                        {compareRows.map((row) => (
+                          <div key={row.label} className="flex min-h-[34px] items-center justify-between gap-3 border-b border-[#edf2f7] py-1.5 last:border-b-0">
+                            <span className="flex items-center gap-2 text-[#60738e]">
+                              <FeatureIcon name={row.icon} className="h-4 w-4 text-[#155eef]" />
+                              {row.label}
+                            </span>
+                            <strong className="text-right font-black text-[#14294a]">{row.value(pkg)}</strong>
                           </div>
                         ))}
                       </div>
 
-                      <div className="mt-auto pt-7">
+                      <div className="mt-auto pt-5">
                         {pkg.contact_sales ? (
                           <Link
                             href="/contact"
-                            className="flex w-full items-center justify-center rounded-full border border-[#b7c4d7] bg-white px-4 py-3 text-sm font-black text-[#08182f] transition hover:border-[#155eef] hover:text-[#155eef]"
+                            className="flex w-full items-center justify-center gap-2 rounded-[14px] border-2 border-[#2c78ff] bg-white px-4 py-3 text-sm font-black text-[#155eef] transition hover:bg-[#f3f7ff]"
                           >
                             ขอใบเสนอราคา
+                            <LineIcon name="arrow" className="h-4 w-4" />
                           </Link>
                         ) : (
                           <button
                             type="button"
                             onClick={() => openCheckout(pkg)}
                             className={
-                              "w-full rounded-full px-4 py-3 text-sm font-black transition " +
+                              "flex w-full items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-black text-white shadow-[0_10px_22px_rgba(21,94,239,0.2)] transition " +
                               (featured
-                                ? "bg-white text-[#071a33] hover:bg-[#edf3ff]"
-                                : "bg-[#08182f] text-white hover:bg-[#155eef]")
+                                ? "bg-[linear-gradient(90deg,#155eef,#163fc9)] hover:brightness-105"
+                                : "bg-[linear-gradient(90deg,#0f79ff,#1658ef)] hover:brightness-105")
                             }
                           >
                             เลือกแพ็กเกจ
+                            <LineIcon name="arrow" className="h-4 w-4" />
                           </button>
                         )}
                       </div>
@@ -371,59 +433,69 @@ export default function CpiposPricingCheckout() {
                 })}
           </div>
         </div>
-      </section>
 
-      {!loading && packages.length ? (
-        <section className="bg-white py-16 sm:py-20">
-          <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-            <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-              <div>
-                <h2 className="text-3xl font-black tracking-tight text-[#08182f]">เปรียบเทียบแพ็กเกจ</h2>
-                <p className="mt-3 text-sm leading-6 text-[#6a7890]">
-                  ดูสิทธิ์สำคัญของแต่ละแพ็กเกจในตารางเดียว
+        {!loading && packages.length ? (
+          <div className="relative mx-auto max-w-[1320px] px-5 pb-16 sm:px-8 lg:pb-20">
+            <section className="overflow-hidden rounded-[24px] border border-[#d7e3f0] bg-white/95 shadow-[0_18px_54px_rgba(23,70,120,0.08)] backdrop-blur">
+              <div className="border-b border-[#e4ebf3] px-6 py-5 sm:px-7">
+                <h2 className="text-2xl font-black tracking-tight text-[#0b1c3d]">เปรียบเทียบแพ็กเกจแบบละเอียด</h2>
+                <p className="mt-1 text-sm text-[#677b96]">
+                  ดูรายละเอียดฟีเจอร์ทั้งหมดของ CpiPOS ในแต่ละแพ็กเกจ เพื่อเลือกสิ่งที่เหมาะกับธุรกิจของคุณ
                 </p>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="min-w-[860px] w-full border-separate border-spacing-0 text-sm">
+              <div className="overflow-x-auto px-4 pb-5 pt-3 sm:px-6">
+                <table className="min-w-[930px] w-full border-separate border-spacing-0 text-[13px]">
                   <thead>
                     <tr>
-                      <th className="w-[220px] pb-4 text-left text-xs font-bold uppercase tracking-wide text-[#7b8799]">สิทธิ์</th>
-                      {packages.map((pkg) => (
-                        <th key={pkg.id} className="px-3 pb-4 text-center align-bottom">
-                          <p className="text-base font-black text-[#08182f]">{pkg.name}</p>
-                          <button
-                            type="button"
-                            disabled={pkg.contact_sales}
-                            onClick={() => openCheckout(pkg)}
-                            className={
-                              "mt-3 w-full rounded-full px-4 py-2 text-xs font-black transition " +
-                              (pkg.code === "growth"
-                                ? "bg-[#08182f] text-white"
-                                : "bg-[#eef2f7] text-[#17253b] hover:bg-[#e2e8f0]") +
-                              (pkg.contact_sales ? " cursor-not-allowed opacity-50" : "")
-                            }
-                          >
-                            {pkg.contact_sales ? "ติดต่อฝ่ายขาย" : "เลือก"}
-                          </button>
+                      <th className="rounded-l-[14px] bg-[#f3f7fc] px-4 py-3 text-left font-black text-[#253b5d]">ฟีเจอร์ / แพ็กเกจ</th>
+                      {packages.map((pkg, index) => (
+                        <th
+                          key={pkg.id}
+                          className={
+                            "px-4 py-3 text-center text-[14px] font-black " +
+                            (pkg.code === "growth" ? "bg-[#e9f4ff] text-[#155eef]" : "bg-[#f3f7fc] text-[#0b1c3d]") +
+                            (index === packages.length - 1 ? " rounded-r-[14px]" : "")
+                          }
+                        >
+                          {pkg.name}
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t border-dashed border-[#d8dee8]">
-                      <td className="border-t border-dashed border-[#d8dee8] py-4 font-semibold text-[#68768b]">ราคาเริ่มต้น</td>
+                    <tr>
+                      <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / เดือน</td>
                       {packages.map((pkg) => (
-                        <td key={pkg.id} className="border-t border-dashed border-[#d8dee8] px-3 py-4 text-center font-semibold text-[#17253b]">
-                          {pkg.contact_sales ? "Custom" : money(pkg.monthly_price) + " / เดือน"}
+                        <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
+                          {pkg.contact_sales ? "ตามสัญญา" : money(pkg.monthly_price)}
+                        </td>
+                      ))}
+                    </tr>
+                    <tr>
+                      <td className="border-b border-[#e6edf5] px-4 py-3 font-bold text-[#657791]">ราคา / ปี</td>
+                      {packages.map((pkg) => (
+                        <td key={pkg.id} className={"border-b border-[#e6edf5] px-4 py-3 text-center font-bold " + (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#344a69]")}>
+                          {pkg.contact_sales ? "ตามสัญญา" : pkg.yearly_price ? money(pkg.yearly_price) : "—"}
                         </td>
                       ))}
                     </tr>
                     {compareRows.map((row) => (
                       <tr key={row.label}>
-                        <td className="border-t border-dashed border-[#d8dee8] py-4 font-semibold text-[#68768b]">{row.label}</td>
+                        <td className="border-b border-[#e6edf5] px-4 py-3 font-semibold text-[#657791]">
+                          <span className="flex items-center gap-2">
+                            <FeatureIcon name={row.icon} className="h-4 w-4 text-[#155eef]" />
+                            {row.label}
+                          </span>
+                        </td>
                         {packages.map((pkg) => (
-                          <td key={pkg.id} className="border-t border-dashed border-[#d8dee8] px-3 py-4 text-center font-semibold text-[#17253b]">
+                          <td
+                            key={pkg.id}
+                            className={
+                              "border-b border-[#e6edf5] px-4 py-3 text-center font-semibold " +
+                              (pkg.code === "growth" ? "bg-[#f5faff] text-[#155eef]" : "text-[#304766]")
+                            }
+                          >
                             {row.value(pkg)}
                           </td>
                         ))}
@@ -432,10 +504,10 @@ export default function CpiposPricingCheckout() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </section>
           </div>
-        </section>
-      ) : null}
+        ) : null}
+      </section>
 
       {selected ? (
         <div
