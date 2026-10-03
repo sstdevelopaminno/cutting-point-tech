@@ -49,6 +49,59 @@ type ApiEnvelope<T> = {
   error?: { code?: string; message?: string };
 };
 
+type IconName = "lock" | "store" | "key" | "upload" | "arrow" | "check";
+
+function LineIcon({ name, className = "h-5 w-5" }: { name: IconName; className?: string }) {
+  if (name === "store") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+        <path d="M4 10h16" />
+        <path d="M5 10V6.8L7 4h10l2 2.8V10" />
+        <path d="M6 10v9h12v-9" />
+        <path d="M9 19v-5h6v5" />
+      </svg>
+    );
+  }
+  if (name === "key") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+        <circle cx="8" cy="15" r="3.5" />
+        <path d="M10.7 12.3 18 5m-1 1 2 2m-4 0 2 2" />
+      </svg>
+    );
+  }
+  if (name === "upload") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+        <path d="M12 16V5" />
+        <path d="m8 9 4-4 4 4" />
+        <path d="M5 19h14" />
+      </svg>
+    );
+  }
+  if (name === "arrow") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+        <path d="M5 12h14" />
+        <path d="m15 8 4 4-4 4" />
+      </svg>
+    );
+  }
+  if (name === "check") {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+        <path d="m6 12 4 4 8-8" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <rect x="5" y="10" width="14" height="10" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
+  );
+}
+
 function money(value: number | null) {
   if (value == null) return "ตามสัญญา";
   return new Intl.NumberFormat("th-TH", {
@@ -63,15 +116,15 @@ function number(value: number | null, suffix = "") {
   return value == null ? "ตามสัญญา" : new Intl.NumberFormat("th-TH").format(value) + suffix;
 }
 
-function packageTone(code: string) {
-  if (code === "growth") return "border-emerald-300 bg-gradient-to-b from-emerald-50 to-white ring-2 ring-emerald-100";
-  if (code === "business") return "border-blue-300 bg-gradient-to-b from-blue-50 to-white ring-2 ring-blue-100";
-  return "border-slate-200 bg-white";
+function packageDescription(code: string) {
+  if (code === "starter") return "เริ่มต้นใช้งานสำหรับร้านขนาดเล็ก";
+  if (code === "growth") return "เหมาะสำหรับร้านที่กำลังเติบโต";
+  if (code === "business") return "สำหรับธุรกิจที่ต้องการขยายทีมและสาขา";
+  return "ปรับสิทธิ์และทรัพยากรตามความต้องการ";
 }
 
-function PackageIcon({ code }: { code: string }) {
-  const icon = code === "starter" ? "🏪" : code === "growth" ? "📈" : code === "business" ? "🏢" : "⚙️";
-  return <span className="text-2xl" aria-hidden>{icon}</span>;
+function displayForCustom(pkg: PackageRow, value: string) {
+  return pkg.contact_sales ? "ตามสัญญา" : value;
 }
 
 export default function CpiposPricingCheckout() {
@@ -108,7 +161,6 @@ export default function CpiposPricingCheckout() {
       active = false;
     };
   }, []);
-
 
   function openCheckout(pkg: PackageRow) {
     if (pkg.contact_sales) return;
@@ -195,31 +247,28 @@ export default function CpiposPricingCheckout() {
   }
 
   const compareRows = [
-    { label: "สาขา", icon: "🏪", value: (p: PackageRow) => number(p.max_branches) },
-    { label: "เครื่อง POS", icon: "🖥️", value: (p: PackageRow) => number(p.max_devices) },
-    { label: "ผู้ใช้งาน", icon: "👥", value: (p: PackageRow) => number(p.max_users) },
-    { label: "สินค้า", icon: "📦", value: (p: PackageRow) => number(p.max_products) },
-    { label: "บิล / เดือน", icon: "🧾", value: (p: PackageRow) => number(p.monthly_bill_limit) },
-    { label: "Storage", icon: "💾", value: (p: PackageRow) => p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB" },
-    { label: "เก็บข้อมูลยอดขาย", icon: "🕘", value: (p: PackageRow) => number(p.retention_months, " เดือน") },
-    { label: "โหมดการขาย", icon: "✨", value: (p: PackageRow) => p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด" },
-    { label: "CpiPOS AI", icon: "🤖", value: (p: PackageRow) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
+    { label: "สาขา", value: (p: PackageRow) => displayForCustom(p, number(p.max_branches)) },
+    { label: "เครื่อง POS", value: (p: PackageRow) => displayForCustom(p, number(p.max_devices)) },
+    { label: "ผู้ใช้งาน", value: (p: PackageRow) => displayForCustom(p, number(p.max_users)) },
+    { label: "สินค้า", value: (p: PackageRow) => displayForCustom(p, number(p.max_products)) },
+    { label: "บิล / เดือน", value: (p: PackageRow) => displayForCustom(p, number(p.monthly_bill_limit)) },
+    { label: "Storage", value: (p: PackageRow) => displayForCustom(p, p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB") },
+    { label: "เก็บข้อมูลยอดขาย", value: (p: PackageRow) => displayForCustom(p, number(p.retention_months, " เดือน")) },
+    { label: "โหมดการขาย", value: (p: PackageRow) => displayForCustom(p, p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด") },
+    { label: "CpiPOS AI", value: (p: PackageRow) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
   ];
 
   return (
     <>
-      <section className="overflow-hidden bg-[radial-gradient(circle_at_top_left,_#eef5ff,_#ffffff_48%,_#f4f0ff)]">
-        <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-bold text-blue-700 shadow-sm">
-              <span aria-hidden>👑</span>
-              CpiPOS PACKAGE
-            </span>
-            <h1 className="mt-5 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
+      <section className="bg-[#f6f8fc]">
+        <div className="mx-auto max-w-[1240px] px-5 pb-16 pt-14 sm:px-8 lg:pb-20 lg:pt-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-4xl font-black tracking-[-0.025em] text-[#08182f] sm:text-5xl">
               เลือกแพ็กเกจ CpiPOS ที่เหมาะกับร้านคุณ
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              เปรียบเทียบราคาและสิทธิ์จากระบบ CpiPOS โดยตรง เลือกแพ็กเกจ ยืนยันรหัสร้านด้วย PIN ของ Owner/Manager แล้วชำระได้จากหน้านี้โดยไม่ต้องล็อกอินเข้า POS
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#5f6f87]">
+              ราคาและสิทธิ์อ้างอิงจากระบบ CpiPOS โดยตรง เลือกแพ็กเกจและชำระได้จากเว็บไซต์
+              โดยยืนยันรหัสร้านและ PIN ของ Owner/Manager
             </p>
           </div>
 
@@ -229,250 +278,410 @@ export default function CpiposPricingCheckout() {
             </div>
           ) : null}
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-11 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {loading
               ? Array.from({ length: 4 }).map((_, index) => (
-                  <div key={index} className="h-[440px] animate-pulse rounded-3xl border border-slate-200 bg-white/80" />
+                  <div key={index} className="h-[510px] animate-pulse rounded-[26px] border border-[#dce3ee] bg-white" />
                 ))
-              : packages.map((pkg) => (
-                  <article key={pkg.id} className={"relative flex min-h-[440px] flex-col rounded-3xl border p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] " + packageTone(pkg.code)}>
-                    {pkg.code === "growth" ? (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-4 py-1.5 text-xs font-black text-white shadow-lg">
-                        แนะนำ
-                      </span>
-                    ) : pkg.code === "business" ? (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-blue-600 px-4 py-1.5 text-xs font-black text-white shadow-lg">
-                        สำหรับธุรกิจ
-                      </span>
-                    ) : null}
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-700 shadow-sm">
-                      <PackageIcon code={pkg.code} />
-                    </div>
-                    <h2 className="mt-5 text-2xl font-black text-slate-950">{pkg.name}</h2>
-                    <div className="mt-3">
-                      <div className="text-3xl font-black text-blue-700">
-                        {pkg.contact_sales ? "ตามสัญญา" : money(pkg.monthly_price)}
-                        {!pkg.contact_sales ? <span className="text-sm font-bold text-slate-500">/เดือน</span> : null}
-                      </div>
-                      {pkg.yearly_price ? (
-                        <p className="mt-1 text-sm font-semibold text-slate-500">{money(pkg.yearly_price)}/ปี</p>
+              : packages.map((pkg) => {
+                  const featured = pkg.code === "growth";
+                  const business = pkg.code === "business";
+                  return (
+                    <article
+                      key={pkg.id}
+                      className={
+                        "relative flex min-h-[510px] flex-col rounded-[26px] border p-6 transition " +
+                        (featured
+                          ? "border-[#0c4edb] bg-[#071a33] text-white shadow-[0_24px_70px_rgba(7,26,51,0.2)]"
+                          : business
+                            ? "border-[#b9d0ff] bg-[#f0f5ff] text-[#08182f] shadow-[0_18px_45px_rgba(13,74,180,0.08)]"
+                            : "border-[#dce3ee] bg-white text-[#08182f] shadow-[0_14px_40px_rgba(15,23,42,0.06)]")
+                      }
+                    >
+                      {featured ? (
+                        <span className="absolute right-5 top-5 rounded-full bg-white/12 px-3 py-1 text-[11px] font-bold tracking-wide text-white ring-1 ring-white/15">
+                          แนะนำ
+                        </span>
+                      ) : business ? (
+                        <span className="absolute right-5 top-5 rounded-full bg-[#155eef] px-3 py-1 text-[11px] font-bold text-white">
+                          สำหรับธุรกิจ
+                        </span>
                       ) : null}
-                    </div>
 
-                    <div className="mt-6 space-y-2 text-sm text-slate-700">
-                      {compareRows.slice(0, 6).map((row) => (
-                        <div key={row.label} className="flex items-center justify-between gap-3 border-b border-slate-100 py-2">
-                          <span className="flex items-center gap-2 text-slate-500"><span aria-hidden>{row.icon}</span>{row.label}</span>
-                          <strong className="text-right text-slate-800">{row.value(pkg)}</strong>
+                      <div className="min-h-[124px]">
+                        <p className={"text-[11px] font-bold uppercase tracking-[0.16em] " + (featured ? "text-[#73a6ff]" : "text-[#6e7e96]")}>
+                          {pkg.code === "custom" ? "Tailored plan" : "CpiPOS plan"}
+                        </p>
+                        <h2 className="mt-3 text-2xl font-black tracking-tight">{pkg.name}</h2>
+                        <p className={"mt-2 min-h-[44px] text-sm leading-6 " + (featured ? "text-[#b9c7db]" : "text-[#69788f]")}>
+                          {packageDescription(pkg.code)}
+                        </p>
+                      </div>
+
+                      <div className="mt-4">
+                        <div className={"text-4xl font-black tracking-tight " + (featured ? "text-white" : "text-[#08182f]")}>
+                          {pkg.contact_sales ? "Custom" : money(pkg.monthly_price)}
+                          {!pkg.contact_sales ? <span className={"ml-1 text-sm font-semibold " + (featured ? "text-[#a8b8cf]" : "text-[#6b7890]")}>/ เดือน</span> : null}
                         </div>
-                      ))}
-                    </div>
+                        {pkg.yearly_price ? (
+                          <p className={"mt-2 text-sm font-semibold " + (featured ? "text-[#9fb0c9]" : "text-[#6b7890]")}>
+                            {money(pkg.yearly_price)} / ปี
+                          </p>
+                        ) : pkg.contact_sales ? (
+                          <p className={"mt-2 text-sm font-semibold " + (featured ? "text-[#9fb0c9]" : "text-[#6b7890]")}>ออกแบบตามสัญญา</p>
+                        ) : null}
+                      </div>
 
-                    <div className="mt-auto pt-6">
-                      {pkg.contact_sales ? (
-                        <Link href="/contact" className="flex w-full items-center justify-center rounded-2xl border-2 border-violet-300 bg-white px-4 py-3 text-sm font-black text-violet-700 transition hover:bg-violet-50">
-                          ขอใบเสนอราคา
-                        </Link>
-                      ) : (
-                        <button type="button" onClick={() => openCheckout(pkg)}
-                          className={"w-full rounded-2xl px-4 py-3 text-sm font-black text-white shadow-lg transition " +
-                            (pkg.code === "growth" ? "bg-emerald-500 hover:bg-emerald-600" : "bg-blue-600 hover:bg-blue-700")}>
-                          เลือกแพ็กเกจ
-                        </button>
-                      )}
-                    </div>
-                  </article>
-                ))}
+                      <div className={"my-6 h-px " + (featured ? "bg-white/12" : "bg-[#e4e9f1]")} />
+
+                      <div className="space-y-3 text-sm">
+                        {compareRows.slice(0, 6).map((row) => (
+                          <div key={row.label} className="flex items-center justify-between gap-3">
+                            <span className={featured ? "text-[#b9c7db]" : "text-[#66758c]"}>{row.label}</span>
+                            <strong className={featured ? "text-white" : "text-[#17253b]"}>{row.value(pkg)}</strong>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mt-auto pt-7">
+                        {pkg.contact_sales ? (
+                          <Link
+                            href="/contact"
+                            className="flex w-full items-center justify-center rounded-full border border-[#b7c4d7] bg-white px-4 py-3 text-sm font-black text-[#08182f] transition hover:border-[#155eef] hover:text-[#155eef]"
+                          >
+                            ขอใบเสนอราคา
+                          </Link>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => openCheckout(pkg)}
+                            className={
+                              "w-full rounded-full px-4 py-3 text-sm font-black transition " +
+                              (featured
+                                ? "bg-white text-[#071a33] hover:bg-[#edf3ff]"
+                                : "bg-[#08182f] text-white hover:bg-[#155eef]")
+                            }
+                          >
+                            เลือกแพ็กเกจ
+                          </button>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
           </div>
         </div>
       </section>
 
       {!loading && packages.length ? (
-        <section className="bg-white py-14 sm:py-16">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8">
-            <div className="mb-6">
-              <h2 className="text-2xl font-black text-slate-950">เปรียบเทียบแพ็กเกจแบบละเอียด</h2>
-              <p className="mt-2 text-sm text-slate-500">ข้อมูลราคาและสิทธิ์ดึงจาก CpiPOS-001 เพื่อให้ตรงกับแพ็กเกจที่ใช้งานจริง</p>
-            </div>
-            <div className="overflow-x-auto rounded-3xl border border-slate-200 shadow-sm">
-              <table className="min-w-[920px] w-full text-sm">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-5 py-4 text-left font-black text-slate-600">สิทธิ์ / แพ็กเกจ</th>
-                    {packages.map((pkg) => (
-                      <th key={pkg.id} className={"px-5 py-4 text-center text-lg font-black " + (pkg.code === "business" ? "bg-blue-50 text-blue-950" : "text-slate-950")}>
-                        {pkg.name}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {compareRows.map((row) => (
-                    <tr key={row.label}>
-                      <td className="px-5 py-4 font-bold text-slate-600">
-                        <span className="flex items-center gap-2"><span aria-hidden>{row.icon}</span>{row.label}</span>
-                      </td>
+        <section className="bg-white py-16 sm:py-20">
+          <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
+            <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
+              <div>
+                <h2 className="text-3xl font-black tracking-tight text-[#08182f]">เปรียบเทียบแพ็กเกจ</h2>
+                <p className="mt-3 text-sm leading-6 text-[#6a7890]">
+                  ดูสิทธิ์สำคัญของแต่ละแพ็กเกจในตารางเดียว
+                </p>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-[860px] w-full border-separate border-spacing-0 text-sm">
+                  <thead>
+                    <tr>
+                      <th className="w-[220px] pb-4 text-left text-xs font-bold uppercase tracking-wide text-[#7b8799]">สิทธิ์</th>
                       {packages.map((pkg) => (
-                        <td key={pkg.id} className={"px-5 py-4 text-center font-semibold text-slate-700 " + (pkg.code === "business" ? "bg-blue-50/40" : "")}>
-                          {row.value(pkg)}
+                        <th key={pkg.id} className="px-3 pb-4 text-center align-bottom">
+                          <p className="text-base font-black text-[#08182f]">{pkg.name}</p>
+                          <button
+                            type="button"
+                            disabled={pkg.contact_sales}
+                            onClick={() => openCheckout(pkg)}
+                            className={
+                              "mt-3 w-full rounded-full px-4 py-2 text-xs font-black transition " +
+                              (pkg.code === "growth"
+                                ? "bg-[#08182f] text-white"
+                                : "bg-[#eef2f7] text-[#17253b] hover:bg-[#e2e8f0]") +
+                              (pkg.contact_sales ? " cursor-not-allowed opacity-50" : "")
+                            }
+                          >
+                            {pkg.contact_sales ? "ติดต่อฝ่ายขาย" : "เลือก"}
+                          </button>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-t border-dashed border-[#d8dee8]">
+                      <td className="border-t border-dashed border-[#d8dee8] py-4 font-semibold text-[#68768b]">ราคาเริ่มต้น</td>
+                      {packages.map((pkg) => (
+                        <td key={pkg.id} className="border-t border-dashed border-[#d8dee8] px-3 py-4 text-center font-semibold text-[#17253b]">
+                          {pkg.contact_sales ? "Custom" : money(pkg.monthly_price) + " / เดือน"}
                         </td>
                       ))}
                     </tr>
-                  ))}
-                  <tr>
-                    <td className="px-5 py-4 font-bold text-slate-600">เลือกแพ็กเกจ</td>
-                    {packages.map((pkg) => (
-                      <td key={pkg.id} className={"px-5 py-4 text-center " + (pkg.code === "business" ? "bg-blue-50/40" : "")}>
-                        {pkg.contact_sales ? (
-                          <Link href="/contact" className="inline-flex rounded-xl border border-violet-300 px-4 py-2 text-xs font-black text-violet-700">ขอใบเสนอราคา</Link>
-                        ) : (
-                          <button type="button" onClick={() => openCheckout(pkg)} className="rounded-xl bg-blue-600 px-4 py-2 text-xs font-black text-white">เลือกแพ็กเกจ</button>
-                        )}
-                      </td>
+                    {compareRows.map((row) => (
+                      <tr key={row.label}>
+                        <td className="border-t border-dashed border-[#d8dee8] py-4 font-semibold text-[#68768b]">{row.label}</td>
+                        {packages.map((pkg) => (
+                          <td key={pkg.id} className="border-t border-dashed border-[#d8dee8] px-3 py-4 text-center font-semibold text-[#17253b]">
+                            {row.value(pkg)}
+                          </td>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </section>
       ) : null}
 
       {selected ? (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" onMouseDown={(event) => {
-          if (event.target === event.currentTarget) closeCheckout();
-        }}>
-          <section role="dialog" aria-modal="true" aria-label="ซื้อแพ็กเกจ CpiPOS"
-            className="max-h-[92vh] w-full max-w-2xl overflow-auto rounded-3xl border border-white/30 bg-white shadow-2xl">
-            <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-white/95 px-5 py-4 backdrop-blur">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-[#071326]/65 p-4 backdrop-blur-[3px]"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeCheckout();
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-label="ซื้อแพ็กเกจ CpiPOS"
+            className="max-h-[92vh] w-full max-w-[672px] overflow-auto rounded-[24px] border border-white/60 bg-white shadow-[0_30px_90px_rgba(2,12,27,0.28)]"
+          >
+            <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-[#e3e8f0] bg-white/98 px-6 py-5 backdrop-blur">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">CpiPOS Secure Checkout</p>
-                <h2 className="mt-1 text-xl font-black text-slate-950">{selected.name}</h2>
+                <p className="text-[11px] font-black uppercase tracking-[0.19em] text-[#155eef]">CPIPOS SECURE CHECKOUT</p>
+                <h2 className="mt-1 text-2xl font-black tracking-tight text-[#08182f]">{selected.name}</h2>
               </div>
-              <button type="button" onClick={closeCheckout} disabled={busy}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-40">
+              <button
+                type="button"
+                onClick={closeCheckout}
+                disabled={busy}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dbe2ec] text-[#6d7b90] transition hover:bg-[#f5f7fa] disabled:opacity-40"
+              >
                 <X className="h-5 w-5" />
               </button>
             </header>
 
-            <div className="p-5 sm:p-6">
+            <div className="p-6">
               {step === "verify" ? (
                 <div>
-                  <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white"><span aria-hidden>🔐</span></div>
+                  <div className="rounded-[18px] border border-[#cfe0ff] bg-[#edf5ff] p-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#dbeaff] text-[#155eef]">
+                        <LineIcon name="lock" className="h-6 w-6" />
+                      </div>
                       <div>
-                        <p className="font-black text-blue-950">ยืนยันสิทธิ์ Owner / Manager</p>
-                        <p className="text-xs leading-5 text-blue-700">ไม่ต้องล็อกอินเข้า POS ใช้รหัสร้านและ PIN ของเจ้าของร้านหรือผู้จัดการเท่านั้น</p>
+                        <p className="font-black text-[#15233b]">ยืนยันสิทธิ์ Owner / Manager</p>
+                        <p className="mt-1 text-xs leading-5 text-[#155eef]">
+                          ไม่ต้องล็อกอินเข้า POS ใช้รหัสร้านและ PIN ของเจ้าของร้านหรือผู้จัดการเท่านั้น
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    <button type="button" onClick={() => setInterval("monthly")}
-                      className={"rounded-2xl border p-4 text-left " + (interval === "monthly" ? "border-blue-500 bg-blue-50 ring-2 ring-blue-100" : "border-slate-200")}>
-                      <p className="text-xs font-bold text-slate-500">รายเดือน</p>
-                      <p className="mt-1 text-xl font-black text-slate-950">{money(selected.monthly_price)}</p>
+                    <button
+                      type="button"
+                      onClick={() => setInterval("monthly")}
+                      className={
+                        "relative rounded-[16px] border p-4 text-left transition " +
+                        (interval === "monthly"
+                          ? "border-[#155eef] bg-[#f1f6ff] shadow-[0_0_0_2px_rgba(21,94,239,0.12)]"
+                          : "border-[#dce3ed] bg-white hover:border-[#b9c9df]")
+                      }
+                    >
+                      <span className="absolute right-4 top-4 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#8fa1b8]">
+                        {interval === "monthly" ? <span className="h-2.5 w-2.5 rounded-full bg-[#155eef]" /> : null}
+                      </span>
+                      <p className="text-xs font-bold text-[#63728a]">รายเดือน</p>
+                      <p className="mt-1 text-2xl font-black tracking-tight text-[#08182f]">{money(selected.monthly_price)}</p>
                     </button>
-                    <button type="button" disabled={!selected.yearly_price} onClick={() => setInterval("yearly")}
-                      className={"rounded-2xl border p-4 text-left disabled:cursor-not-allowed disabled:opacity-40 " + (interval === "yearly" ? "border-violet-500 bg-violet-50 ring-2 ring-violet-100" : "border-slate-200")}>
-                      <p className="text-xs font-bold text-slate-500">รายปี</p>
-                      <p className="mt-1 text-xl font-black text-slate-950">{selected.yearly_price ? money(selected.yearly_price) : "ยังไม่เปิด"}</p>
+
+                    <button
+                      type="button"
+                      disabled={!selected.yearly_price}
+                      onClick={() => setInterval("yearly")}
+                      className={
+                        "relative rounded-[16px] border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-40 " +
+                        (interval === "yearly"
+                          ? "border-[#155eef] bg-[#f1f6ff] shadow-[0_0_0_2px_rgba(21,94,239,0.12)]"
+                          : "border-[#dce3ed] bg-white hover:border-[#b9c9df]")
+                      }
+                    >
+                      <span className="absolute right-4 top-4 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#8fa1b8]">
+                        {interval === "yearly" ? <span className="h-2.5 w-2.5 rounded-full bg-[#155eef]" /> : null}
+                      </span>
+                      <p className="text-xs font-bold text-[#63728a]">รายปี</p>
+                      <p className="mt-1 text-2xl font-black tracking-tight text-[#08182f]">
+                        {selected.yearly_price ? money(selected.yearly_price) : "ยังไม่เปิด"}
+                      </p>
                     </button>
                   </div>
 
                   <div className="mt-5 grid gap-4">
-                    <label className="grid gap-1.5 text-sm font-bold text-slate-700">
+                    <label className="grid gap-2 text-sm font-bold text-[#314159]">
                       รหัสร้าน
-                      <input value={storeCode} onChange={(e) => setStoreCode(e.target.value)} maxLength={32}
-                        autoComplete="off" placeholder="เช่น 123456"
-                        className="rounded-2xl border border-slate-300 px-4 py-3 text-base font-semibold outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100" />
+                      <div className="flex items-center rounded-[15px] border border-[#cbd5e3] bg-white px-4 transition focus-within:border-[#155eef] focus-within:ring-4 focus-within:ring-[#dce9ff]">
+                        <LineIcon name="store" className="h-5 w-5 shrink-0 text-[#71839c]" />
+                        <input
+                          value={storeCode}
+                          onChange={(e) => setStoreCode(e.target.value)}
+                          maxLength={32}
+                          autoComplete="off"
+                          placeholder="เช่น 123456"
+                          className="w-full bg-transparent px-3 py-3.5 text-base font-semibold text-[#14233b] outline-none placeholder:text-[#9ba8ba]"
+                        />
+                      </div>
                     </label>
-                    <label className="grid gap-1.5 text-sm font-bold text-slate-700">
+
+                    <label className="grid gap-2 text-sm font-bold text-[#314159]">
                       PIN Owner / Manager
-                      <input value={pin} onChange={(e) => setPin(e.target.value)} maxLength={32}
-                        type="password" inputMode="numeric" autoComplete="one-time-code" placeholder="••••"
-                        className="rounded-2xl border border-slate-300 px-4 py-3 text-base font-semibold tracking-[0.35em] outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100" />
+                      <div className="flex items-center rounded-[15px] border border-[#cbd5e3] bg-white px-4 transition focus-within:border-[#155eef] focus-within:ring-4 focus-within:ring-[#dce9ff]">
+                        <LineIcon name="key" className="h-5 w-5 shrink-0 text-[#71839c]" />
+                        <input
+                          value={pin}
+                          onChange={(e) => setPin(e.target.value)}
+                          maxLength={32}
+                          type="password"
+                          inputMode="numeric"
+                          autoComplete="one-time-code"
+                          placeholder="••••"
+                          className="w-full bg-transparent px-3 py-3.5 text-base font-semibold tracking-[0.35em] text-[#14233b] outline-none placeholder:text-[#9ba8ba]"
+                        />
+                      </div>
                     </label>
                   </div>
 
-                  {dialogError ? <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{dialogError}</p> : null}
-                  <button type="button" onClick={() => void verifyStore()} disabled={busy}
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3.5 text-sm font-black text-white shadow-lg hover:bg-blue-700 disabled:opacity-50">
-                    {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden /> : <span aria-hidden>🔐</span>}
+                  {dialogError ? (
+                    <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
+                      {dialogError}
+                    </p>
+                  ) : null}
+
+                  <button
+                    type="button"
+                    onClick={() => void verifyStore()}
+                    disabled={busy}
+                    className="mt-5 flex w-full items-center justify-center gap-3 rounded-[14px] bg-[#155eef] px-5 py-3.5 text-sm font-black text-white shadow-[0_10px_24px_rgba(21,94,239,0.24)] transition hover:bg-[#0f4fd1] disabled:opacity-50"
+                  >
+                    {busy ? (
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden />
+                    ) : (
+                      <LineIcon name="lock" className="h-5 w-5" />
+                    )}
                     {busy ? "กำลังยืนยัน..." : "ยืนยันและไปหน้าชำระเงิน"}
+                    {!busy ? <LineIcon name="arrow" className="h-5 w-5" /> : null}
                   </button>
                 </div>
               ) : step === "pay" && session ? (
                 <div>
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                  <div className="rounded-[18px] border border-[#c9eadf] bg-[#eefaf6] p-4">
                     <div className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-6 w-6 text-emerald-600" />
+                      <CheckCircle2 className="mt-0.5 h-6 w-6 text-[#0a8f66]" />
                       <div>
-                        <p className="font-black text-emerald-950">ยืนยันร้านสำเร็จ · {session.store.name}</p>
-                        <p className="mt-1 text-xs text-emerald-700">รหัสร้าน {session.store.code} · {session.package.name} · {session.package.billing_interval === "yearly" ? "รายปี" : "รายเดือน"}</p>
+                        <p className="font-black text-[#123c31]">ยืนยันร้านสำเร็จ · {session.store.name}</p>
+                        <p className="mt-1 text-xs text-[#4a7168]">
+                          รหัสร้าน {session.store.code} · {session.package.name} · {session.package.billing_interval === "yearly" ? "รายปี" : "รายเดือน"}
+                        </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-5 rounded-3xl border border-blue-200 bg-gradient-to-br from-blue-50 to-violet-50 p-5">
+                  <div className="mt-5 rounded-[20px] border border-[#d3def0] bg-[#f5f8fc] p-5">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div>
-                        <p className="text-xs font-black uppercase tracking-wide text-blue-700">บัญชีรับชำระของบริษัท</p>
-                        <p className="mt-2 text-sm font-bold text-slate-700">{session.issuer.bank_name || "บัญชีบริษัท"}</p>
-                        <p className="mt-1 text-base font-black text-slate-950">{session.issuer.account_name}</p>
-                        <p className="mt-2 text-2xl font-black tracking-wide text-blue-700">{session.issuer.account_number || session.issuer.promptpay_id}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#155eef]">บัญชีรับชำระของบริษัท</p>
+                        <p className="mt-3 text-sm font-bold text-[#526176]">{session.issuer.bank_name || "บัญชีบริษัท"}</p>
+                        <p className="mt-1 text-base font-black text-[#08182f]">{session.issuer.account_name}</p>
+                        <p className="mt-2 text-2xl font-black tracking-wide text-[#155eef]">{session.issuer.account_number || session.issuer.promptpay_id}</p>
                       </div>
-                      <div className="rounded-2xl bg-white px-5 py-4 text-right shadow-sm">
-                        <p className="text-xs font-bold text-slate-500">ยอดตามแพ็กเกจ</p>
-                        <p className="mt-1 text-3xl font-black text-blue-700">{money(session.package.amount)}</p>
+                      <div className="rounded-[16px] border border-[#e1e7ef] bg-white px-5 py-4 text-right shadow-sm">
+                        <p className="text-xs font-bold text-[#6d7b90]">ยอดตามแพ็กเกจ</p>
+                        <p className="mt-1 text-3xl font-black tracking-tight text-[#155eef]">{money(session.package.amount)}</p>
                       </div>
                     </div>
                   </div>
 
-                  <label className="mt-5 block rounded-3xl border-2 border-dashed border-blue-300 bg-blue-50/60 p-6 text-center transition hover:bg-blue-50">
-                    <span className="mx-auto block text-4xl text-blue-600" aria-hidden>↥</span>
-                    <span className="mt-3 block text-sm font-black text-slate-800">{slip ? slip.name : "แนบรูปสลิปการโอนเงิน"}</span>
-                    <span className="mt-1 block text-xs text-slate-500">JPG, PNG, WebP · สูงสุด 4 MB</span>
-                    <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only"
-                      onChange={(event) => setSlip(event.target.files?.[0] ?? null)} />
+                  <label className="mt-5 block rounded-[20px] border-2 border-dashed border-[#9dbbff] bg-[#f6f9ff] p-6 text-center transition hover:bg-[#eef4ff]">
+                    <LineIcon name="upload" className="mx-auto h-8 w-8 text-[#155eef]" />
+                    <span className="mt-3 block text-sm font-black text-[#14233b]">{slip ? slip.name : "แนบรูปสลิปการโอนเงิน"}</span>
+                    <span className="mt-1 block text-xs text-[#7b889b]">JPG, PNG, WebP · สูงสุด 4 MB</span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      onChange={(event) => setSlip(event.target.files?.[0] ?? null)}
+                    />
                   </label>
 
-                  <label className="mt-4 grid gap-1.5 text-sm font-bold text-slate-700">
+                  <label className="mt-4 grid gap-2 text-sm font-bold text-[#314159]">
                     หมายเหตุ (ถ้ามี)
-                    <textarea value={note} onChange={(e) => setNote(e.target.value)} maxLength={500}
+                    <textarea
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      maxLength={500}
                       placeholder="เช่น ชื่อสาขา หรือข้อมูลเพิ่มเติมสำหรับฝ่าย IT"
-                      className="min-h-24 rounded-2xl border border-slate-300 px-4 py-3 text-sm font-normal outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100" />
+                      className="min-h-24 rounded-[15px] border border-[#cbd5e3] px-4 py-3 text-sm font-normal outline-none transition focus:border-[#155eef] focus:ring-4 focus:ring-[#dce9ff]"
+                    />
                   </label>
 
-                  {dialogError ? <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{dialogError}</p> : null}
+                  {dialogError ? (
+                    <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">
+                      {dialogError}
+                    </p>
+                  ) : null}
+
                   <div className="mt-5 flex gap-3">
-                    <button type="button" onClick={() => { setStep("verify"); setSession(null); setSlip(null); setDialogError(""); }}
-                      disabled={busy} className="rounded-2xl border border-slate-300 px-5 py-3.5 text-sm font-black text-slate-700 disabled:opacity-50">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStep("verify");
+                        setSession(null);
+                        setSlip(null);
+                        setDialogError("");
+                      }}
+                      disabled={busy}
+                      className="rounded-[14px] border border-[#cbd5e3] px-5 py-3.5 text-sm font-black text-[#40516a] transition hover:bg-[#f6f8fb] disabled:opacity-50"
+                    >
                       ย้อนกลับ
                     </button>
-                    <button type="button" onClick={() => void submitPayment()} disabled={busy || !slip}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3.5 text-sm font-black text-white shadow-lg hover:bg-emerald-700 disabled:opacity-50">
-                      {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden /> : <span aria-hidden>↥</span>}
+                    <button
+                      type="button"
+                      onClick={() => void submitPayment()}
+                      disabled={busy || !slip}
+                      className="flex flex-1 items-center justify-center gap-2 rounded-[14px] bg-[#155eef] px-5 py-3.5 text-sm font-black text-white shadow-[0_10px_24px_rgba(21,94,239,0.22)] transition hover:bg-[#0f4fd1] disabled:opacity-50"
+                    >
+                      {busy ? (
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden />
+                      ) : (
+                        <LineIcon name="upload" className="h-5 w-5" />
+                      )}
                       {busy ? "กำลังส่ง..." : "ส่งหลักฐานให้ฝ่าย IT ตรวจสอบ"}
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="py-8 text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#e6f7f1] text-[#0a8f66]">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h3 className="mt-5 text-2xl font-black text-slate-950">ส่งคำขอสำเร็จ</h3>
-                  <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
-                    ระบบส่งแพ็กเกจและสลิปไปยังฝ่าย IT แล้ว เมื่อเจ้าหน้าที่ตรวจสอบเงินเข้าบัญชีบริษัทและอนุมัติ ระบบจะอัปเดตแพ็กเกจของร้านตามขั้นตอนเดิม
+                  <h3 className="mt-5 text-2xl font-black text-[#08182f]">ส่งคำขอสำเร็จ</h3>
+                  <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#66758c]">
+                    ระบบส่งแพ็กเกจและสลิปไปยังฝ่าย IT แล้ว เมื่อเจ้าหน้าที่ตรวจสอบเงินเข้าบัญชีบริษัทและอนุมัติ
+                    ระบบจะอัปเดตแพ็กเกจของร้านตามขั้นตอนเดิม
                   </p>
-                  <div className="mx-auto mt-5 max-w-md rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
-                    <span className="text-slate-500">เลขที่คำขอ</span>
-                    <strong className="mt-1 block break-all text-slate-900">{requestId}</strong>
+                  <div className="mx-auto mt-5 max-w-md rounded-[16px] border border-[#dce3ed] bg-[#f7f9fc] p-4 text-sm">
+                    <span className="text-[#7b889b]">เลขที่คำขอ</span>
+                    <strong className="mt-1 block break-all text-[#17253b]">{requestId}</strong>
                   </div>
-                  <button type="button" onClick={closeCheckout}
-                    className="mt-6 rounded-2xl bg-slate-950 px-8 py-3 text-sm font-black text-white">
+                  <button
+                    type="button"
+                    onClick={closeCheckout}
+                    className="mt-6 rounded-full bg-[#08182f] px-8 py-3 text-sm font-black text-white transition hover:bg-[#155eef]"
+                  >
                     ปิด
                   </button>
                 </div>
