@@ -295,7 +295,7 @@ export default function CpiposPricingCheckout() {
                           ? "border-[#0c4edb] bg-[#071a33] text-white shadow-[0_24px_70px_rgba(7,26,51,0.2)]"
                           : business
                             ? "border-[#b9d0ff] bg-[#f0f5ff] text-[#08182f] shadow-[0_18px_45px_rgba(13,74,180,0.08)]"
-                            : "border-[#dce3ee] bg-white text-[#08182f] shadow-[0_14px_40px_rgba(15,23,42,0.06)]"
+                            : "border-[#dce3ee] bg-white text-[#08182f] shadow-[0_14px_40px_rgba(15,23,42,0.06)]")
                       }
                     >
                       {featured ? (
