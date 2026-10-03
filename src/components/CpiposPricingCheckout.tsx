@@ -1,23 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Building2,
-  Check,
-  CheckCircle2,
-  Clock3,
-  Crown,
-  Database,
-  Loader2,
-  Monitor,
-  ReceiptText,
-  ShieldCheck,
-  Sparkles,
-  Store,
-  Upload,
-  Users,
-  X,
-} from "lucide-react";
+import { CheckCircle2, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -87,10 +70,8 @@ function packageTone(code: string) {
 }
 
 function PackageIcon({ code }: { code: string }) {
-  if (code === "starter") return <Store className="h-6 w-6" />;
-  if (code === "growth") return <Sparkles className="h-6 w-6" />;
-  if (code === "business") return <Building2 className="h-6 w-6" />;
-  return <Crown className="h-6 w-6" />;
+  const icon = code === "starter" ? "🏪" : code === "growth" ? "📈" : code === "business" ? "🏢" : "⚙️";
+  return <span className="text-2xl" aria-hidden>{icon}</span>;
 }
 
 export default function CpiposPricingCheckout() {
@@ -214,15 +195,15 @@ export default function CpiposPricingCheckout() {
   }
 
   const compareRows = [
-    { label: "สาขา", icon: Store, value: (p: PackageRow) => number(p.max_branches) },
-    { label: "เครื่อง POS", icon: Monitor, value: (p: PackageRow) => number(p.max_devices) },
-    { label: "ผู้ใช้งาน", icon: Users, value: (p: PackageRow) => number(p.max_users) },
-    { label: "สินค้า", icon: Box, value: (p: PackageRow) => number(p.max_products) },
-    { label: "บิล / เดือน", icon: ReceiptText, value: (p: PackageRow) => number(p.monthly_bill_limit) },
-    { label: "Storage", icon: Database, value: (p: PackageRow) => p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB" },
-    { label: "เก็บข้อมูลยอดขาย", icon: Clock3, value: (p: PackageRow) => number(p.retention_months, " เดือน") },
-    { label: "โหมดการขาย", icon: Sparkles, value: (p: PackageRow) => p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด" },
-    { label: "CpiPOS AI", icon: Crown, value: (p: PackageRow) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
+    { label: "สาขา", icon: "🏪", value: (p: PackageRow) => number(p.max_branches) },
+    { label: "เครื่อง POS", icon: "🖥️", value: (p: PackageRow) => number(p.max_devices) },
+    { label: "ผู้ใช้งาน", icon: "👥", value: (p: PackageRow) => number(p.max_users) },
+    { label: "สินค้า", icon: "📦", value: (p: PackageRow) => number(p.max_products) },
+    { label: "บิล / เดือน", icon: "🧾", value: (p: PackageRow) => number(p.monthly_bill_limit) },
+    { label: "Storage", icon: "💾", value: (p: PackageRow) => p.storage_limit_gb == null ? "ตามสัญญา" : p.storage_limit_gb + " GB" },
+    { label: "เก็บข้อมูลยอดขาย", icon: "🕘", value: (p: PackageRow) => number(p.retention_months, " เดือน") },
+    { label: "โหมดการขาย", icon: "✨", value: (p: PackageRow) => p.sales_mode_limit == null ? "กำหนดตามสัญญา" : "สูงสุด " + p.sales_mode_limit + " โหมด" },
+    { label: "CpiPOS AI", icon: "🤖", value: (p: PackageRow) => p.contact_sales ? "กำหนดตามสัญญา" : p.ai_included ? "รวม " + number(p.ai_monthly_requests, " ครั้ง/เดือน") : "ไม่รวม" },
   ];
 
   return (
@@ -231,7 +212,7 @@ export default function CpiposPricingCheckout() {
         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:py-20">
           <div className="mx-auto max-w-4xl text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-bold text-blue-700 shadow-sm">
-              <Crown className="h-4 w-4" />
+              <span aria-hidden>👑</span>
               CpiPOS PACKAGE
             </span>
             <h1 className="mt-5 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
@@ -281,7 +262,7 @@ export default function CpiposPricingCheckout() {
                     <div className="mt-6 space-y-2 text-sm text-slate-700">
                       {compareRows.slice(0, 6).map((row) => (
                         <div key={row.label} className="flex items-center justify-between gap-3 border-b border-slate-100 py-2">
-                          <span className="flex items-center gap-2 text-slate-500"><row.icon className="h-4 w-4" />{row.label}</span>
+                          <span className="flex items-center gap-2 text-slate-500"><span aria-hidden>{row.icon}</span>{row.label}</span>
                           <strong className="text-right text-slate-800">{row.value(pkg)}</strong>
                         </div>
                       ))}
@@ -329,7 +310,7 @@ export default function CpiposPricingCheckout() {
                   {compareRows.map((row) => (
                     <tr key={row.label}>
                       <td className="px-5 py-4 font-bold text-slate-600">
-                        <span className="flex items-center gap-2"><row.icon className="h-4 w-4 text-blue-600" />{row.label}</span>
+                        <span className="flex items-center gap-2"><span aria-hidden>{row.icon}</span>{row.label}</span>
                       </td>
                       {packages.map((pkg) => (
                         <td key={pkg.id} className={"px-5 py-4 text-center font-semibold text-slate-700 " + (pkg.code === "business" ? "bg-blue-50/40" : "")}>
@@ -379,7 +360,7 @@ export default function CpiposPricingCheckout() {
                 <div>
                   <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white"><ShieldCheck className="h-5 w-5" /></div>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white"><span aria-hidden>🔐</span></div>
                       <div>
                         <p className="font-black text-blue-950">ยืนยันสิทธิ์ Owner / Manager</p>
                         <p className="text-xs leading-5 text-blue-700">ไม่ต้องล็อกอินเข้า POS ใช้รหัสร้านและ PIN ของเจ้าของร้านหรือผู้จัดการเท่านั้น</p>
@@ -418,7 +399,7 @@ export default function CpiposPricingCheckout() {
                   {dialogError ? <p className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-700">{dialogError}</p> : null}
                   <button type="button" onClick={() => void verifyStore()} disabled={busy}
                     className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3.5 text-sm font-black text-white shadow-lg hover:bg-blue-700 disabled:opacity-50">
-                    {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
+                    {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden /> : <span aria-hidden>🔐</span>}
                     {busy ? "กำลังยืนยัน..." : "ยืนยันและไปหน้าชำระเงิน"}
                   </button>
                 </div>
@@ -450,7 +431,7 @@ export default function CpiposPricingCheckout() {
                   </div>
 
                   <label className="mt-5 block rounded-3xl border-2 border-dashed border-blue-300 bg-blue-50/60 p-6 text-center transition hover:bg-blue-50">
-                    <Upload className="mx-auto h-9 w-9 text-blue-600" />
+                    <span className="mx-auto block text-4xl text-blue-600" aria-hidden>↥</span>
                     <span className="mt-3 block text-sm font-black text-slate-800">{slip ? slip.name : "แนบรูปสลิปการโอนเงิน"}</span>
                     <span className="mt-1 block text-xs text-slate-500">JPG, PNG, WebP · สูงสุด 4 MB</span>
                     <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only"
@@ -472,7 +453,7 @@ export default function CpiposPricingCheckout() {
                     </button>
                     <button type="button" onClick={() => void submitPayment()} disabled={busy || !slip}
                       className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 py-3.5 text-sm font-black text-white shadow-lg hover:bg-emerald-700 disabled:opacity-50">
-                      {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                      {busy ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden /> : <span aria-hidden>↥</span>}
                       {busy ? "กำลังส่ง..." : "ส่งหลักฐานให้ฝ่าย IT ตรวจสอบ"}
                     </button>
                   </div>
@@ -480,7 +461,7 @@ export default function CpiposPricingCheckout() {
               ) : (
                 <div className="py-8 text-center">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                    <Check className="h-8 w-8" />
+                    <CheckCircle2 className="h-8 w-8" />
                   </div>
                   <h3 className="mt-5 text-2xl font-black text-slate-950">ส่งคำขอสำเร็จ</h3>
                   <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
