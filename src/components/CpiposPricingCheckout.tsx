@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type PackageRow = {
   id: string;
@@ -128,7 +128,6 @@ export default function CpiposPricingCheckout() {
     };
   }, []);
 
-  const packageMap = useMemo(() => new Map(packages.map((item) => [item.code, item])), [packages]);
 
   function openCheckout(pkg: PackageRow) {
     if (pkg.contact_sales) return;
