@@ -12,7 +12,7 @@ const WINDOWS_FINAL_RELEASE = {
 
 const ANDROID_FINAL_RELEASE = {
   version: "v1.0.25",
-  versionCode: 34,
+  versionCode: 34, // Production Android release
   fileName: "CpIPOS-Android-POS-1.0.25.apk",
   url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.25-print-health-auto-update/CpIPOS-Android-POS-1.0.25.apk",
 } as const;
