@@ -11,10 +11,10 @@ const WINDOWS_FINAL_RELEASE = {
 } as const;
 
 const ANDROID_FINAL_RELEASE = {
-  version: "v1.0.24",
-  versionCode: 33,
-  fileName: "CpIPOS-Android-POS-1.0.24.apk",
-  url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.24-print-stability/CpIPOS-Android-POS-1.0.24.apk",
+  version: "v1.0.25",
+  versionCode: 34,
+  fileName: "CpIPOS-Android-POS-1.0.25.apk",
+  url: "https://github.com/sstdevelopaminno/CpIPOS/releases/download/android-runtime-modern-1.0.25-print-health-auto-update/CpIPOS-Android-POS-1.0.25.apk",
 } as const;
 
 const copy = {
