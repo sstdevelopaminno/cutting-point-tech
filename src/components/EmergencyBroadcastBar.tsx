@@ -23,7 +23,21 @@ type Broadcast = {
   updated_at: string;
 };
 
-const REFRESH_MS = 120_000;
+const REFRESH_MS = 30_000;
+
+function resolveBroadcastIcon(broadcast: Broadcast) {
+  const topic = (broadcast.title_en + " " + broadcast.message_en).toLowerCase();
+  if (topic.includes("rain") || topic.includes("flood") || topic.includes("storm") || topic.includes("weather")) return "\u{1F327}\uFE0F";
+  if (topic.includes("api") || topic.includes("server") || topic.includes("database") || topic.includes("network") || topic.includes("internet") || topic.includes("connectivity")) return "\u{1F310}";
+  if (topic.includes("maintenance") || topic.includes("upgrade") || topic.includes("update")) return "\u{1F6E0}\uFE0F";
+  if (topic.includes("payment") || topic.includes("billing") || topic.includes("package")) return "\u{1F4B3}";
+  if (topic.includes("security") || topic.includes("password") || topic.includes("account")) return "\u{1F512}";
+  if (topic.includes("announcement") || topic.includes("notice") || topic.includes("news")) return "\u{1F4E2}";
+  if (broadcast.severity === "emergency") return "\u{1F6A8}";
+  if (broadcast.severity === "danger") return "\u26D4";
+  if (broadcast.severity === "warning") return "\u26A0\uFE0F";
+  return "\u2139\uFE0F";
+}
 
 export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
   const [broadcast, setBroadcast] = useState<Broadcast | null>(null);
@@ -115,7 +129,7 @@ export default function EmergencyBroadcastBar({ lang }: { lang: Lang }) {
           aria-hidden="true"
           className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full border-2 border-current text-sm font-black sm:mt-0"
         >
-          !
+          {resolveBroadcastIcon(broadcast)}
         </span>
 
         <div className="min-w-0 flex-1 sm:flex sm:items-center sm:gap-3">
